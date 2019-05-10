@@ -18,7 +18,7 @@ module.exports = {
       console.log("found user", foundUser);
       if (foundUser) {
         console.log("after userfound");
-        return res.status(403).send({ message: "Email already exists" });
+        return res.status(200).send({ message: "Email already exists" });
       }
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(password, salt);
@@ -57,7 +57,7 @@ module.exports = {
       const [foundUser] = await db.login_user([user_email]);
       console.log(foundUser);
       if (!foundUser) {
-        return res.status(404).send("User not found");
+        return res.status(200).send("User not found");
       }
       const isAuth = bcrypt.compareSync(password, foundUser.user_hash);
       if (isAuth) {
@@ -71,10 +71,10 @@ module.exports = {
             loggedIn: true
           });
       } else {
-        res.status(401).send("incorrect password");
+        res.status(200).send("incorrect password");
       }
     } catch (error) {
-      res.status(500).send(error);
+      res.status(200).send({message: error});
     }
   }
 
