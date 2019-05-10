@@ -1,11 +1,24 @@
 import React from "react"
-import "./App.css"
+import { HashRouter, Switch, Route } from 'react-router-dom'
+import Login from './Components/Login'
+import Dashboard from './Components/Dashboard'
+import Post from './Components/Post'
+import PostView from './Components/PostView'
+import Chat from './Components/Chat'
+
+
 
 function App() {
   return (
-    <div>
-    
-    </div>
+    <HashRouter>
+      <Switch>
+        <Route path='/' component={Login} />
+        <Route path='/dashboard' component={Dashboard} />
+        <Route path='/post' component={Post} />
+        <Route path='/postview' component={PostView} />
+        <Route path='/chat' component={Chat} />
+      </Switch>
+    </HashRouter>
   );
 }
 
