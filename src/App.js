@@ -7,7 +7,6 @@ import PostView from './Components/PostView'
 import Chat from './Components/Chat'
 
 
-
 function App() {
   return (
     <HashRouter>
