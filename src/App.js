@@ -6,7 +6,6 @@ import Post from './Components/Post'
 import PostView from './Components/PostView'
 import Chat from './Components/Chat'
 
-import "./App.css"
 
 function App() {
   return (
