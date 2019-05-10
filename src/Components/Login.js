@@ -1,27 +1,45 @@
 import React, { useState, useRef } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
+import swal from 'sweetalert'
 
 
 
 
-const Login = () => {
+const Login = (props) => {
     const [toggle, setToggle] = useState(false)
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const firstRef = useRef()
+    const lastRef = useRef()
     const emailRef = useRef()
     const passwordRef = useRef()
+    const employeeRef = useRef()
+    const groupRef = useRef()
 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        setEmail(emailRef.current.value)
-        await setPassword(passwordRef.current.value)
-        let res = axios
-            .post('/auth/login', { email, password })
-            if (res.loggedIn) {
-                console.log(res)
-            }
+
+    const handleLogin = async () => {
+        let res = await axios
+            .post('/auth/login', { email: emailRef.current.value, password: passwordRef.current.value })
+
+        if (res.data.loggedIn) props.history.push('/dashboard')
+
+        else swal(res.data)
+    }
+
+    const handleRegister = async () => {
+        let res = await axios
+            .post('/auth/register', { 
+                user_first: firstRef.current.value,
+                user_last: lastRef.current.value,
+                user_email: emailRef.current.value,
+                password: passwordRef.current.value,
+                user_employee_id: employeeRef.current.value,
+                group_id: groupRef.current.value
+            })
+        if (res.data.loggedIn) props.history.push('/dashboard')
+
+        else swal(res.data.message)
+        
     }
 
     return !toggle ?
@@ -29,7 +47,7 @@ const Login = () => {
             <OuterBody>
                 <Body>
                     <form
-                        onSubmit={handleSubmit}
+                        onSubmit={handleLogin}
                     >
                         <Input type="text" placeholder="Email" ref={emailRef} />
                         <Input type="password" placeholder="Password" ref={passwordRef} />
@@ -45,12 +63,14 @@ const Login = () => {
         (
             <OuterBody>
                 <Body>
-                    <Input placeholder="First Name" />
-                    <Input placeholder="Last Name" />
-                    <Input placeholder="Email" />
-                    <Input placeholder="Password" />
-                    <Input placeholder="Employee ID" />
-                    <Select>
+                    <Input ref={firstRef} placeholder="First Name" />
+                    <Input ref={lastRef} placeholder="Last Name" />
+                    <Input ref={emailRef} placeholder="Email" />
+                    <Input ref={passwordRef} placeholder="Password" />
+                    <Input ref={employeeRef} placeholder="Employee ID" />
+                    <Select
+                    ref={groupRef}
+                    >
                         <option defaultValue>Select Group</option>
                         <option value="1" >Reservation</option>
                         <option value="2" >MCCM</option>
@@ -59,6 +79,11 @@ const Login = () => {
                         <option value="5" >Vacation</option>
                         <option value="6" >Customer</option>
                     </Select>
+                    <Button
+                    onClick={() => handleRegister()}
+                    >
+                        Register
+                    </Button>
                 </Body>
             </OuterBody>
         )
