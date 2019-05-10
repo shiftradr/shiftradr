@@ -11,7 +11,7 @@ function App() {
   return (
     <HashRouter>
       <Switch>
-        <Route path='/' component={Login} />
+        <Route path='/' exact component={Login} />
         <Route path='/dashboard' component={Dashboard} />
         <Route path='/post' component={Post} />
         <Route path='/postview' component={PostView} />
