@@ -1,3 +1,4 @@
+drop table if exists posts;
 drop table if exists users;
 drop table if exists groups;
 
@@ -79,4 +80,49 @@ values
         $4, --password 4
         '4567',
         4
+);
+
+create table posts 
+(   
+        post_id serial primary key,
+        user_id int references users(user_id),
+        shift_date date,
+        start_time time,
+        end_time time,
+        memo text,
+        incentive text,
+        trade boolean,
+        give boolean,
+        group_id int references groups(group_id),
+        taken boolean,
+        post_date timestamp
+);
+
+insert into posts
+(
+        user_id,
+        shift_date,
+        start_time,
+        end_time,
+        memo,
+        incentive,
+        trade,
+        give,
+        group_id,
+        taken,
+        post_date
+)
+values
+(
+        1,
+        '2019-05-13',
+        '09:00:00',
+        '11:00:00',
+        'Please take my shift so I dont have to code',
+        'Jazz tickets',
+        false,
+        false,
+        1,
+        false,
+        '2019-05-12 19:10:25-07'
 );
