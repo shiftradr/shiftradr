@@ -1,14 +1,78 @@
-import React, { useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import styled, { css } from "styled-components"
 import { Link } from "react-router-dom"
-import Search from './Search'
+import swal from "@sweetalert/with-react"
 
 const Header = () => {
     const [toggle, setToggle] = useState(false)
+
+    const node = useRef()
+
+    const [open, setOpen] = useState(false)
+
+    const handleClickOutside = (e) => {
+        console.log("clicking anywhere")
+        if (node.current.contains(e.target)) {
+            // inside click
+            return
+        }
+        // outside click
+        setOpen(false)
+    }
+
+    const handleChange = (selectedValue) => {
+        // onChange(selectedValue);
+        setOpen(false)
+    }
+
+    useEffect(() => {
+        if (open) {
+            document.addEventListener("mousedown", handleClickOutside)
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside)
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside)
+        }
+    }, [open])
+
     return (
         <div>
             <Head>
-                <StyledLink to="/post">
+                <StyledLink
+                    onClick={() =>
+                        swal(
+                            <Div>
+                                <h1>Please enter shift date</h1>
+                                <InputDiv>
+                                     Date:<Input type="date" />
+                                </InputDiv>
+                                <InputDiv>
+                                    Clock In:<Input type="time" />
+                                </InputDiv>
+                                <InputDiv>
+                                    Clock Out:<Input type="time" />
+                                </InputDiv>
+                                <InputDiv>
+                                   Description: <Input
+                                        type="text"
+                                        placeholder="Add Description"
+                                    />
+                                </InputDiv>
+                                <InputDiv>
+                                    Incentive: <Input type="text" placeholder="Enter Incentive" />
+                                </InputDiv>
+                            </Div>,
+                            {
+                                buttons: {
+                                    cancel: "Cancel",
+                                    Post: true,
+                                },
+                            },
+                        )
+                    }
+                >
                     <i className="fas fa-plus" />
                     Post
                 </StyledLink>
@@ -16,19 +80,42 @@ const Header = () => {
                 <Link to="/dashboard">
                     <h1>ShifTradr</h1>
                 </Link>
-                <I className="fas fa-bars" onClick={() => setToggle(!toggle)} />
+                <I className="fas fa-bars" onClick={() => setOpen(!open)}  />
             </Head>
-            <SlideOut on={toggle}>
+            <SlideOut on={open} ref={node}>
                 <SettingsTitle>
                     <span>Settings</span>
-                    <Times className="fas fa-times" />
+                    <Times
+                        className="fas fa-times"
+                        onClick={() => setOpen(!open)}
+                    />
                 </SettingsTitle>
+                <h4>Account</h4>
+                <h4 />
             </SlideOut>
         </div>
     )
 }
 
 export default Header
+
+const Input = styled.input`
+    width: 170px;
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid black;
+    margin: 10px 0px;
+    background: white;
+    outline: none;
+    text-align: center;
+
+
+
+
+    &:focus {
+        outline: none;
+    }
+`
 
 const Times = styled.i`
     position: relative;
@@ -91,7 +178,7 @@ const I = styled.i`
     position: relative;
     right: 20vw;
 `
-const StyledLink = styled(Link)`
+const StyledLink = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -99,11 +186,20 @@ const StyledLink = styled(Link)`
     width: 80px;
     border-radius: 30px;
     background: #10171e;
-    outline: none;
     color: white;
-    text-decoration: none;
-    border-bottom: none;
     font-size: 1rem;
     position: relative;
     left: 20vw;
+`
+const Div = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+`
+const InputDiv = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 280px;
 `

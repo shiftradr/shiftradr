@@ -2,7 +2,7 @@ import React from "react"
 import { HashRouter, Switch, Route } from 'react-router-dom'
 import Login from './Components/Login'
 import Dashboard from './Components/Dashboard'
-import Search from './Components/Search'
+import Post from './Components/Post'
 import PostView from './Components/PostView'
 import Chat from './Components/Chat'
 
@@ -11,9 +11,9 @@ function App() {
   return (
     <HashRouter>
       <Switch>
-        <Route path='/' exact component={Login} />
+        <Route exact path='/' component={Login} />
         <Route path='/dashboard' component={Dashboard} />
-        {/* <Route path='/post' component={Search} /> */}
+        <Route path='/post' component={Post} />
         <Route path='/postview' component={PostView} />
         <Route path='/chat' component={Chat} />
       </Switch>
