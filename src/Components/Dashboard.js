@@ -9,35 +9,7 @@ const Dashboard = () => {
             <Header />
             <Dash>
                 <PostView>
-                    <button
-                        onClick={() =>
-                            swal(
-                                <Div>
-                                    <h1>Please enter shift date</h1>
-                                    <input type="date" />
-                                    <br />
-                                    <input type="time" />
-                                    <br />
-                                    <span>Add a description</span>
-                                    <input
-                                        type="text"
-                                        placeholder="description"
-                                    />
-                                    <span>incentive</span>
-                                    <input type="number" placeholder="amount" />
-                                </Div>,
-                                {
-                                    buttons: {
-                                        cancel: "Cancel",
-                                        Post: true,
-                                    },
-
-                                },
-                            )
-                        }
-                    >
-                        click me
-                    </button>
+                    
                     <button onClick={() => swal("hi")}>hi</button>
                 </PostView>
             </Dash>
@@ -65,9 +37,4 @@ const PostView = styled.div`
     background: #15202b;
 `
 
-const Div = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`
+
