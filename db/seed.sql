@@ -1,5 +1,6 @@
 drop table if exists users;
 drop table if exists groups;
+-- drop table if exists post
 
 create table groups
 (
@@ -80,3 +81,25 @@ values
         '4567',
         4
 );
+
+
+-- create table post
+-- (
+--     post_id serial primary key,
+--     post_date date not null,
+--     post_start_time time not null,
+--     post_end_time time not null,
+    
+-- );
+
+-- "post_id" serial NOT NULL,
+-- 	"date" DATE NOT NULL,
+-- 	"start_time" TIME NOT NULL,
+-- 	"end_time" TIME NOT NULL,
+-- 	"memo" TEXT NOT NULL,
+-- 	"incentive" TEXT NOT NULL,
+-- 	"trade" BOOLEAN NOT NULL,
+-- 	"give" BOOLEAN NOT NULL,
+-- 	"group" TEXT NOT NULL,
+-- 	"taken" BOOLEAN NOT NULL,
+-- 	"user_id" integer NOT NULL,
