@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import styled, { css } from "styled-components"
 import { Link } from "react-router-dom"
+import Search from './Search'
 
 const Header = () => {
     const [toggle, setToggle] = useState(false)
@@ -11,6 +12,7 @@ const Header = () => {
                     <i className="fas fa-plus" />
                     Post
                 </StyledLink>
+                <Search />
                 <Link to="/dashboard">
                     <h1>ShifTradr</h1>
                 </Link>
