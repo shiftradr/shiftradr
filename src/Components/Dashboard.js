@@ -9,7 +9,6 @@ const Dashboard = () => {
             <Header />
             <Dash>
                 <PostView>
-                    
                     <button onClick={() => swal("hi")}>hi</button>
                 </PostView>
             </Dash>

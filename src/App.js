@@ -1,6 +1,6 @@
 import React from "react"
 import { HashRouter, Switch, Route } from 'react-router-dom'
-import Login from './Components/Login'
+import Login from './Components/Login2'
 import Dashboard from './Components/Dashboard'
 import Post from './Components/Post'
 import PostView from './Components/PostView'
