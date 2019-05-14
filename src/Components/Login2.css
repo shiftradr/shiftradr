@@ -102,12 +102,29 @@ light green: #A3C4BC
   
   .groupId {
     width: 100%;
-    /* display: flex;
-    flex-direction: column;
-    align-items: center; */
-
+    height: 39px;
+    border-radius: 5px;
+    border: 1px solid #cfcfcf;
+    outline: none;
+    font-size: .9em;
+    font-weight: lighter;
+    color: #999;
+    padding: 5px
   }
-  
+
+  .groupId::placeholder {
+    font-size: .9em;
+    font-weight: lighter;
+    color: #999;
+  }
+
+  select option {
+    font-size: 1em;
+    font-weight: lighter;
+    color: #999;
+    outline: none;
+  }
+   
   .createAccount {
     width: 100%;
     display: flex;
