@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react"
 import "./Login2.css"
-import styled from "styled-components"
 import axios from "axios"
 import swal from "sweetalert"
 
@@ -221,7 +220,7 @@ const Login2 = (props) => {
                         )}
                     </div>
                     <div className="employeeId">
-                        <label htmlFor="employeeId">Employee ID</label>
+                        <label className="label" htmlFor="employeeId">Employee ID</label>
                         <input
                             type="text"
                             className={
@@ -240,10 +239,10 @@ const Login2 = (props) => {
                             </span>
                         )}
                     </div>
+                    <label className="label" htmlFor="groupId">Department</label>
                     <select
                         ref={groupRef}
                         className="groupId"
-                        style={{ fontSize: "18px", color: "gray" }}
                     >
                         <option defaultValue>Select Group</option>
                         <option value="1">Crew</option>
@@ -299,4 +298,4 @@ const Login2 = (props) => {
         </div>
     )
 }
-export default Login
+export default Login2
