@@ -2,13 +2,16 @@ import React, { useState, useRef, useEffect } from "react"
 import styled, { css } from "styled-components"
 import { Link } from "react-router-dom"
 import swal from "@sweetalert/with-react"
+import Search from './Search'
 
-const Header = () => {
+const Header = (props) => {
     const [toggle, setToggle] = useState(false)
 
     const node = useRef()
 
     const [open, setOpen] = useState(false)
+
+    const [filter, setFilter] = useState(false)
 
     const handleClickOutside = (e) => {
         console.log("clicking anywhere")
@@ -46,7 +49,7 @@ const Header = () => {
                             <Div>
                                 <h1>Please enter shift date</h1>
                                 <InputDiv>
-                                     Date:<Input type="date" />
+                                    Date:<Input type="date" />
                                 </InputDiv>
                                 <InputDiv>
                                     Clock In:<Input type="time" />
@@ -55,7 +58,7 @@ const Header = () => {
                                     Clock Out:<Input type="time" />
                                 </InputDiv>
                                 <InputDiv>
-                                   Description: <Input
+                                    Description: <Input
                                         type="text"
                                         placeholder="Add Description"
                                     />
@@ -76,10 +79,15 @@ const Header = () => {
                     <i className="fas fa-plus" />
                     Post
                 </StyledLink>
+                {/* <Search /> */}
+                <Filter
+                    onClick={props.handleClick}
+                    className="fas fa-filter"
+                />
                 <Link to="/dashboard">
                     <h1>ShifTradr</h1>
                 </Link>
-                <I className="fas fa-bars" onClick={() => setOpen(!open)}  />
+                <I className="fas fa-bars" onClick={() => setOpen(!open)} />
             </Head>
             <SlideOut on={open} ref={node}>
                 <SettingsTitle>
@@ -201,4 +209,13 @@ const InputDiv = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 280px;
+`
+
+
+const FilterTitle = styled.div`
+  
+`
+
+const Filter = styled.div`
+
 `
