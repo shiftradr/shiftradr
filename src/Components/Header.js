@@ -4,7 +4,6 @@ import { Link } from "react-router-dom"
 import swal from "@sweetalert/with-react"
 
 const Header = () => {
-    const [toggle, setToggle] = useState(false)
 
     const node = useRef()
 
@@ -17,11 +16,6 @@ const Header = () => {
             return
         }
         // outside click
-        setOpen(false)
-    }
-
-    const handleChange = (selectedValue) => {
-        // onChange(selectedValue);
         setOpen(false)
     }
 
@@ -90,7 +84,6 @@ const Header = () => {
                     />
                 </SettingsTitle>
                 <h4>Account</h4>
-                <h4 />
             </SlideOut>
         </div>
     )
