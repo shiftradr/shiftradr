@@ -1,6 +1,6 @@
 import React from "react"
 import { HashRouter, Switch, Route } from 'react-router-dom'
-import Login from './Components/Login'
+import Login from './Components/Login2'
 import Dashboard from './Components/Dashboard'
 import Post from './Components/Post'
 import PostView from './Components/PostView'
@@ -11,7 +11,7 @@ function App() {
   return (
     <HashRouter>
       <Switch>
-        <Route path='/' exact component={Login} />
+        <Route exact path='/' component={Login} />
         <Route path='/dashboard' component={Dashboard} />
         <Route path='/post' component={Post} />
         <Route path='/postview' component={PostView} />
