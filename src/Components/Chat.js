@@ -24,7 +24,7 @@ export default Chat
 const ChatBar = styled.div`
     display: relative;
     left: 0px;
-    width: 10vw;
+    width: 50vw;
     background: black;
 `
 

@@ -1,5 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import "./Login2.css"
+import styled from "styled-components"
 import axios from "axios"
 import swal from "sweetalert"
 
@@ -18,7 +19,8 @@ const formValid = ({ formErrors, ...rest }) => {
     })
     return valid
 }
-const Login = (props) => {
+const Login2 = (props) => {
+    const groupRef = useRef()
     const [toggle, setToggle] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -27,11 +29,15 @@ const Login = (props) => {
         lastName: null,
         email: null,
         password: null,
+        employeeId: null,
+        groupId: null,
         formErrors: {
             firstName: "",
             lastName: "",
             email: "",
             password: "",
+            employeeId: "",
+            groupId: "",
         },
     })
     const handleSubmit = (e) => {
@@ -43,6 +49,8 @@ const Login = (props) => {
       Last Name: ${state.lastName}
       Email: ${state.email}
       Password: ${state.password}
+      EmployeeId: ${state.employeeId}
+      GroupId: ${groupRef.current.value}
       `)
         } else {
             console.error("Form Invalid - Display Error Message")
@@ -50,14 +58,19 @@ const Login = (props) => {
     }
 
     const handleLogin = async () => {
-        console.log(12121, email)
-        let res = await axios.post("/auth/login", {
-            email: email,
-            password: password,
-        })
-
-        if (res.data.loggedIn) props.history.push("/dashboard")
-        else swal(res.data)
+        try {
+            console.log(12121, email)
+            let res = await axios.post("/auth/login", {
+                email: email,
+                password: password,
+            })
+            console.log(res.data)
+            if (res.data.loggedIn) props.history.push("/dashboard")
+            else swal(res.data)
+        } catch (error) {
+            console.log({ error })
+            // res.status(500).send(error);
+        }
     }
 
     const handleRegister = async () => {
@@ -66,8 +79,8 @@ const Login = (props) => {
             user_last: state.lastName,
             user_email: state.email,
             password: state.password,
-            user_employee_id: 345,
-            group_id: 1,
+            user_employee_id: state.employeeId,
+            group_id: groupRef.current.value,
         })
         if (res.data.loggedIn) props.history.push("/dashboard")
         else swal(res.data.message)
@@ -80,12 +93,10 @@ const Login = (props) => {
         let formErrors = state.formErrors
         switch (name) {
             case "firstName":
-                formErrors.firstName =
-                    value.length < 3 ? "minimum 3 characters required" : ""
+                formErrors.firstName = value.length < 1 ? "Required Field" : ""
                 break
             case "lastName":
-                formErrors.lastName =
-                    value.length < 3 ? "minimum 2 characters required" : ""
+                formErrors.lastName = value.length < 1 ? "Required Field" : ""
                 break
             case "email":
                 formErrors.email = emailRegex.test(value)
@@ -93,8 +104,13 @@ const Login = (props) => {
                     : "invalid email address"
                 break
             case "password":
-                formErrors.password =
-                    value.length < 6 ? "minimum 6 characaters required" : ""
+                formErrors.password = value.length < 6 ? "minimum 6 characaters required" : ""
+                break
+            case "employeeId":
+                formErrors.employeeId = value.length < 6 ? "Required Field" : ""
+                break
+            case "groupId":
+                formErrors.groupId = value.length < 1 ? "Required Field" : ""
                 break
             default:
                 break
@@ -204,6 +220,39 @@ const Login = (props) => {
                             </span>
                         )}
                     </div>
+                    <div className="employeeId">
+                        <label htmlFor="employeeId">Employee ID</label>
+                        <input
+                            type="text"
+                            className={
+                                formErrors.employeeId.length > 0
+                                    ? "error regInput"
+                                    : "regInput"
+                            }
+                            placeholder="Employee ID"
+                            name="employeeId"
+                            noValidate
+                            onChange={handleChange}
+                        />
+                        {formErrors.employeeId.length > 0 && (
+                            <span className="errorMessage">
+                                {formErrors.employeeId}
+                            </span>
+                        )}
+                    </div>
+                    <select
+                        ref={groupRef}
+                        className="groupId"
+                        style={{ fontSize: "18px", color: "gray" }}
+                    >
+                        <option defaultValue>Select Group</option>
+                        <option value="1">Crew</option>
+                        <option value="2">Customer</option>
+                        <option value="3">MCCM</option>
+                        <option value="4">Reservations</option>
+                        <option value="5">True</option>
+                        <option value="6">Vacations</option>
+                    </select>
                     <div className="createAccount">
                         <button
                             className="regButton"

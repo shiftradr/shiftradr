@@ -52,6 +52,7 @@ module.exports = {
   login: async (req, res) => {
     try {
       const { email: user_email, password } = req.body;
+      console.log(req.body)
       console.log(user_email, password);
       let db = req.app.get("db");
       const [foundUser] = await db.login_user([user_email]);
