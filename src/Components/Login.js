@@ -18,7 +18,7 @@ const Login = (props) => {
             email: emailRef.current.value,
             password: passwordRef.current.value,
         })
-
+        console.log(props)
         if (res.data.loggedIn) props.history.push("/dashboard")
         else swal(res.data)
     }

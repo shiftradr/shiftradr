@@ -1,4 +1,3 @@
-drop table if exists posts;
 drop table if exists users;
 drop table if exists groups;
 
@@ -126,4 +125,3 @@ values
         false,
         '2019-05-12 19:10:25-07'
 );
-

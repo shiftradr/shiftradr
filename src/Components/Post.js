@@ -2,20 +2,20 @@ import React from "react"
 import Header from "./Header"
 import styled from "styled-components"
 
-const Post = () => {
+const Search = () => {
     return (
         <>
             <Header />
             <PostView>
                 <Input type='date' />
-                <Input placeHolder='' type='time' />
+                <Input placeholder='' type='time' />
                 <Input placeHolder='' />
             </PostView>
         </>
     )
 }
 
-export default Post
+export default Search
 
 const PostView = styled.div`
     display: flex;
