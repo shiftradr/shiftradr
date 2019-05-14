@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react"
 import styled, { css } from "styled-components"
 import { Link } from "react-router-dom"
 import swal from "@sweetalert/with-react"
+import axios from 'axios'
 
 const Header = (props) => {
     const node = useRef()
@@ -10,6 +11,13 @@ const Header = (props) => {
     const [open, setOpen] = useState(false)
 
     // const [filter, setFilter] = useState(false)
+
+    //createNewPost Refs
+    const shiftDateRef = useRef()
+    const startTimeRef = useRef()
+    const endTimeRef = useRef()
+    const memoRef   = useRef()
+    const incentiveRef  = useRef()
 
     const handleClickOutside = (e) => {
         console.log("clicking anywhere")
@@ -33,56 +41,66 @@ const Header = (props) => {
         }
     }, [open])
 
+    const createNewPost = async () => {
+        await axios.post('/api/posts', {
+            shiftDate: shiftDateRef.current.value,
+            startTime: startTimeRef.current.value,
+            endTime: endTimeRef.current.value,
+            memo: memoRef.current.value,
+            incentive: incentiveRef.current.value
+        }).then(res => res.data)
+    }
+
     return (
         <div>
             <Head>
                 <Icons>
-                    <StyledLink
-                        onClick={() =>
-                            swal(
-                                <Div>
-                                    <h1>Please enter shift date</h1>
-                                    <InputDiv>
-                                        Date:
-                                        <Input type="date" />
-                                    </InputDiv>
-                                    <InputDiv>
-                                        Clock In:
-                                        <Input type="time" />
-                                    </InputDiv>
-                                    <InputDiv>
-                                        Clock Out:
-                                        <Input type="time" />
-                                    </InputDiv>
-                                    <InputDiv>
-                                        Description:{" "}
-                                        <Input
-                                            type="text"
-                                            placeholder="Add Description"
-                                        />
-                                    </InputDiv>
-                                    <InputDiv>
-                                        Incentive:{" "}
-                                        <Input
-                                            type="text"
-                                            placeholder="Enter Incentive"
-                                        />
-                                    </InputDiv>
-                                </Div>,
-                                {
-                                    buttons: {
-                                        cancel: "Cancel",
-                                        Post: true,
-                                    },
+                <StyledLink
+                    onClick={() =>
+                        swal(
+                            <Div>
+                                <h1>Please enter shift date</h1>
+                                <InputDiv>
+                                    Date:<Input type="date" ref={shiftDateRef} />
+                                </InputDiv>
+                                <InputDiv>
+                                    Clock In:<Input type="time" ref={startTimeRef} />
+                                </InputDiv>
+                                <InputDiv>
+                                    Clock Out:<Input type="time" ref={endTimeRef} />
+                                </InputDiv>
+                                <InputDiv>
+                                    Description: <Input
+                                        type="text"
+                                        placeholder="Add Description"
+                                        ref={memoRef}
+                                    />
+                                </InputDiv>
+                                <InputDiv>
+                                    Incentive: <Input type="text" placeholder="Enter Incentive" ref={incentiveRef} />
+                                </InputDiv>
+                            </Div>,
+                            {
+                                buttons: {
+                                    cancel: "Cancel",
+                                    Post: true,
                                 },
-                            )
-                        }
-                    >
-                        <i className="fas fa-plus" />
-                        Post
-                    </StyledLink>
-                    {/* <Search /> */}
-                    <StyledLink 
+                            },
+                        
+                        ).then(function(){
+                            createNewPost()
+                            swal('coooooollllllll')
+                        }, function(dismiss){
+                            if (dismiss === 'cancel'){
+                                swal('canceled')
+                            }
+                        })
+                    }
+                >
+                    <i className="fas fa-plus" />
+                    Post
+                </StyledLink>
+                <StyledLink 
                     ref={props.test}
                     onClick={props.handleClick}>
                         <i className="fas fa-filter" />

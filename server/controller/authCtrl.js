@@ -96,6 +96,14 @@ getPosts: async (req, res) => {
     const db = req.app.get('db')
     const posts = await db.get_posts_by_group([groupId])
     res.status(200).send(posts)
+},
+createPost: async (req, res) => {
+  const {shiftDate, startTime, endTime, memo, incentive} = req.body
+  const groupId = req.session.group_id
+  const user_id = req.session.user_id
+  const db = req.app.get('db')
+  const shifts = await db.create_post([user_id, shiftDate, startTime, endTime, memo, incentive, groupId, groupId])
+  res.status(200).send(shifts)
 }
 
   

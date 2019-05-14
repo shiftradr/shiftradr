@@ -44,3 +44,6 @@ app.get('/auth/user-data', authCtrl.userData)
 // post get
 app.get('/api/posts', authCtrl.getPosts)
 
+// post create
+app.post('/api/posts', authCtrl.createPost)
+
