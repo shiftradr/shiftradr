@@ -1,29 +1,26 @@
 import React from "react"
-import Header from "./Header"
 import styled from "styled-components"
 
-const Search = () => {
+const Post = (props) => {
     return (
         <>
-            <Header />
             <PostView>
-                <Input type='date' />
-                <Input placeholder='' type='time' />
-                <Input placeHolder='' />
+                <h5>{props.map}</h5>
             </PostView>
         </>
     )
 }
 
-export default Search
+export default Post
 
 const PostView = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 8vh;
-    height: 92vh;
-    width: 100vw;
+    height: 100px;
+    width: 90%;
+    background: pink;
 `
 
 const Input = styled.input`

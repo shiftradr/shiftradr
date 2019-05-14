@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 import Header from './Header'
 
 const Chat = () => {
@@ -24,7 +24,7 @@ export default Chat
 const ChatBar = styled.div`
     display: relative;
     left: 0px;
-    width: 10vw;
+    width: 50vw;
     background: black;
 `
 

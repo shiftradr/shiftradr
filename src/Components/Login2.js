@@ -1,6 +1,5 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import "./Login2.css"
-import styled from "styled-components"
 import axios from "axios"
 import swal from "sweetalert"
 
@@ -19,20 +18,25 @@ const formValid = ({ formErrors, ...rest }) => {
     })
     return valid
 }
-const Login = (props) => {
+const Login2 = (props) => {
+    const groupRef = useRef()
     const [toggle, setToggle] = useState(false)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [state, setState] = useState({
         firstName: null,
         lastName: null,
         email: null,
         password: null,
+        employeeId: null,
+        groupId: null,
         formErrors: {
             firstName: "",
             lastName: "",
             email: "",
             password: "",
+            employeeId: "",
+            groupId: "",
         },
     })
     const handleSubmit = (e) => {
@@ -44,6 +48,8 @@ const Login = (props) => {
       Last Name: ${state.lastName}
       Email: ${state.email}
       Password: ${state.password}
+      EmployeeId: ${state.employeeId}
+      GroupId: ${groupRef.current.value}
       `)
         } else {
             console.error("Form Invalid - Display Error Message")
@@ -51,29 +57,34 @@ const Login = (props) => {
     }
 
     const handleLogin = async () => {
-        console.log(12121, email)
-        let res = await axios.post("/auth/login", {
-            email: email,
-            password: password,
-        })
-
-        if (res.data.loggedIn) props.history.push("/dashboard")
-        else swal(res.data)
+        try {
+            console.log(12121, email)
+            let res = await axios.post("/auth/login", {
+                email: email,
+                password: password,
+            })
+            console.log(res.data)
+            if (res.data.loggedIn) props.history.push("/dashboard")
+            else swal(res.data)
+        } catch (error) {
+            console.log({ error })
+            // res.status(500).send(error);
+        }
     }
-    
+
     const handleRegister = async () => {
         let res = await axios.post("/auth/register", {
             user_first: state.firstName,
             user_last: state.lastName,
             user_email: state.email,
             password: state.password,
-            user_employee_id: 345,
-            group_id: 1,
+            user_employee_id: state.employeeId,
+            group_id: groupRef.current.value,
         })
         if (res.data.loggedIn) props.history.push("/dashboard")
         else swal(res.data.message)
     }
-    
+
     const { formErrors } = state
     const handleChange = (e) => {
         e.preventDefault()
@@ -81,12 +92,10 @@ const Login = (props) => {
         let formErrors = state.formErrors
         switch (name) {
             case "firstName":
-                formErrors.firstName =
-                    value.length < 3 ? "minimum 3 characters required" : ""
+                formErrors.firstName = value.length < 1 ? "Required Field" : ""
                 break
             case "lastName":
-                formErrors.lastName =
-                    value.length < 3 ? "minimum 2 characters required" : ""
+                formErrors.lastName = value.length < 1 ? "Required Field" : ""
                 break
             case "email":
                 formErrors.email = emailRegex.test(value)
@@ -94,8 +103,13 @@ const Login = (props) => {
                     : "invalid email address"
                 break
             case "password":
-                formErrors.password =
-                    value.length < 6 ? "minimum 6 characaters required" : ""
+                formErrors.password = value.length < 6 ? "minimum 6 characaters required" : ""
+                break
+            case "employeeId":
+                formErrors.employeeId = value.length < 6 ? "Required Field" : ""
+                break
+            case "groupId":
+                formErrors.groupId = value.length < 1 ? "Required Field" : ""
                 break
             default:
                 break
@@ -111,16 +125,22 @@ const Login = (props) => {
     return toggle ? (
         <div className="wrapper">
             <div className="form-wrapper">
-                <h1>Create Account</h1>
-                <form onSubmit={handleSubmit} noValidate>
+                <h1 className="registerTitle">Create Account</h1>
+                <form
+                    className="registerForm"
+                    onSubmit={handleSubmit}
+                    noValidate
+                >
                     <div className="firstName">
-                        <label htmlFor="firstName">First Name</label>
+                        <label className="label" htmlFor="firstName">
+                            First Name
+                        </label>
                         <input
                             type="text"
                             className={
                                 formErrors.firstName.length > 0
-                                    ? "erreor"
-                                    : null
+                                    ? "error regInput"
+                                    : "regInput"
                             }
                             placeholder="First Name"
                             name="firstName"
@@ -134,11 +154,15 @@ const Login = (props) => {
                         )}
                     </div>
                     <div className="lastName">
-                        <label htmlFor="lastName">Last Name</label>
+                        <label className="label" htmlFor="lastName">
+                            Last Name
+                        </label>
                         <input
                             type="text"
                             className={
-                                formErrors.lastName.length > 0 ? "error" : null
+                                formErrors.lastName.length > 0
+                                    ? "error regInput"
+                                    : "regInput"
                             }
                             placeholder="Last Name"
                             name="lastName"
@@ -152,13 +176,17 @@ const Login = (props) => {
                         )}
                     </div>
                     <div className="email">
-                        <label htmlFor="email">Email</label>
+                        <label className="label" htmlFor="email">
+                            Email
+                        </label>
                         <input
                             type="email"
                             className={
-                                formErrors.email.length > 0 ? "error" : null
+                                formErrors.email.length > 0
+                                    ? "error regInput"
+                                    : "regInput"
                             }
-                            placeholder="email"
+                            placeholder="Email"
                             name="email"
                             noValidate
                             onChange={handleChange}
@@ -170,11 +198,15 @@ const Login = (props) => {
                         )}
                     </div>
                     <div className="password">
-                        <label htmlFor="password">Password</label>
+                        <label className="label" htmlFor="password">
+                            Password
+                        </label>
                         <input
                             type="password"
                             className={
-                                formErrors.password.length > 0 ? "error" : null
+                                formErrors.password.length > 0
+                                    ? "error regInput"
+                                    : "regInput"
                             }
                             placeholder="Password"
                             name="password"
@@ -187,8 +219,48 @@ const Login = (props) => {
                             </span>
                         )}
                     </div>
+                    <div className="employeeId">
+                        <label className="label" htmlFor="employeeId">Employee ID</label>
+                        <input
+                            type="text"
+                            className={
+                                formErrors.employeeId.length > 0
+                                    ? "error regInput"
+                                    : "regInput"
+                            }
+                            placeholder="Employee ID"
+                            name="employeeId"
+                            noValidate
+                            onChange={handleChange}
+                        />
+                        {formErrors.employeeId.length > 0 && (
+                            <span className="errorMessage">
+                                {formErrors.employeeId}
+                            </span>
+                        )}
+                    </div>
+                    <label className="label" htmlFor="groupId">Department</label>
+                    <select
+                        ref={groupRef}
+                        className="groupId"
+                    >
+                        <option defaultValue>Select Group</option>
+                        <option value="1">Crew</option>
+                        <option value="2">Customer</option>
+                        <option value="3">MCCM</option>
+                        <option value="4">Reservations</option>
+                        <option value="5">True</option>
+                        <option value="6">Vacations</option>
+                    </select>
                     <div className="createAccount">
-                        <button type="submit" onClick={() => handleRegister()}> Create Account</button>
+                        <button
+                            className="regButton"
+                            type="submit"
+                            onClick={() => handleRegister()}
+                        >
+                            {" "}
+                            Create Account
+                        </button>
                         <small onClick={() => setToggle(!toggle)}>
                             Already Have an Account?
                         </small>
@@ -199,68 +271,31 @@ const Login = (props) => {
     ) : (
         <div className="wrapper">
             <div className="form-wrapper">
-                <form>
+                <h1 className="registerTitle">Login</h1>
+                <form className="loginForm">
                     <input
+                        className="regInput"
                         type="text"
                         placeholder="Email"
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <input
+                        className="regInput"
                         type="password"
                         placeholder="Password"
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <button onClick={handleLogin}>Login</button>
+                    <div className="createAccount">
+                        <button className="regButton" onClick={handleLogin}>
+                            Login
+                        </button>
+                        <small onClick={() => setToggle(!toggle)}>
+                            Don't have an account? Click here to register!
+                        </small>
+                    </div>
                 </form>
-                <button onClick={() => setToggle(!toggle)}>Register</button>
             </div>
         </div>
     )
 }
-export default Login
-
-const Input = styled.input`
-    display: flex;
-    height: 20px;
-    width: 100px;
-    margin: 10px;
-    border: none;
-    outline: none;
-    border-bottom: 0.5px solid black;
-`
-const Button = styled.button`
-    display: flex;
-    height: 30px;
-    width: 100px;
-    justify-content: center;
-    margin: 10px;
-    border-radius: 5px;
-    box-shadow: 0 3px 8px rgb(0, 0, 0, 0.18);
-
-    &:hover {
-    }
-`
-const Body = styled.div`
-    height: 350px;
-    width: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.18);
-    border-radius: 10px;
-`
-
-const OuterBody = styled.div`
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`
-
-const Select = styled.select`
-    background-color: white;
-    height: 30px;
-    width: 110px;
-`
+export default Login2
