@@ -13,14 +13,14 @@ useEffect( () => {
     const getData = async () => {
         axios.get('/auth/user-data').then(res => console.log(res.data))
         let res = await axios.get('/api/posts')
-        console.log(9999, res.data[0])
+        // console.log(9999, res.data[0])
         setPost(res.data)
-        console.log(res)
+        // console.log(res)
     }
     getData()
 }, [])
 
-console.log(1111, post)
+// console.log(1111, post)
 
 let map = post.map((item, i) => {
     return (
@@ -165,7 +165,7 @@ const InputDiv = styled.div`
 `
 
 const Input = styled.input`
-    z-index: 10
+    z-index: 10;
     font-size: 1.1rem;
 
 `
