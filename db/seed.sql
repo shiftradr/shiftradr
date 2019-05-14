@@ -14,10 +14,16 @@ insert into groups
     )
 values
     (
+        'Crew'
+),
+(
+        'Customer'
+),
+(
         'MCCM'
 ),
 (
-        'Crew'
+        'Reservations'
 ),
 (
         'True Blue'

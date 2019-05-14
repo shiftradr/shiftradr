@@ -42,7 +42,7 @@
   },
   "proxy": "http://localhost:4444",
   "main": "server/server.js",
-  "nodemonconfig": {
+  "nodemonConfig": {
     "ignore": [
       "src/*",
       "public/*"
