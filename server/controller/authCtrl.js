@@ -64,6 +64,14 @@ module.exports = {
       if (isAuth) {
         req.session.user_id = foundUser.user_id;
         req.session.group_id = foundUser.group_id;
+        req.session.user = {
+          user_id: foundUser.user_id,
+          user_first: foundUser.user_first,
+          user_last: foundUser.user_last,
+          user_email: foundUser.user_email,
+          user_employee_id: foundUser.user_employee_id,
+          group_id: foundUser.group_id
+        }
         res
           .status(200)
           .send({
@@ -77,7 +85,17 @@ module.exports = {
     } catch (error) {
       res.status(200).send({message: error});
     }
-  }
+  },
+  userData: (req, res) => {
+    if(req.session.user) res.status(200).send(req.session.user)
+  else res.status(401).send('please log in');
+},
+getPosts: async (req, res) => {
+    const groupId = req.session.user.group_id
+    const db = req.app.get('db')
+    const posts = await db.get_posts_by_group([groupId])
+    res.status(200).send(posts)
+}
 
   
 };
