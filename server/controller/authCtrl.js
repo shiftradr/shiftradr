@@ -61,7 +61,7 @@ module.exports = {
         return res.status(200).send("User not found");
       }
       const isAuth = await bcrypt.compareSync(password, foundUser.user_hash);
-      console.log(isAuth)
+      console.log({ isAuth })
       if (isAuth) {
         req.session.user_id = foundUser.user_id;
         req.session.group_id = foundUser.group_id;
