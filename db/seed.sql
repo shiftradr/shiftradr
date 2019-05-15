@@ -93,15 +93,15 @@ create table posts
         post_id serial primary key,
         user_id int references users(user_id),
         shift_date date,
-        start_time time,
-        end_time time,
+        start_time time with time zone,
+        end_time time with time zone,
         memo text,
         incentive text,
         trade boolean,
         give boolean,
         group_id int references groups(group_id),
         taken boolean,
-        post_date timestamp
+        post_date timestamptz
 );
 
 insert into posts
