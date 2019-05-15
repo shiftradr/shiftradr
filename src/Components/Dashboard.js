@@ -11,16 +11,16 @@ const Dashboard = (props) => {
     const [post, setPost] = useState([])
 
     useEffect(() => {
-        const getData = async () => {
-            axios.get("/auth/user-data").then((res) => console.log(res.data))
-            let res = await axios.get("/api/posts")
-            console.log(9999, res.data[0])
-            setPost(res.data)
-            console.log(res)
-        }
         getData()
     }, [])
-
+    
+    const getData = async () => {
+        axios.get("/auth/user-data").then((res) => console.log(res.data))
+        let res = await axios.get("/api/posts")
+        console.log(9999, res.data[0])
+        setPost(res.data)
+        console.log(res)
+    }
     console.log(1111, post)
 
     let map = post.map((item, i) => {
@@ -29,7 +29,6 @@ const Dashboard = (props) => {
                 <span>Date:  {item.shift_date}</span>
                 <span>{item.memo}</span>
                 <span>Incentive:  {item.incentive}</span>
-                <Button>Message Poster</Button>
             </PostV>
         )
     })
@@ -66,7 +65,7 @@ const Dashboard = (props) => {
 
     return (
         <>
-            <Header test={test} handleClick={handleClick} />
+            <Header getData={getData} test={test} handleClick={handleClick} />
             <Dash>
                 <PostView>
                     <SlideDown under={filter} ref={node}>
@@ -114,7 +113,7 @@ const Button = styled.button`
     border-radius: 20px;
     outline: none;
     border: none;
-
+    margin: 8px 0px;
 `
 
 const PostV = styled.div`
@@ -123,9 +122,9 @@ const PostV = styled.div`
     align-items: center;
     flex-direction: column;
     margin-top: 5vh;
-    height: 100px;
+    min-height: 120px;
     width: 90%;
-    background: pink;
+    background: #283E4A;
     border-radius: 20px;
 
 `
@@ -138,6 +137,7 @@ const Dash = styled.div`
     height: 92vh;
     width: 100vw;
     background: #10171e;
+
 `
 const PostView = styled.div`
     display: flex;
@@ -147,6 +147,13 @@ const PostView = styled.div`
     width: 60%;
     height: 100%;
     background: #15202b;
+    background-position: fixed;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
 `
 
 const SlideDown = styled.div`

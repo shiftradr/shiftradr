@@ -103,7 +103,8 @@ const Login2 = (props) => {
                     : "invalid email address"
                 break
             case "password":
-                formErrors.password = value.length < 6 ? "minimum 6 characaters required" : ""
+                formErrors.password =
+                    value.length < 6 ? "minimum 6 characaters required" : ""
                 break
             case "employeeId":
                 formErrors.employeeId = value.length < 6 ? "Required Field" : ""
@@ -220,7 +221,9 @@ const Login2 = (props) => {
                         )}
                     </div>
                     <div className="employeeId">
-                        <label className="label" htmlFor="employeeId">Employee ID</label>
+                        <label className="label" htmlFor="employeeId">
+                            Employee ID
+                        </label>
                         <input
                             type="text"
                             className={
@@ -239,11 +242,10 @@ const Login2 = (props) => {
                             </span>
                         )}
                     </div>
-                    <label className="label" htmlFor="groupId">Department</label>
-                    <select
-                        ref={groupRef}
-                        className="groupId"
-                    >
+                    <label className="label" htmlFor="groupId">
+                        Department
+                    </label>
+                    <select ref={groupRef} className="groupId">
                         <option defaultValue>Select Group</option>
                         <option value="1">Crew</option>
                         <option value="2">Customer</option>
