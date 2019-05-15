@@ -19,9 +19,9 @@ insert into posts(
     $6,
     false,
     false,
-    1,
+    $7,
     false,
-    now()
+    $8
 );
 select *
 from posts

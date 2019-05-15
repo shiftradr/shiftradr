@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from "react"
 import styled, { css } from "styled-components"
 import Header from "./Header"
 import swal from "@sweetalert/with-react"
-import Post from "./Post"
+import moment from 'moment'
+// import Post from "./Post"
 import axios from "axios"
 
 const Dashboard = (props) => {
@@ -24,11 +25,17 @@ const Dashboard = (props) => {
     console.log(1111, post)
 
     let map = post.map((item, i) => {
+        let time = moment(item.post_date).fromNow()
+        let date = moment(item.shift_date).format('dddd, MMMM Do, YYYY')
+        let when = moment(item.shift_date)
+        let bob = moment().to(when)
         return (
             <PostV key={i}>
-                <span>Date:  {item.shift_date}</span>
+                <span>{date}</span>
                 <span>{item.memo}</span>
                 <span>Incentive:  {item.incentive}</span>
+                <span>Posted {time}</span>
+                <span>{bob}</span>
             </PostV>
         )
     })
@@ -106,15 +113,15 @@ const Dashboard = (props) => {
 
 export default Dashboard
 
-const Button = styled.button`
-    background: #519e8a;
-    color: white;
-    padding: 8px;
-    border-radius: 20px;
-    outline: none;
-    border: none;
-    margin: 8px 0px;
-`
+// const Button = styled.button`
+//     background: #519e8a;
+//     color: white;
+//     padding: 8px;
+//     border-radius: 20px;
+//     outline: none;
+//     border: none;
+//     margin: 8px 0px;
+// `
 
 const PostV = styled.div`
     display: flex;

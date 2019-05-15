@@ -23,12 +23,12 @@ const PostView = styled.div`
     background: pink;
 `
 
-const Input = styled.input`
-    display: flex;
-    height: 20px;
-    width: 100px;
-    margin: 10px;
-    border: none;
-    outline: none;
-    border-bottom: 0.5px solid black;
-`
+// const Input = styled.input`
+//     display: flex;
+//     height: 20px;
+//     width: 100px;
+//     margin: 10px;
+//     border: none;
+//     outline: none;
+//     border-bottom: 0.5px solid black;
+// `

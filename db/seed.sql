@@ -101,7 +101,7 @@ create table posts
         give boolean,
         group_id int references groups(group_id),
         taken boolean,
-        post_date timestamp
+        post_date timestamptz
 );
 
 insert into posts
