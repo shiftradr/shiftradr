@@ -52,6 +52,7 @@ module.exports = {
   login: async (req, res) => {
     try {
       const { email: user_email, password } = req.body;
+      console.log(req.body)
       console.log(user_email, password);
       let db = req.app.get("db");
       const [foundUser] = await db.login_user([user_email]);
@@ -60,7 +61,7 @@ module.exports = {
         return res.status(200).send("User not found");
       }
       const isAuth = await bcrypt.compareSync(password, foundUser.user_hash);
-      console.log(isAuth)
+      console.log({ isAuth })
       if (isAuth) {
         req.session.user_id = foundUser.user_id;
         req.session.group_id = foundUser.group_id;
@@ -95,6 +96,14 @@ getPosts: async (req, res) => {
     const db = req.app.get('db')
     const posts = await db.get_posts_by_group([groupId])
     res.status(200).send(posts)
+},
+createPost: async (req, res) => {
+  const {shiftDate, startTime, endTime, memo, incentive} = req.body
+  const groupId = req.session.group_id
+  const user_id = req.session.user_id
+  const db = req.app.get('db')
+  const shifts = await db.create_post([user_id, shiftDate, startTime, endTime, memo, incentive, groupId, groupId])
+  res.status(200).send(shifts)
 }
 
   

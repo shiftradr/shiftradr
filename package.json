@@ -10,6 +10,7 @@
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "massive": "^5.8.0",
+    "nodemon": "^1.19.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router": "^5.0.0",
@@ -46,5 +47,17 @@
       "src/*",
       "public/*"
     ]
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shiftradr/shiftradr.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shiftradr/shiftradr/issues"
+  },
+  "homepage": "https://github.com/shiftradr/shiftradr#readme"
 }
