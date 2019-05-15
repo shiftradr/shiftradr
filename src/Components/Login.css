@@ -6,6 +6,7 @@ dark green: #519E8A
 medium green: #7EB09B
 light green: #A3C4BC
 */
+
 .wrapper {
     height: 100vh;
     width: 100%;
@@ -26,13 +27,13 @@ light green: #A3C4BC
     background-color: #ffffff;
   }
   
-  .registerForm  {
+  form {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
   }
   
- .registerTitle {
+  h1 {
     text-align: center;
     width: 100%;
     color: #111;
@@ -41,27 +42,27 @@ light green: #A3C4BC
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   }
   
-  .label {
+  label {
     font-size: 0.8em;
     margin-bottom: 0.25em;
     color: #222;
     font-weight: lighter;
   }
   
-  .regInput {
+  input {
     padding: 10px 10px;
     border-radius: 5px;
     outline: none;
     border: 1px solid #cfcfcf;
   }
   
-  .regInput:placeholder {
+  input::placeholder {
     font-size: 1.2em;
     font-weight: lighter;
     color: #999;
   }
   
-  .regInput.error {
+  input.error {
     border: 1px solid red;
   }
   
@@ -82,8 +83,7 @@ light green: #A3C4BC
   .firstName,
   .lastName,
   .email,
-  .password,
-  .employeeId {
+  .password {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
@@ -95,36 +95,10 @@ light green: #A3C4BC
   }
   
   .email,
-  .password,
-  .employeeId {
+  .password {
     width: 100%;
   }
   
-  .groupId {
-    width: 100%;
-    height: 39px;
-    border-radius: 5px;
-    border: 1px solid #cfcfcf;
-    outline: none;
-    font-size: .9em;
-    font-weight: lighter;
-    color: #999;
-    padding: 5px
-  }
-
-  .groupId::placeholder {
-    font-size: .9em;
-    font-weight: lighter;
-    color: #999;
-  }
-
-  select option {
-    font-size: 1em;
-    font-weight: lighter;
-    color: #999;
-    outline: none;
-  }
-   
   .createAccount {
     width: 100%;
     display: flex;
@@ -132,16 +106,7 @@ light green: #A3C4BC
     align-items: center;
   }
   
-
-  .loginForm {
-    display: flex;
-    justify-content: space-evenly;
-    flex-direction: column;
-    align-items: center;
-    height: 200px;
-  }
-  
-   .regButton  {
+  .createAccount button {
     background-color: #519e8a;
     color: #fff;
     border: 2px solid #fff;
@@ -152,29 +117,15 @@ light green: #A3C4BC
     font-weight: lighter;
     letter-spacing: 1px;
     margin-bottom: 0.25em;
-    border: 1px solid #519e8a;
-    border-radius: 5px;
-    outline: none;
-    cursor: pointer;
   }
   
   .createAccount button:hover {
     color: #519e8a;
     background-color: #fff;
-    border: 1px solid #519e8a;
-    transition: .15s;
+    border: 2px solid #519e8a;
   }
   
   .createAccount small {
-    color: rgb(121, 120, 120);
+    color: #999;
     font-weight: lighter;
-    cursor: pointer;
-  }
-
-  .swal-button {
-    border: 1px solid #519e8a;
-    background-color: #519e8a;
-  }
-  .swal-button:not([disabled]):hover {
-    background-color: #4cbb9d;
   }

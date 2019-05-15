@@ -1,123 +1,305 @@
-import React, { useState, useRef } from "react"
+import React, { useState} from "react"
+import "./Login.css"
 import axios from "axios"
-import styled from "styled-components"
 import swal from "sweetalert"
 
+const emailRegex = RegExp(
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+)
+const formValid = ({ formErrors, ...rest }) => {
+    console.log(formErrors, rest)
+    let valid = true
+    // validates form errors being empty
+    Object.values(formErrors).forEach((val) => {
+        val.length > 0 && (valid = false)
+    })
+    //validates the from was filled out
+    Object.values(rest).forEach((val) => {
+        val === null && (valid = false)
+    })
+    return valid
+}
 const Login = (props) => {
     const [toggle, setToggle] = useState(false)
-    const firstRef = useRef()
-    const lastRef = useRef()
-    const emailRef = useRef()
-    const passwordRef = useRef()
-    const employeeRef = useRef()
-    const groupRef = useRef() 
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [state, setState] = useState({
+        firstName: null,
+        lastName: null,
+        email: null,
+        password: null,
+        employeeId: null,
+        groupId: null,
+        formErrors: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            employeeId: "",
+            groupId: "",
+        },
+    })
+ 
 
-
-    const handleLogin = async () => {
-        let res = await axios.post("/auth/login", {
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
-        })
-        console.log(props)
-        if (res.data.loggedIn) props.history.push("/dashboard")
-        else swal(res.data)
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        try {
+            console.log(12121, email)
+            let res = await axios.post("/auth/login", {
+                email: email,
+                password: password,
+            })
+            console.log(res.data)
+            if (res.data.loggedIn) props.history.push("/dashboard")
+            else swal(res.data)
+        } catch (error) {
+            console.log({ error })
+            // res.status(500).send(error);
+        }
     }
 
-    const handleRegister = async () => {
-        let res = await axios.post("/auth/register", {
-            user_first: firstRef.current.value,
-            user_last: lastRef.current.value,
-            user_email: emailRef.current.value,
-            password: passwordRef.current.value,
-            user_employee_id: employeeRef.current.value,
-            group_id: groupRef.current.value,
+    const handleRegister = async (e) => {
+        e.preventDefault()
+        console.log(formValid(state))
+        if (formValid(state)) {
+            console.log(`
+      ----SUBMITTING---
+      First Name: ${state.firstName}
+      Last Name: ${state.lastName}
+      Email: ${state.email}
+      Password: ${state.password}
+      EmployeeId: ${state.employeeId}
+      GroupId: ${state.groupId}
+      `)
+            var res = await axios.post("/auth/register", {
+                user_first: state.firstName,
+                user_last: state.lastName,
+                user_email: state.email,
+                password: state.password,
+                user_employee_id: state.employeeId,
+                group_id: state.groupId,
+            })
+            if (res.data.loggedIn) props.history.push("/dashboard")
+        } else {
+            console.error("Form Invalid - Display Error Message")
+            // swal(res.data.message)
+        
+        }
+    }
+    const { formErrors } = state
+    const handleChange = (e) => {
+        e.preventDefault()
+        const { name, value } = e.target
+        let formErrors = state.formErrors
+        switch (name) {
+            case "firstName":
+                formErrors.firstName = value.length < 1 ? "Required Field" : ""
+                break
+            case "lastName":
+                formErrors.lastName = value.length < 1 ? "Required Field" : ""
+                break
+            case "email":
+                formErrors.email = emailRegex.test(value)
+                    ? ""
+                    : "invalid email address"
+                break
+            case "password":
+                formErrors.password = value.length < 6 ? "minimum 6 characaters required" : ""
+                break
+            case "employeeId":
+                formErrors.employeeId = value.length < 6 ? "Required Field" : ""
+                break
+            case "groupId":
+                formErrors.groupId = value.length < 1 ? "Required Field" : ""
+                break
+            default:
+                break
+        }
+        setState({
+            ...state,
+            formErrors,
+            ...state,
+            [name]: value,
         })
-        if (res.data.loggedIn) props.history.push("/dashboard")
-        else swal(res.data.message)
     }
 
-    return !toggle ? (
-        <OuterBody>
-            <Body>
-                <form onSubmit={handleLogin}>
-                    <Input type="text" placeholder="Email" ref={emailRef} />
-                    <Input
+    return toggle ? (
+        <div className="wrapper">
+            <div className="form-wrapper">
+                <h1 className="registerTitle">Create Account</h1>
+                <form
+                    className="registerForm"
+                    onSubmit={handleRegister}
+                    noValidate
+                >
+                    <div className="firstName">
+                        <label className="label" htmlFor="firstName">
+                            First Name
+                        </label>
+                        <input
+                            type="text"
+                            className={
+                                formErrors.firstName.length > 0
+                                    ? "error regInput"
+                                    : "regInput"
+                            }
+                            placeholder="First Name"
+                            name="firstName"
+                            noValidate
+                            onChange={handleChange}
+                        />
+                        {formErrors.firstName.length > 0 && (
+                            <span className="errorMessage">
+                                {formErrors.firstName}
+                            </span>
+                        )}
+                    </div>
+                    <div className="lastName">
+                        <label className="label" htmlFor="lastName">
+                            Last Name
+                        </label>
+                        <input
+                            type="text"
+                            className={
+                                formErrors.lastName.length > 0
+                                    ? "error regInput"
+                                    : "regInput"
+                            }
+                            placeholder="Last Name"
+                            name="lastName"
+                            noValidate
+                            onChange={handleChange}
+                        />
+                        {formErrors.lastName.length > 0 && (
+                            <span className="errorMessage">
+                                {formErrors.lastName}
+                            </span>
+                        )}
+                    </div>
+                    <div className="email">
+                        <label className="label" htmlFor="email">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            className={
+                                formErrors.email.length > 0
+                                    ? "error regInput"
+                                    : "regInput"
+                            }
+                            placeholder="Email"
+                            name="email"
+                            noValidate
+                            onChange={handleChange}
+                        />
+                        {formErrors.email.length > 0 && (
+                            <span className="errorMessage">
+                                {formErrors.email}
+                            </span>
+                        )}
+                    </div>
+                    <div className="password">
+                        <label className="label" htmlFor="password">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            className={
+                                formErrors.password.length > 0
+                                    ? "error regInput"
+                                    : "regInput"
+                            }
+                            placeholder="Password"
+                            name="password"
+                            noValidate
+                            onChange={handleChange}
+                        />
+                        {formErrors.password.length > 0 && (
+                            <span className="errorMessage">
+                                {formErrors.password}
+                            </span>
+                        )}
+                    </div>
+                    <div className="employeeId">
+                        <label className="label" htmlFor="employeeId">Employee ID</label>
+                        <input
+                            type="text"
+                            className={
+                                formErrors.employeeId.length > 0
+                                    ? "error regInput"
+                                    : "regInput"
+                            }
+                            placeholder="Employee ID"
+                            name="employeeId"
+                            noValidate
+                            onChange={handleChange}
+                        />
+                        {formErrors.employeeId.length > 0 && (
+                            <span className="errorMessage">
+                                {formErrors.employeeId}
+                            </span>
+                        )}
+                    </div>
+                    <label className="label" htmlFor="groupId">Department</label>
+                    <select
+                        onChange={handleChange}
+                        className="groupId"
+                        name="groupId"
+                    >
+                        <option defaultValue>Select Group</option>
+                        <option value="1">Crew</option>
+                        <option value="2">Customer</option>
+                        <option value="3">MCCM</option>
+                        <option value="4">Reservations</option>
+                        <option value="5">True</option>
+                        <option value="6">Vacations</option>
+                    </select>
+                    <div className="createAccount">
+                        <button
+                            className="regButton"
+                            type="submit"
+                            // onClick={() => handleRegister()}
+                        >
+                            {" "}
+                            Create Account
+                        </button>
+                        <small onClick={() => setToggle(!toggle)}>
+                            Already Have an Account?
+                        </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    ) : (
+        <div className="wrapper">
+            <div className="form-wrapper">
+                <h1 className="registerTitle">Login</h1>
+                <form className="loginForm" onSubmit={handleLogin}>
+                    <input
+                        className="regInput"
+                        type="text"
+                        placeholder="Email"
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <input
+                        className="regInput"
                         type="password"
                         placeholder="Password"
-                        ref={passwordRef}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
-                    <Button>Login</Button>
+                    <div className="createAccount">
+                            <button className="regButton" type="submit"
+                                // onClick={handleLogin}
+                            >
+                            Login
+                        </button>
+                        <small onClick={() => setToggle(!toggle)}>
+                            Don't have an account? Click here to register!
+                        </small>
+                    </div>
                 </form>
-                <Button onClick={() => setToggle(true)}>Register</Button>
-            </Body>
-        </OuterBody>
-    ) : (
-        <OuterBody>
-            <Body>
-                <Input ref={firstRef} placeholder="First Name" />
-                <Input ref={lastRef} placeholder="Last Name" />
-                <Input ref={emailRef} placeholder="Email" />
-                <Input ref={passwordRef} placeholder="Password" />
-                <Input ref={employeeRef} placeholder="Employee ID" />
-                <Select ref={groupRef}>
-                    <option defaultValue>Select Group</option>
-                    <option value="1">Reservation</option>
-                    <option value="2">MCCM</option>
-                    <option value="3">True Blue</option>
-                    <option value="4">Crew</option>
-                    <option value="5">Vacation</option>
-                    <option value="6">Customer</option>
-                </Select>
-                <Button onClick={() => handleRegister()}>Register</Button>
-            </Body>
-        </OuterBody>
+            </div>
+        </div>
     )
 }
-
 export default Login
-
-const Input = styled.input`
-    display: flex;
-    height: 20px;
-    width: 100px;
-    margin: 10px;
-    border: none;
-    outline: none;
-    border-bottom: 0.5px solid black;
-`
-const Button = styled.button`
-    display: flex;
-    height: 30px;
-    width: 100px;
-    justify-content: center;
-    margin: 10px;
-    border-radius: 5px;
-    box-shadow: 0 3px 8px rgb(0, 0, 0, 0.18);
-
-    &:hover {
-    }
-`
-const Body = styled.div`
-    height: 350px;
-    width: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.18);
-    border-radius: 10px;
-`
-
-const OuterBody = styled.div`
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`
-
-const Select = styled.select`
-    background-color: white;
-    height: 30px;
-    width: 110px;
-`
