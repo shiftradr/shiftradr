@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from "react"
 import styled, { css } from "styled-components"
 import Header from "./Header"
 import swal from "@sweetalert/with-react"
-import Post from "./Post"
+import moment from 'moment'
+// import Post from "./Post"
 import axios from "axios"
 
 const Dashboard = (props) => {
@@ -11,25 +12,30 @@ const Dashboard = (props) => {
     const [post, setPost] = useState([])
 
     useEffect(() => {
-        const getData = async () => {
-            axios.get("/auth/user-data").then((res) => console.log(res.data))
-            let res = await axios.get("/api/posts")
-            console.log(9999, res.data[0])
-            setPost(res.data)
-            console.log(res)
-        }
         getData()
     }, [])
-
+    
+    const getData = async () => {
+        axios.get("/auth/user-data").then((res) => console.log(res.data))
+        let res = await axios.get("/api/posts")
+        console.log(9999, res.data[0])
+        setPost(res.data)
+        console.log(res)
+    }
     console.log(1111, post)
 
     let map = post.map((item, i) => {
+        let time = moment(item.post_date).fromNow()
+        let date = moment(item.shift_date).format('dddd, MMMM Do, YYYY')
+        let when = moment(item.shift_date)
+        let bob = moment().to(when)
         return (
             <PostV key={i}>
-                <span>Date:  {item.shift_date}</span>
+                <span>{date}</span>
                 <span>{item.memo}</span>
                 <span>Incentive:  {item.incentive}</span>
-                <Button>Message Poster</Button>
+                <span>Posted {time}</span>
+                <span>{bob}</span>
             </PostV>
         )
     })
@@ -66,7 +72,7 @@ const Dashboard = (props) => {
 
     return (
         <>
-            <Header test={test} handleClick={handleClick} />
+            <Header getData={getData} test={test} handleClick={handleClick} />
             <Dash>
                 <PostView>
                     <SlideDown under={filter} ref={node}>
@@ -107,15 +113,15 @@ const Dashboard = (props) => {
 
 export default Dashboard
 
-const Button = styled.button`
-    background: #519e8a;
-    color: white;
-    padding: 8px;
-    border-radius: 20px;
-    outline: none;
-    border: none;
-
-`
+// const Button = styled.button`
+//     background: #519e8a;
+//     color: white;
+//     padding: 8px;
+//     border-radius: 20px;
+//     outline: none;
+//     border: none;
+//     margin: 8px 0px;
+// `
 
 const PostV = styled.div`
     display: flex;
@@ -123,9 +129,9 @@ const PostV = styled.div`
     align-items: center;
     flex-direction: column;
     margin-top: 5vh;
-    height: 100px;
+    min-height: 120px;
     width: 90%;
-    background: pink;
+    background: #283E4A;
     border-radius: 20px;
 
 `
@@ -138,6 +144,7 @@ const Dash = styled.div`
     height: 92vh;
     width: 100vw;
     background: #10171e;
+
 `
 const PostView = styled.div`
     display: flex;
@@ -147,6 +154,13 @@ const PostView = styled.div`
     width: 60%;
     height: 100%;
     background: #15202b;
+    background-position: fixed;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
 `
 
 const SlideDown = styled.div`
