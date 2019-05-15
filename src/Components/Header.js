@@ -87,8 +87,9 @@ const Header = (props) => {
                                 },
                             },
                         
-                        ).then(function(){
-                            createNewPost()
+                        ).then( async () => {
+                            await createNewPost()
+                            props.getData()
                             swal('coooooollllllll')
                         }, function(dismiss){
                             if (dismiss === 'cancel'){
