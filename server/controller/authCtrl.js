@@ -108,10 +108,10 @@ createPost: async (req, res) => {
   res.status(200).send(shifts)
 },
 deletePost: async (req, res) => {
-  const {postId} = req.params
+  const {id} = req.params
   const user_id = req.session.user_id
   const db = req.app.get('db')
-  const posts = await db.delete_post([postId, user_id])
+  const posts = await db.delete_post([id, user_id])
   res.status(200).send(posts)
 },
 getPostsByUser: async (req, res) => {
@@ -119,7 +119,8 @@ getPostsByUser: async (req, res) => {
   const db = req.app.get('db')
   const userPosts = await db.get_posts_by_user([user_id])
   res.status(200).send(userPosts)
-}
+},
+markTaken: async (req, res) => {}
 
   
 };
