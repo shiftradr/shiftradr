@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from "react"
 import styled, { css } from "styled-components"
 import { Link } from "react-router-dom"
-import swal from "@sweetalert/with-react"
-import axios from 'axios'
 
 const Header = (props) => {
     const node = useRef()
@@ -10,18 +8,12 @@ const Header = (props) => {
 
     const [open, setOpen] = useState(false)
 
-    // const [filter, setFilter] = useState(false)
-
-    //createNewPost Refs
-    const shiftDateRef = useRef()
-    const startTimeRef = useRef()
-    const endTimeRef = useRef()
-    const memoRef   = useRef()
-    const incentiveRef  = useRef()
-
     const handleClickOutside = (e) => {
         console.log("clicking anywhere")
-        if (node.current.contains(e.target) || bars.current.contains(e.target)) {
+        if (
+            node.current.contains(e.target) ||
+            bars.current.contains(e.target)
+        ) {
             // inside click
             return
         }
@@ -41,81 +33,31 @@ const Header = (props) => {
         }
     }, [open])
 
-    const createNewPost = async () => {
-        await axios.post('/api/posts', {
-            shiftDate: shiftDateRef.current.value,
-            startTime: startTimeRef.current.value,
-            endTime: endTimeRef.current.value,
-            memo: memoRef.current.value,
-            incentive: incentiveRef.current.value
-        }).then(res => res.data)
-    }
-
     return (
         <div>
             <Head>
                 <Icons>
-                <StyledLink
-                    onClick={() =>
-                        swal(
-                            <Div>
-                                <h1>Please enter shift date</h1>
-                                <InputDiv>
-                                    Date:<Input type="date" ref={shiftDateRef} />
-                                </InputDiv>
-                                <InputDiv>
-                                    Clock In:<Input type="time" ref={startTimeRef} />
-                                </InputDiv>
-                                <InputDiv>
-                                    Clock Out:<Input type="time" ref={endTimeRef} />
-                                </InputDiv>
-                                <InputDiv>
-                                    Description: <Input
-                                        type="text"
-                                        placeholder="Add Description"
-                                        ref={memoRef}
-                                    />
-                                </InputDiv>
-                                <InputDiv>
-                                    Incentive: <Input type="text" placeholder="Enter Incentive" ref={incentiveRef} />
-                                </InputDiv>
-                            </Div>,
-                            {
-                                buttons: {
-                                    cancel: "Cancel",
-                                    Post: true,
-                                },
-                            },
-                        
-                        ).then( async () => {
-                            await createNewPost()
-                            props.getData()
-                            swal('coooooollllllll')
-                        }, function(dismiss){
-                            if (dismiss === 'cancel'){
-                                swal('canceled')
-                            }
-                        })
-                    }
-                >
-                    <i className="fas fa-plus" />
-                    Post
-                </StyledLink>
-                <StyledLink 
-                    ref={props.test}
-                    onClick={props.handleClick}>
+                    <StyledLink onClick={() => props.handleModal()}>
+                        <i className="fas fa-plus" />
+                        Post
+                    </StyledLink>
+                    <StyledLink ref={props.test} onClick={props.handleClick}>
                         <i className="fas fa-filter" />
                         Filter
                     </StyledLink>
                     <StyledLink>
-                    <i className="fas fa-bookmark"></i>
+                        <i className="fas fa-bookmark" />
                         Faves
                     </StyledLink>
                 </Icons>
                 <Linked to="/dashboard">
                     <h1>ShifTradr</h1>
                 </Linked>
-                <I ref={bars} className="fas fa-bars" onClick={() => setOpen(!open)} />
+                <I
+                    ref={bars}
+                    className="fas fa-bars"
+                    onClick={() => setOpen(!open)}
+                />
             </Head>
             <SlideOut on={open} ref={node}>
                 <SettingsTitle>
@@ -139,21 +81,6 @@ const Icons = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: row;
-`
-
-const Input = styled.input`
-    width: 170px;
-    height: 30px;
-    border: none;
-    border-bottom: 1px solid black;
-    margin: 10px 0px;
-    background: white;
-    outline: none;
-    text-align: center;
-
-    &:focus {
-        outline: none;
-    }
 `
 
 const Times = styled.i`
@@ -229,18 +156,6 @@ const StyledLink = styled.div`
     font-size: 1rem;
     position: relative;
     left: 12vw;
-`
-const Div = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`
-const InputDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 280px;
 `
 
 const Linked = styled(Link)`

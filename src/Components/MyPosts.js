@@ -13,13 +13,13 @@ const MyPosts = (props) => {
     }, [])
     
     const getData = async () => {
-        axios.get("/auth/user-data").then((res) => console.log(res.data))
         let res = await axios.get("/api/user/posts")
         setPost(res.data)
     }
 
-    const deletePost = (id) => {   
-        axios.delete(`/api/posts/${id}`).then(res => res.data).catch(err => console.log('delete error', err))
+    const deletePost = async (id) => {   
+        await axios.delete(`/api/posts/${id}`).then(res => res.data).catch(err => console.log('delete error', err))
+        getData()
     }
 
     let map = post.map((item, i) => {

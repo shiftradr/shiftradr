@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from "react"
 import styled, { css } from "styled-components"
 import Header from "./Header"
 import swal from "@sweetalert/with-react"
-import moment from 'moment'
+import moment from "moment"
 // import Post from "./Post"
 import axios from "axios"
+import PostModal from "./PostModal"
 
 const Dashboard = (props) => {
     const test = useRef()
@@ -14,28 +15,27 @@ const Dashboard = (props) => {
     useEffect(() => {
         getData()
     }, [])
-    
+
     const getData = async () => {
         axios.get("/auth/user-data").then((res) => console.log(res.data))
         let res = await axios.get("/api/posts")
-        console.log(9999, res.data[0])
+        // console.log(9999, res.data[0])
         setPost(res.data)
-        console.log(res)
+        // console.log(res)
     }
-    console.log(1111, post)
+    // console.log(1111, post)
 
     let map = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
-        let date = moment(item.shift_date).format('dddd, MMMM Do, YYYY')
-        let when = moment(item.shift_date)
-        let bob = moment().to(when)
+        let date = moment(item.shift_date).format("dddd, MMMM Do, YYYY")
         return (
             <PostV key={i}>
                 <span>{date}</span>
                 <span>{item.memo}</span>
-                <span>Incentive:  {item.incentive}</span>
+                {item.incentive ? (
+                    <span>Incentive: {item.incentive}</span>
+                ) : null}
                 <span>Posted {time}</span>
-                <span>{bob}</span>
             </PostV>
         )
     })
@@ -45,8 +45,10 @@ const Dashboard = (props) => {
     const [filter, setFilter] = useState(false)
 
     const handleClickOutside = (e) => {
-        console.log("clicking anywhere")
-        if (node.current.contains(e.target) || test.current.contains(e.target)) {
+        if (
+            node.current.contains(e.target) ||
+            test.current.contains(e.target)
+        ) {
             // inside click
             return
         }
@@ -70,9 +72,20 @@ const Dashboard = (props) => {
         }
     }, [filter])
 
+    const handleModal = () => {
+        setModal(!modal)
+    }
+
+    const [modal, setModal] = useState(false)
+
     return (
         <>
-            <Header getData={getData} test={test} handleClick={handleClick} />
+            <Header
+                handleModal={handleModal}
+                getData={getData}
+                test={test}
+                handleClick={handleClick}
+            />
             <Dash>
                 <PostView>
                     <SlideDown under={filter} ref={node}>
@@ -103,8 +116,16 @@ const Dashboard = (props) => {
                             />
                         </FilterTitle>
                     </SlideDown>
+
                     {map}
                     <button onClick={() => swal(post[0].memo)}>hi</button>
+                    {modal && (
+                        <PostModal
+                            getData={getData}
+                            handleModal={handleModal}
+                            modal={modal}
+                        />
+                    )}
                 </PostView>
             </Dash>
         </>
@@ -131,9 +152,8 @@ const PostV = styled.div`
     margin-top: 5vh;
     min-height: 120px;
     width: 90%;
-    background: #283E4A;
+    background: #283e4a;
     border-radius: 20px;
-
 `
 
 const Dash = styled.div`
@@ -144,7 +164,6 @@ const Dash = styled.div`
     height: 92vh;
     width: 100vw;
     background: #10171e;
-
 `
 const PostView = styled.div`
     display: flex;
@@ -160,7 +179,6 @@ const PostView = styled.div`
     &::-webkit-scrollbar {
         display: none;
     }
-
 `
 
 const SlideDown = styled.div`
@@ -208,5 +226,4 @@ const Input = styled.input`
     font-size: 1.1rem;
     border: none;
     border-bottom: 1px solid black;
-
 `

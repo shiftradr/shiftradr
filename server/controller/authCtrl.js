@@ -102,7 +102,7 @@ createPost: async (req, res) => {
   const {shiftDate, startTime, endTime, memo, incentive} = req.body
   const groupId = req.session.group_id
   const user_id = req.session.user_id
-  const post_date = moment()
+  const post_date = moment.utc()
   const db = req.app.get('db')
   const shifts = await db.create_post([user_id, shiftDate, startTime, endTime, memo, incentive, groupId, post_date])
   res.status(200).send(shifts)
