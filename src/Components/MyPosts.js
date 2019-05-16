@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import Header from './Header'
 import styled from "styled-components"
 import axios from 'axios'
+import moment from 'moment'
 
 const MyPosts = (props) => {
 
@@ -17,23 +18,28 @@ const MyPosts = (props) => {
         setPost(res.data)
     }
 
-    const deletePost = (id) => {
-        const postId = post.post_id    
-        axios.delete(`/api/posts/${id}`, postId).then(res => res.data)
+    const deletePost = (id) => {   
+        axios.delete(`/api/posts/${id}`).then(res => res.data).catch(err => console.log('delete error', err))
     }
 
     let map = post.map((item, i) => {
+        let time = moment(item.post_date).fromNow()
+        let date = moment(item.shift_date).format('dddd, MMMM Do, YYYY')
+        let when = moment(item.shift_date)
+        let bob = moment().to(when)
         return (
             <PostV key={i}>
-                <span>Date:  {item.shift_date}</span>
+                <span>{date}</span>
                 <span>{item.memo}</span>
-                <span>Incentive:  {item.incentive}</span>
-                <Button onClick={deletePost()}>Delete Post</Button>
+                {item.incentive ? (
+                <span>Incentive: {item.incentive}</span>
+                ) : null }
+                <span>Posted {time}</span>
+                <span>{bob}</span>
+                <Button onClick={() => deletePost(item.post_id)}>Delete Post</Button>
             </PostV>
         )
     })
-    console.log(1111, post)
-
 
     return(
         <>
@@ -67,6 +73,13 @@ const PostView = styled.div`
     width: 60%;
     height: 100%;
     background: #15202b;
+    background-position: fixed;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
 `
 
 const PostV = styled.div`
@@ -75,7 +88,7 @@ const PostV = styled.div`
     align-items: center;
     flex-direction: column;
     margin-top: 5vh;
-    height: 100px;
+    height: 140px;
     width: 90%;
     background: pink;
     border-radius: 20px;

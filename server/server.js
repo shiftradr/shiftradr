@@ -52,3 +52,6 @@ app.delete('/api/posts/:id', authCtrl.deletePost)
 
 // get all posts for a specific user, will use this list to delete
 app.get('/api/user/posts', authCtrl.getPostsByUser)
+
+//marking a post as taken
+app.put('/api/posts/:id', authCtrl.markTaken)
