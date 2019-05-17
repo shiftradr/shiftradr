@@ -3,12 +3,25 @@ const express = require('express')
 const session = require('express-session')
 const massive = require('massive')
 const authCtrl = require('./controller/authCtrl')
+const nodemailer = require('nodemailer')
 
 
 const app = express()
-const{SERVER_PORT, CONNECTION_STRING, SESSION_SECRET,NODE_ENV} = process.env
+const{SERVER_PORT, CONNECTION_STRING, SESSION_SECRET,NODE_ENV, MAIL_USER, MAIL_PASSWORD, FROM, TO} = process.env
 app.use(express.json())
 app.use(express.static(`${__dirname}/../build`));
+
+
+// ***** NODEMAILER ***** 
+const transporter = nodemailer.createTransport({
+    service: 'gmail', 
+    auth: {
+        user: MAIL_USER,
+        pass: MAIL_PASSWORD
+    }
+})
+// **********************************
+
 
 massive(CONNECTION_STRING)
     .then((db) => {
@@ -36,6 +49,34 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 * 365
     }
 }))
+
+// ***** NODEMAILER POST *****
+
+app.post('/api/email', (req, res) => {
+    console.log (req.body)
+    const { name, message, email } = req.body
+    console.log(name, message, email)
+    const mailOptions = {
+        from: FROM,
+        to: TO,
+        subject: `ALERT: email from ${name}`,
+        text: `from: ${email}, message: ${message}`
+
+    }
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error)
+            res.status(500).send(error.message)
+        }
+        else {
+            console.log(info)
+            res.sendStatus(200)
+        }
+    })
+})
+
+// **********************************
+
 
 app.post('/auth/register', authCtrl.register)
 app.post('/auth/login', authCtrl.login)
