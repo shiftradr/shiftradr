@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer')
 
 
 const app = express()
-const{SERVER_PORT, CONNECTION_STRING, SESSION_SECRET,NODE_ENV, MAIL_USER, MAIL_PASSWORD, FROM, TO} = process.env
+const{SERVER_PORT, CONNECTION_STRING, SESSION_SECRET, NODE_ENV, MAIL_USER, MAIL_PASSWORD, FROM} = process.env
 app.use(express.json())
 app.use(express.static(`${__dirname}/../build`));
 
@@ -54,14 +54,14 @@ app.use(session({
 
 app.post('/api/email', (req, res) => {
     console.log (req.body)
-    const { name, message, email1, email2 } = req.body
-    console.log(name, message, email1, email2)
+    const {  message, email1, email2 } = req.body
+    console.log( message, email1, email2)
     const mailOptions = {
         from: FROM,
         to: `${email1}, ${email2}`,
-        subject: `Important: email from Shiftradr` ,
+        subject: `Important: email from Shiftradr `,
         text: `${message}`
- 
+
     }
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
