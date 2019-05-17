@@ -18,8 +18,8 @@ function Picker(props) {
     const incentiveRef = useRef()
 
     const handlePost = async () => {
-        let start = moment(startTime).format("hh:mm")
-        let end = moment(endTime).format("hh:mm")
+        let start = moment(startTime).format("HH:mm:ss")
+        let end = moment(endTime).format("HH:mm:ss")
 
         let bob = moment(end).get("hour, min")
         let bib = moment(start).get("hour, min")
@@ -52,10 +52,10 @@ function Picker(props) {
                 />
             </Divv>
             <Divv>
-                Clock Out: <TimePicker value={startTime} onChange={setOutChange} />
+                Clock Out: <TimePicker ampm={false} value={startTime} onChange={setOutChange} />
             </Divv>
             <Divv>
-                Clock In: <TimePicker value={endTime} onChange={setInChange} />
+                Clock In: <TimePicker ampm={false} value={endTime} onChange={setInChange} />
             </Divv>
             <Divv>
                 Description: <Input placeholder="Description" ref={memoRef} />
