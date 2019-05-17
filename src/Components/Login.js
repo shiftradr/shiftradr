@@ -7,7 +7,6 @@ const emailRegex = RegExp(
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
 )
 const formValid = ({ formErrors, ...rest }) => {
-    console.log(formErrors, rest)
     let valid = true
     // validates form errors being empty
     Object.values(formErrors).forEach((val) => {

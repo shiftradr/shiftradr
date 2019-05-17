@@ -88,20 +88,32 @@ values
         4
 );
 
-create table posts 
-(   
-        post_id serial primary key,
-        user_id int references users(user_id),
-        shift_date date,
-        start_time time with time zone,
-        end_time time with time zone,
-        memo text,
-        incentive text,
-        trade boolean,
-        give boolean,
-        group_id int references groups(group_id),
-        taken boolean,
-        post_date timestamptz
+CREATE TABLE posts (
+    post_id SERIAL PRIMARY KEY,
+    user_id integer REFERENCES users(user_id),
+    shift_date date,
+    start_time time without time zone,
+    end_time time without time zone,
+    memo text,
+    incentive text,
+    group_id integer REFERENCES groups(group_id),
+    taken boolean,
+    post_date timestamp with time zone,
+    post_emp_id integer,
+    first_name text,
+    last_name text,
+    post_type integer
+);
+
+CREATE TABLE acc (
+    acc_id SERIAL PRIMARY KEY,
+    post_id integer REFERENCES posts(post_id),
+    acc_user_id integer,
+    acc_first_name character varying(64),
+    acc_last_name character varying(64),
+    acc_emp_id integer,
+    unique (post_id, acc_user_id)
+
 );
 
 insert into posts

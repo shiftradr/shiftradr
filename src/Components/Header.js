@@ -71,6 +71,7 @@ const Header = (props) => {
                 <Link to="/my-posts">
                     <h4>My Posts</h4>
                 </Link>
+            
             </SlideOut>
         </div>
     )

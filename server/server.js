@@ -55,3 +55,12 @@ app.get('/api/user/posts', authCtrl.getPostsByUser)
 
 //marking a post as taken
 app.put('/api/posts/:id', authCtrl.markTaken)
+
+// get post by id
+app.get('/api/post/:id', authCtrl.getPostById)
+
+// accept a post
+app.put('/api/post/:id', authCtrl.accPost)
+
+// get intersted people
+app.get('/api/interested/:id', authCtrl.interested)
