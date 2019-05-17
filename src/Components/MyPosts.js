@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { Link } from 'react-router-dom'
 import Header from './Header'
 import styled from "styled-components"
 import axios from 'axios'
@@ -17,26 +18,31 @@ const MyPosts = (props) => {
         setPost(res.data)
     }
 
-    const deletePost = async (id) => {   
-        await axios.delete(`/api/posts/${id}`).then(res => res.data).catch(err => console.log('delete error', err))
+    // const deletePost = async (id) => {   
+    //     await axios.delete(`/api/posts/${id}`).then(res => res.data).catch(err => console.log('delete error', err))
+    //     getData()
+    // }
+
+    const takeShift = async (id) => {
+        await axios.put(`/api/posts/${id}`).then(res => res.data).catch(err => console.log('update error', err))
         getData()
     }
 
     let map = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         let date = moment(item.shift_date).format('dddd, MMMM Do, YYYY')
-        let when = moment(item.shift_date)
-        let bob = moment().to(when)
         return (
-            <PostV key={i}>
+            <PostV to={`/accept_post/${item.post_id}`} key={i}>
                 <span>{date}</span>
                 <span>{item.memo}</span>
                 {item.incentive ? (
                 <span>Incentive: {item.incentive}</span>
                 ) : null }
                 <span>Posted {time}</span>
-                <span>{bob}</span>
-                <Button onClick={() => deletePost(item.post_id)}>Delete Post</Button>
+                {/* <Button onClick={() => deletePost(item.post_id)}>Delete Post</Button> */}
+                {!item.taken ? (
+                    <Button onClick={() => takeShift(item.post_id)}>Remove Post</Button>
+                ) : <span>No Longer Listed</span>}
             </PostV>
         )
     })
@@ -47,6 +53,7 @@ const MyPosts = (props) => {
             <Dash>
                 <PostView>
                 <Title>My Posts</Title>
+        
                 {map}
                 </PostView>
             </Dash>
@@ -82,7 +89,7 @@ const PostView = styled.div`
 
 `
 
-const PostV = styled.div`
+const PostV = styled(Link)`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -105,6 +112,6 @@ const Button = styled.button`
 
 `
 const Title = styled.h1`
-color: white;
-font-weight: 700;
+    color: white;
+    font-weight: 700;
 `

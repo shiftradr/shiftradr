@@ -11,20 +11,23 @@ import axios from "axios"
 import moment from "moment"
 
 function Picker(props) {
-    const [selectedDate, handleDateChange] = useState(moment())
+    const [selectedDate, handleDateChange] = useState(new Date())
     const [startTime, setOutChange] = useState()
     const [endTime, setInChange] = useState()
     const memoRef = useRef()
     const incentiveRef = useRef()
+    const typeRef = useRef()
 
     const handlePost = async () => {
-        let start = moment(startTime).format("hh:mm")
-        let end = moment(endTime).format("hh:mm")
+        let start = moment(startTime).format("HH:mm:ss")
+        let end = moment(endTime).format("HH:mm:ss")
 
         let bob = moment(end).get("hour, min")
         let bib = moment(start).get("hour, min")
 
-        // console.log(endTime, startTime, bob, bib)
+        console.log(selectedDate)
+        console.log(moment())
+        console.log(new Date())
         await axios
             .post("/api/posts", {
                 shiftDate: selectedDate,
@@ -32,6 +35,7 @@ function Picker(props) {
                 endTime: bob._i,
                 memo: memoRef.current.value,
                 incentive: incentiveRef.current.value,
+                post_type: typeRef.current.value
             })
             .catch((err) => console.log(66, err))
         props.getData()
@@ -52,10 +56,10 @@ function Picker(props) {
                 />
             </Divv>
             <Divv>
-                Clock Out: <TimePicker value={startTime} onChange={setOutChange} />
+                Clock Out: <TimePicker ampm={false} value={startTime} onChange={setOutChange} />
             </Divv>
             <Divv>
-                Clock In: <TimePicker value={endTime} onChange={setInChange} />
+                Clock In: <TimePicker ampm={false} value={endTime} onChange={setInChange} />
             </Divv>
             <Divv>
                 Description: <Input placeholder="Description" ref={memoRef} />
@@ -63,6 +67,12 @@ function Picker(props) {
             <Divv>
                 Incentive: <Input placeholder="Incentive" ref={incentiveRef} />
             </Divv>
+            <select name="Post type" ref={typeRef}  >
+                <option defaultValue >Post Type</option>
+                <option value="1">Trade</option>
+                <option value="2">NSA</option>
+                <option value="3">Permanent</option>
+            </select>
             <ButtonDiv>
                 <Button onClick={() => props.handleModal()}>Cancel</Button>
                 <Button2 onClick={() => handlePost()}>Post</Button2>
