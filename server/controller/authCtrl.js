@@ -120,7 +120,13 @@ getPostsByUser: async (req, res) => {
   const userPosts = await db.get_posts_by_user([user_id])
   res.status(200).send(userPosts)
 },
-markTaken: async (req, res) => {}
+markTaken: async (req, res) => {
+  const {id} = req.params
+  const user_id = req.session.user_id
+  const db = req.app.get('db')
+  const taken = await db.taken_shift([id, user_id])
+  res.status(200).send(taken)
+}
 
   
 };

@@ -25,9 +25,20 @@ const Dashboard = (props) => {
     }
     // console.log(1111, post)
 
+    const takeShift = async (id) => {
+        await axios.put(`/api/posts/${id}`).then(res => res.data).catch(err => console.log('update error', err))
+        getData()
+    }
+
     let map = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         let date = moment(item.shift_date).format("dddd, MMMM Do, YYYY")
+        let date2 = moment(item.shift_date)
+        let date3 = moment(item.start_time, 'HH:mm:ss')
+        if (moment().isSameOrAfter(date2) && moment().isAfter(date3)) {
+            takeShift(item.post_id)
+        }
+        
         return (
             <PostV key={i}>
                 <span>{date}</span>
@@ -36,6 +47,7 @@ const Dashboard = (props) => {
                     <span>Incentive: {item.incentive}</span>
                 ) : null}
                 <span>Posted {time}</span>
+                <span>{item.start_time}</span>
             </PostV>
         )
     })
