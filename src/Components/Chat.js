@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react"
 import styled from "styled-components"
-import Header from './Header'
+import Header from "./Header"
 
 const Chat = () => {
     return (
         <>
             <Header />
+<<<<<<< HEAD
             <Box>
             <ChatBar >
                 <Messengers>
@@ -16,10 +17,15 @@ const Chat = () => {
                 <ChatLines />
             </ChatRows>
             </Box>
+=======
+            <ChatBar>
+                <Messengers />
+            </ChatBar>
+            <ChatLines />
+>>>>>>> master
         </>
     )
 }
-
 
 export default Chat
 
@@ -37,6 +43,7 @@ const ChatBar = styled.div`
     background: black;
 `
 
+<<<<<<< HEAD
 const Messengers = styled.div`
     
 `
@@ -56,3 +63,8 @@ const ChatLines = styled.div`
     width: 90vw;
     bottom-border: .5px solid black;
 `
+=======
+const Messengers = styled.div``
+
+const ChatLines = styled.div``
+>>>>>>> master
