@@ -1,4 +1,4 @@
-import React, { useState} from "react"
+import React, { useState } from "react"
 import "./Login.css"
 import axios from "axios"
 import swal from "sweetalert"
@@ -7,7 +7,6 @@ const emailRegex = RegExp(
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
 )
 const formValid = ({ formErrors, ...rest }) => {
-    console.log(formErrors, rest)
     let valid = true
     // validates form errors being empty
     Object.values(formErrors).forEach((val) => {
@@ -39,7 +38,6 @@ const Login = (props) => {
             groupId: "",
         },
     })
- 
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -83,7 +81,6 @@ const Login = (props) => {
         } else {
             console.error("Form Invalid - Display Error Message")
             // swal(res.data.message)
-        
         }
     }
     const { formErrors } = state
@@ -104,7 +101,8 @@ const Login = (props) => {
                     : "invalid email address"
                 break
             case "password":
-                formErrors.password = value.length < 6 ? "minimum 6 characaters required" : ""
+                formErrors.password =
+                    value.length < 6 ? "minimum 6 characaters required" : ""
                 break
             case "employeeId":
                 formErrors.employeeId = value.length < 6 ? "Required Field" : ""
@@ -220,47 +218,54 @@ const Login = (props) => {
                             </span>
                         )}
                     </div>
-                    <div className="employeeId">
-                        <label className="label" htmlFor="employeeId">Employee ID</label>
-                        <input
-                            type="text"
-                            className={
-                                formErrors.employeeId.length > 0
-                                    ? "error regInput"
-                                    : "regInput"
-                            }
-                            placeholder="Employee ID"
-                            name="employeeId"
-                            noValidate
-                            onChange={handleChange}
-                        />
-                        {formErrors.employeeId.length > 0 && (
-                            <span className="errorMessage">
-                                {formErrors.employeeId}
-                            </span>
-                        )}
+                    <div className='groups'>
+                        <div className="employeeId">
+                            <label className="label" htmlFor="employeeId">
+                                Employee ID
+                            </label>
+                            <input
+                                type="text"
+                                className={
+                                    formErrors.employeeId.length > 0
+                                        ? "error regInput"
+                                        : "regInput"
+                                }
+                                placeholder="Employee ID"
+                                name="employeeId"
+                                noValidate
+                                onChange={handleChange}
+                            />
+                            {formErrors.employeeId.length > 0 && (
+                                <span className="errorMessage">
+                                    {formErrors.employeeId}
+                                </span>
+                            )}
+                        </div>
+                        <div className="employeeId">
+                            <label className="label" htmlFor="groupId">
+                                Department
+                            </label>
+                            <select
+                                onChange={handleChange}
+                                className="groupId"
+                                name="groupId"
+                            >
+                                <option defaultValue>Select Group</option>
+                                <option value="1">Crew</option>
+                                <option value="2">Customer</option>
+                                <option value="3">MCCM</option>
+                                <option value="4">Reservations</option>
+                                <option value="5">True</option>
+                                <option value="6">Vacations</option>
+                            </select>
+                        </div>
                     </div>
-                    <label className="label" htmlFor="groupId">Department</label>
-                    <select
-                        onChange={handleChange}
-                        className="groupId"
-                        name="groupId"
-                    >
-                        <option defaultValue>Select Group</option>
-                        <option value="1">Crew</option>
-                        <option value="2">Customer</option>
-                        <option value="3">MCCM</option>
-                        <option value="4">Reservations</option>
-                        <option value="5">True</option>
-                        <option value="6">Vacations</option>
-                    </select>
                     <div className="createAccount">
                         <button
                             className="regButton"
                             type="submit"
                             // onClick={() => handleRegister()}
                         >
-                            {" "}
                             Create Account
                         </button>
                         <small onClick={() => setToggle(!toggle)}>
@@ -288,9 +293,11 @@ const Login = (props) => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="createAccount">
-                            <button className="regButton" type="submit"
-                                // onClick={handleLogin}
-                            >
+                        <button
+                            className="regButton"
+                            type="submit"
+                            // onClick={handleLogin}
+                        >
                             Login
                         </button>
                         <small onClick={() => setToggle(!toggle)}>

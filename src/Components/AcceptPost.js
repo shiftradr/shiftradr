@@ -5,8 +5,9 @@ import axios from "axios"
 import moment from "moment"
 import swal from "@sweetalert/with-react"
 
-const Post = (props) => {
+const AcceptPost = (props) => {
     const [post, setPost] = useState([])
+    const [peeps, setPeeps] = useState([])
 
     console.log(props.match.params)
 
@@ -19,6 +20,7 @@ const Post = (props) => {
 
     useEffect(() => {
         getData()
+        getPeeps()
     }, [])
     console.log(post)
 
@@ -38,15 +40,49 @@ const Post = (props) => {
         )
     })
 
+    const getPeeps = async () => {
+        console.log(id)
+        let res = await axios.get(`/api/interested/${id}`)
+        console.log(res.data)
+        setPeeps(res.data)
+    }
+    console.log(7397489432897, peeps)
+
+    let mapped = peeps.map((peeps, i) => {
+        return (
+            <Mapp key={i}>
+                <Mappy>
+                    <span>
+                        {peeps.acc_first_name} {peeps.acc_last_name}
+                    </span>
+                    <span>{peeps.acc_emp_id}</span>
+                </Mappy>
+                    <Mapp>
+                        <button>Accept</button>
+                        <button>Decline</button>
+                        <button>Message</button>
+                    </Mapp>
+            </Mapp>
+        )
+    })
+
     const acceptPost = async () => {
         let res = await axios
             .put(`/api/post/${id}`)
             .catch((err) => console.log("bobby", err))
 
         if (res.data.goodMessage) {
-            swal("Request Sent!", "Please wait for poster's response!", "success")
+            swal(
+                "Request Sent!",
+                "Please wait for poster's response!",
+                "success",
+            )
         } else if (res.data.message) {
-            swal("Request Failed!", "You've already asked for this shift.", "error")
+            swal(
+                "Request Failed!",
+                "You've already asked for this shift.",
+                "error",
+            )
         }
     }
 
@@ -55,42 +91,57 @@ const Post = (props) => {
             <Header />
             <Dash>
                 <PostView>
-                    <Posts>
-                        {mappyboi}
-
-                        <button onClick={() => acceptPost()}>
-                            plz accept me
-                        </button>
-                    </Posts>
-                    <ChatBox />
+                    <PostH>{mappyboi}</PostH>
+                    <Divv>
+                        <Posts>{mapped}</Posts>
+                        <ChatBox />
+                    </Divv>
                 </PostView>
             </Dash>
         </>
     )
 }
 
-export default Post
+export default AcceptPost
+
+const PostH = styled.div`
+    width: 91%;
+    height: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: pink;
+`
 
 const Mapp = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    background: #BADA55;
+`
+
+const Mappy = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 100px;
 `
 
 const Posts = styled.div`
-    height: 84vh;
+    height: 76vh;
     width: 26vw;
     background: pink;
     position: relative;
-    top: 30px;
+    top: 10px;
 `
 const ChatBox = styled.div`
-    height: 84vh;
+    height: 76vh;
     width: 26vw;
     background: pink;
     position: relative;
-    top: 30px;
+    top: 10px;
 `
 
 // const Input = styled.input`
@@ -114,7 +165,8 @@ const Dash = styled.div`
 const PostView = styled.div`
     display: flex;
     justify-content: space-evenly;
-    align-items: flex-start;
+    align-items: center;
+    flex-direction: column;
     width: 60%;
     height: 100%;
     background: #15202b;
@@ -124,4 +176,10 @@ const PostView = styled.div`
     &::-webkit-scrollbar {
         display: none;
     }
+`
+const Divv = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+    align-items: space-evenly;
+    width: 100%;
 `
