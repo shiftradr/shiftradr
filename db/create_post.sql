@@ -1,27 +1,34 @@
-insert into posts(
+insert into posts
+    (
     user_id,
     shift_date,
     start_time,
     end_time,
     memo,
     incentive,
-    trade,
-    give,
     group_id,
-    taken,
-    post_date
-) values (
-    $1,
-    $2,
-    $3,
-    $4,
-    $5,
-    $6,
-    false,
-    false,
-    $7,
-    false,
-    $8
+    post_date,
+    first_name,
+    last_name,
+    post_emp_id,
+    post_type,
+    taken
+    )
+values
+    (
+        $1,
+        $2,
+        $3,
+        $4,
+        $5,
+        $6,
+        $7,
+        $8,
+        $9,
+        $10,
+        $11,
+        $12,
+        false
 );
 select *
 from posts

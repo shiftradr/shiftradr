@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react"
+import { Link } from 'react-router-dom'
 import styled, { css } from "styled-components"
 import Header from "./Header"
 import swal from "@sweetalert/with-react"
 import moment from "moment"
-// import Post from "./Post"
 import axios from "axios"
 import PostModal from "./PostModal"
 
@@ -40,7 +40,7 @@ const Dashboard = (props) => {
         }
         
         return (
-            <PostV key={i}>
+            <PostV to={`/post/${item.post_id}`} key={i}>
                 <span>{date}</span>
                 <span>{item.memo}</span>
                 {item.incentive ? (
@@ -156,7 +156,7 @@ export default Dashboard
 //     margin: 8px 0px;
 // `
 
-const PostV = styled.div`
+const PostV = styled(Link)`
     display: flex;
     justify-content: center;
     align-items: center;
