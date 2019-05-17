@@ -8,6 +8,7 @@ import swal from "@sweetalert/with-react"
 const AcceptPost = (props) => {
     const [post, setPost] = useState([])
     const [peeps, setPeeps] = useState([])
+    const [currentUser, setUser] = useState("")
 
     console.log(props.match.params)
 
@@ -19,11 +20,12 @@ const AcceptPost = (props) => {
     }
 
     useEffect(() => {
+        axios.get("/auth/user-data").then((res) => setUser(res.data))
         getData()
         getPeeps()
     }, [])
     console.log(post)
-
+    console.log(currentUser)
     let mappyboi = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         const date = moment(post.shift_date).format("dddd, MMMM Do, YYYY")
@@ -48,6 +50,18 @@ const AcceptPost = (props) => {
     }
     console.log(7397489432897, peeps)
 
+    const emailPeople = async (email2, first, last, emp_id) => {
+        let res = await axios.post("/api/email", {
+            email1: currentUser.user_email,
+            email2,
+            message: `Shift posted by ${currentUser.user_first} ${
+                currentUser.user_last
+            } employee id ${
+                currentUser.user_employee_id
+            }, and accepted by ${first} ${last} employee id ${emp_id}`,
+        })
+    }
+
     let mapped = peeps.map((peeps, i) => {
         return (
             <Mapp key={i}>
@@ -57,11 +71,22 @@ const AcceptPost = (props) => {
                     </span>
                     <span>{peeps.acc_emp_id}</span>
                 </Mappy>
-                    <Mapp>
-                        <button>Accept</button>
-                        <button>Decline</button>
-                        <button>Message</button>
-                    </Mapp>
+                <Mapp>
+                    <button
+                        onClick={() =>
+                            emailPeople(
+                                peeps.acc_user_email,
+                                peeps.acc_first_name,
+                                peeps.acc_last_name,
+                                peeps.acc_emp_id,
+                            )
+                        }
+                    >
+                        Accept
+                    </button>
+                    <button>Decline</button>
+                    <button>Message</button>
+                </Mapp>
             </Mapp>
         )
     })
@@ -118,7 +143,7 @@ const Mapp = styled.div`
     justify-content: space-evenly;
     align-items: center;
     width: 100%;
-    background: #BADA55;
+    background: #bada55;
 `
 
 const Mappy = styled.div`

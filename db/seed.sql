@@ -112,6 +112,7 @@ CREATE TABLE acc (
     acc_first_name character varying(64),
     acc_last_name character varying(64),
     acc_emp_id integer,
+    acc_user_email text,
     unique (post_id, acc_user_id)
 
 );

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react"
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 import Header from "./Header"
 import swal from "@sweetalert/with-react"
@@ -26,7 +26,10 @@ const Dashboard = (props) => {
     // console.log(1111, post)
 
     const takeShift = async (id) => {
-        await axios.put(`/api/posts/${id}`).then(res => res.data).catch(err => console.log('update error', err))
+        await axios
+            .put(`/api/posts/${id}`)
+            .then((res) => res.data)
+            .catch((err) => console.log("update error", err))
         getData()
     }
 
@@ -34,11 +37,11 @@ const Dashboard = (props) => {
         let time = moment(item.post_date).fromNow()
         let date = moment(item.shift_date).format("dddd, MMMM Do, YYYY")
         let date2 = moment(item.shift_date)
-        let date3 = moment(item.start_time, 'HH:mm:ss')
+        let date3 = moment(item.start_time, "HH:mm:ss")
         if (moment().isSameOrAfter(date2) && moment().isAfter(date3)) {
             takeShift(item.post_id)
         }
-        
+
         return (
             <PostV to={`/post/${item.post_id}`} key={i}>
                 <span>{date}</span>
@@ -102,26 +105,19 @@ const Dashboard = (props) => {
                 <PostView>
                     <SlideDown under={filter} ref={node}>
                         <FilterTitle>
-                            <InputDiv>
-                                Date:
-                                <Input type="date" />
-                            </InputDiv>
-                            <InputDiv>
-                                Date:
-                                <Input type="date" />
-                            </InputDiv>
-                            <InputDiv>
-                                Give
-                                <Input type="checkbox" {...props} />
-                            </InputDiv>
-                            <InputDiv>
-                                Trade
-                                <Input type="checkbox" {...props} />
-                            </InputDiv>
-                            <InputDiv>
-                                Incentives
-                                <Input type="checkbox" {...props} />
-                            </InputDiv>
+                            <Div2>
+                                <span>Please Select Date Range:</span>
+                            <Div>
+                                <InputDiv>
+                                    From:{'   '}
+                                    <Input type="date" />
+                                </InputDiv>
+                                <InputDiv>
+                                    Date:
+                                    <Input type="date" />
+                                </InputDiv>
+                            </Div>
+                            </Div2>
                             <Filter
                                 // className="fas fa-filter"
                                 onClick={() => setFilter(!filter)}
@@ -145,6 +141,22 @@ const Dashboard = (props) => {
 }
 
 export default Dashboard
+
+
+const Div2 = styled.div`
+     display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    
+`
+
+const Div = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 430px;
+`
 
 // const Button = styled.button`
 //     background: #519e8a;
@@ -228,9 +240,11 @@ const Filter = styled.div``
 const InputDiv = styled.div`
     z-index: 10;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 100%;
+    width: 200px;
+
 `
 
 const Input = styled.input`
