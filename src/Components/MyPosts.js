@@ -105,6 +105,6 @@ const Button = styled.button`
 
 `
 const Title = styled.h1`
-color: white;
-font-weight: 700;
+    color: white;
+    font-weight: 700;
 `

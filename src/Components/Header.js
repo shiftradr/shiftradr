@@ -68,7 +68,9 @@ const Header = (props) => {
                     />
                 </SettingsTitle>
                 <h4>Account</h4>
-                <Link to='/my-posts' ><h4>My Posts</h4></Link>
+                <Link to="/my-posts">
+                    <h4>My Posts</h4>
+                </Link>
             </SlideOut>
         </div>
     )
@@ -78,7 +80,7 @@ export default Header
 
 const Icons = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-direction: row;
 `
@@ -106,9 +108,15 @@ const SettingsTitle = styled.div`
     border-bottom: 1px solid white;
     height: 8vh;
     font-size: 1.7rem;
+    width: 300px;
 `
 
 const SlideOut = styled.div`
+    color: white;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
     position: fixed;
     width: 300px;
     height: 100vh;
@@ -155,10 +163,11 @@ const StyledLink = styled.div`
     color: white;
     font-size: 1rem;
     position: relative;
-    left: 12vw;
+    left: 11vw;
+    margin: 0px 6px;
 `
 
 const Linked = styled(Link)`
     position: relative;
-    right: 5.5vw;
+    right: 6.7vw;
 `
