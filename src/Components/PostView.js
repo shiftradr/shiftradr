@@ -11,9 +11,9 @@ import axios from "axios"
 import moment from "moment"
 
 function Picker(props) {
-    const [selectedDate, handleDateChange] = useState(new Date())
-    const [startTime, setOutChange] = useState()
-    const [endTime, setInChange] = useState()
+    const [selectedDate, handleDateChange] = useState(moment())
+    const [startTime, setOutChange] = useState(moment())
+    const [endTime, setInChange] = useState(moment())
     const memoRef = useRef()
     const incentiveRef = useRef()
     const typeRef = useRef()
@@ -24,13 +24,14 @@ function Picker(props) {
 
         let bob = moment(end).get("hour, min")
         let bib = moment(start).get("hour, min")
+        let date = moment(selectedDate).format('YYYY-MM-DD')
 
-        console.log(selectedDate)
-        console.log(moment())
-        console.log(new Date())
+        console.warn(selectedDate)
+        console.log(bob)
+        console.log(bib)
         await axios
             .post("/api/posts", {
-                shiftDate: selectedDate,
+                shiftDate: date,
                 startTime: bib._i,
                 endTime: bob._i,
                 memo: memoRef.current.value,

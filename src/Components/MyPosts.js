@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import { Link } from 'react-router-dom'
 import Header from './Header'
 import styled from "styled-components"
 import axios from 'axios'
@@ -32,14 +31,13 @@ const MyPosts = (props) => {
         let time = moment(item.post_date).fromNow()
         let date = moment(item.shift_date).format('dddd, MMMM Do, YYYY')
         return (
-            <PostV to={`/accept_post/${item.post_id}`} key={i}>
+            <PostV key={i}>
                 <span>{date}</span>
                 <span>{item.memo}</span>
                 {item.incentive ? (
                 <span>Incentive: {item.incentive}</span>
                 ) : null }
                 <span>Posted {time}</span>
-                {/* <Button onClick={() => deletePost(item.post_id)}>Delete Post</Button> */}
                 {!item.taken ? (
                     <Button onClick={() => takeShift(item.post_id)}>Remove Post</Button>
                 ) : <span>No Longer Listed</span>}
@@ -53,7 +51,6 @@ const MyPosts = (props) => {
             <Dash>
                 <PostView>
                 <Title>My Posts</Title>
-        
                 {map}
                 </PostView>
             </Dash>
@@ -89,7 +86,7 @@ const PostView = styled.div`
 
 `
 
-const PostV = styled(Link)`
+const PostV = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
