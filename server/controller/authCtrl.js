@@ -178,6 +178,7 @@ module.exports = {
             const last_name = req.session.user.user_last
             const acc_emp_id = req.session.user.user_employee_id
             const acc_user_id = req.session.user_id
+            const acc_user_email = req.session.user.user_email
             const db = req.app.get("db")
             let accPost = await db
             .acc_post_by_id([
@@ -186,6 +187,7 @@ module.exports = {
                 last_name,
                 acc_emp_id,
                 acc_user_id,
+                acc_user_email
             ])
             
             res.status(200).send({ goodMessage: 'Request sent! Please wait for poster to review!'})

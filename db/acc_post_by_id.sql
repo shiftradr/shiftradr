@@ -4,7 +4,8 @@ insert into acc
     acc_first_name,
     acc_last_name,
     acc_emp_id,
-    acc_user_id
+    acc_user_id,
+    acc_user_email
 )
 VALUES
 (
@@ -12,5 +13,6 @@ VALUES
     $2,
     $3,
     $4,
-    $5
+    $5,
+    $6
 );
