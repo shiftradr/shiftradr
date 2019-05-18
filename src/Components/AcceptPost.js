@@ -9,6 +9,7 @@ const AcceptPost = (props) => {
     const [post, setPost] = useState([])
     const [peeps, setPeeps] = useState([])
     const [currentUser, setUser] = useState("")
+    const [taken, setTaken] = useState('')
 
     console.log(props.match.params)
 
@@ -23,7 +24,7 @@ const AcceptPost = (props) => {
         axios.get("/auth/user-data").then((res) => setUser(res.data))
         getData()
         getPeeps()
-    }, [])
+    }, [taken])
     console.log(post)
     console.log(currentUser)
     let mappyboi = post.map((item, i) => {
@@ -50,8 +51,15 @@ const AcceptPost = (props) => {
     }
     console.log(7397489432897, peeps)
 
+    const takeShift = async () => {
+        await axios
+            .put(`/api/posts/${id}`)
+            .then((res) => res.data)
+            .catch((err) => console.log("update error", err))
+    }
+
     const emailPeople = async (email2, first, last, emp_id) => {
-        let res = await axios.post("/api/email", {
+        await axios.post("/api/email", {
             email1: currentUser.user_email,
             email2,
             message: `Shift posted by ${currentUser.user_first} ${
@@ -60,6 +68,9 @@ const AcceptPost = (props) => {
                 currentUser.user_employee_id
             }, and accepted by ${first} ${last} employee id ${emp_id}`,
         })
+        takeShift()
+        setTaken(true)
+        swal("Awesome!", "An email has been sent to both of you!", "success")
     }
 
     let mapped = peeps.map((peeps, i) => {
@@ -72,44 +83,29 @@ const AcceptPost = (props) => {
                     <span>{peeps.acc_emp_id}</span>
                 </Mappy>
                 <Mapp>
-                    <button
-                        onClick={() =>
-                            emailPeople(
-                                peeps.acc_user_email,
-                                peeps.acc_first_name,
-                                peeps.acc_last_name,
-                                peeps.acc_emp_id,
-                            )
-                        }
-                    >
-                        Accept
-                    </button>
-                    <button>Decline</button>
+                    {!post[0].taken ? (
+                        <>
+                            <button
+                                onClick={() =>
+                                    emailPeople(
+                                        peeps.acc_user_email,
+                                        peeps.acc_first_name,
+                                        peeps.acc_last_name,
+                                        peeps.acc_emp_id,
+                                    )
+                                }
+                            >
+                                Accept
+                            </button>
+                            <button>Decline</button>
+                        </>
+                    ) : <span>Shift no longer listed</span>    }
                     <button>Message</button>
                 </Mapp>
             </Mapp>
         )
     })
 
-    const acceptPost = async () => {
-        let res = await axios
-            .put(`/api/post/${id}`)
-            .catch((err) => console.log("bobby", err))
-
-        if (res.data.goodMessage) {
-            swal(
-                "Request Sent!",
-                "Please wait for poster's response!",
-                "success",
-            )
-        } else if (res.data.message) {
-            swal(
-                "Request Failed!",
-                "You've already asked for this shift.",
-                "error",
-            )
-        }
-    }
 
     return (
         <>
