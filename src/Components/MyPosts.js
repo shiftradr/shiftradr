@@ -3,6 +3,7 @@ import Header from './Header'
 import styled from "styled-components"
 import axios from 'axios'
 import moment from 'moment'
+import {Link} from 'react-router-dom'
 
 const MyPosts = (props) => {
 
@@ -31,7 +32,7 @@ const MyPosts = (props) => {
         let time = moment(item.post_date).fromNow()
         let date = moment(item.shift_date).format('dddd, MMMM Do, YYYY')
         return (
-            <PostV key={i}>
+            <PostV to={`/accept_post/${item.post_id}`} key={i}>
                 <span>{date}</span>
                 <span>{item.memo}</span>
                 {item.incentive ? (
@@ -86,7 +87,7 @@ const PostView = styled.div`
 
 `
 
-const PostV = styled.div`
+const PostV = styled(Link)`
     display: flex;
     justify-content: center;
     align-items: center;

@@ -4,7 +4,7 @@ const { VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED,
         LOGOUT, COMMUNITY_CHAT, MESSAGE_RECEIVED, MESSAGE_SENT,
         TYPING } = require('update after creating Events')
 
-const { createUser, createMessage, createCHat } = require('update after creating Factories')
+const { createUser, createMessage, createChat } = require('update after creating Factories')
 
 let connectedUsers = { }
 

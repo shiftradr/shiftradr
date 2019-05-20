@@ -4,6 +4,7 @@ import Header from "./Header"
 import axios from "axios"
 import moment from "moment"
 import swal from "@sweetalert/with-react"
+import Chat from './Chat'
 
 const AcceptPost = (props) => {
     const [post, setPost] = useState([])
@@ -115,7 +116,9 @@ const AcceptPost = (props) => {
                     <PostH>{mappyboi}</PostH>
                     <Divv>
                         <Posts>{mapped}</Posts>
-                        <ChatBox />
+                        <ChatBox >
+                            <Chat/>
+                        </ChatBox>
                     </Divv>
                 </PostView>
             </Dash>
