@@ -9,6 +9,8 @@ const AcceptPost = (props) => {
     const [post, setPost] = useState([])
     const [peeps, setPeeps] = useState([])
     const [currentUser, setUser] = useState("")
+    const [messages, setMessages] = useState([])
+    const [message, setMessage] = useState("")
 
     console.log(props.match.params)
 
@@ -60,6 +62,11 @@ const AcceptPost = (props) => {
                 currentUser.user_employee_id
             }, and accepted by ${first} ${last} employee id ${emp_id}`,
         })
+    }
+
+    const getChat = async (acc_user_id) => {
+        let res = await axios
+            .get(`/api/getChat`, {acc_user_id})
     }
 
     let mapped = peeps.map((peeps, i) => {

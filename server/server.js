@@ -23,6 +23,14 @@ const transporter = nodemailer.createTransport({
 // **********************************
 
 
+// Sockets
+const socket = require('socket.io')
+const io = socket (
+    app.listen(SERVER_PORT, () => {
+        console.log(`Listening on ${SERVER_PORT}`)
+    })
+)
+
 massive(CONNECTION_STRING)
     .then((db) => {
         app.set('db', db)
@@ -38,7 +46,7 @@ massive(CONNECTION_STRING)
                  console.log('DB Seeded')
             })
         }
-app.listen(SERVER_PORT, () => console.log(`Running on ${SERVER_PORT}`))
+// app.listen(SERVER_PORT, () => console.log(`Running on ${SERVER_PORT}`))
     })
 
 app.use(session({
@@ -105,3 +113,30 @@ app.put('/api/post/:id', authCtrl.accPost)
 
 // get intersted people
 app.get('/api/interested/:id', authCtrl.interested)
+
+// Chat Endpoints
+const sockCtrl = require("./controller/SocketsController")
+app.get('/api/getChat', sockCtrl.getChat)
+
+// Socket Endpoints
+io.on("connection", function(socket) {
+    socket.on("endChat", function(room) {
+        socket.leave(room)
+    })
+
+    socket.on("startChat", async function(room) {
+        const db = app.get("db")
+        const checkedRoom = await db.chats.check_room({ room })
+        !checkedRoom[0] && (await db.chats.create_room({ room }))
+        const messages = await db.chats.get_chats({ room })
+        socket.join(room)
+        io.to(room).emit("returnJoin", messages)
+    })
+
+    socket.on("sendMessage", async function(data) {
+        const db = app.get("db")
+        const { message, user_id, room } = data
+        const messages = await db.chats.create_message({ message, user_id, room })
+        io.to(room).emit("returnMessages", messages)
+    })
+})
