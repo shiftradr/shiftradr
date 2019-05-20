@@ -5,12 +5,19 @@ import axios from "axios"
 import moment from "moment"
 import swal from "@sweetalert/with-react"
 import Chat from './Chat'
+import sockets from "./Sockets";
 
 const AcceptPost = (props) => {
     const [post, setPost] = useState([])
     const [peeps, setPeeps] = useState([])
     const [currentUser, setUser] = useState("")
+    const [messages, setMessages] = useState([])
+    const [message, setMessage] = useState("")
     const [taken, setTaken] = useState('')
+    const [user_id, setUser_id] = useState("")
+    const [user_id2, setUser_id2] = useState("")
+    const [room, setRoom] = useState()
+
 
     console.log(props.match.params)
 
@@ -19,6 +26,7 @@ const AcceptPost = (props) => {
         console.log(id)
         let res = await axios.get(`/api/post/${id}`)
         setPost(res.data)
+        setUser_id(res.data[0].user_id)
     }
 
     useEffect(() => {
@@ -74,6 +82,27 @@ const AcceptPost = (props) => {
         swal("Awesome!", "An email has been sent to both of you!", "success")
     }
 
+    const getChat = async (acc_user_id) => {
+        // await sockets.emit("endChat", room);
+        let big;
+        let small;
+        if (user_id > acc_user_id) {
+          big = user_id;
+          small = acc_user_id;
+        } else {
+          big = acc_user_id;
+          small = user_id;
+        }
+        let room = big + ":" + small;
+        sockets.emit("startChat", room);
+        setRoom(room)
+
+        let res = await axios
+            .get(`/api/getChat`, {acc_user_id})
+            setMessages(res.data)
+            setUser_id2(acc_user_id)
+    }
+
     let mapped = peeps.map((peeps, i) => {
         return (
             <Mapp key={i}>
@@ -101,7 +130,7 @@ const AcceptPost = (props) => {
                             <button>Decline</button>
                         </>
                     ) : <span>Shift no longer listed</span>    }
-                    <button>Message</button>
+                    <button onClick={() => getChat(peeps.acc_user_id)} >Message</button>
                 </Mapp>
             </Mapp>
         )
@@ -116,8 +145,11 @@ const AcceptPost = (props) => {
                     <PostH>{mappyboi}</PostH>
                     <Divv>
                         <Posts>{mapped}</Posts>
-                        <ChatBox >
-                            <Chat/>
+                        <ChatBox>
+                            <Chat 
+                                user_id2={user_id2}
+                                room={room}
+                            />
                         </ChatBox>
                     </Divv>
                 </PostView>

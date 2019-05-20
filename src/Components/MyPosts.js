@@ -3,7 +3,7 @@ import Header from './Header'
 import styled from "styled-components"
 import axios from 'axios'
 import moment from 'moment'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const MyPosts = (props) => {
 
