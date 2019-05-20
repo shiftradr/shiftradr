@@ -4,28 +4,29 @@ import Header from "./Header"
 import axios from "axios"
 import moment from "moment"
 import swal from "@sweetalert/with-react"
+import Chat from './Chat'
 
 const Post = (props) => {
     const [post, setPost] = useState([])
+    const [message, setMessage] = useState("")
+    const [messages, setMessages] = useState([])
+    const [user_id, setUser_id] = useState("")
 
-    console.log(props.match.params)
 
     const id = props.match.params.post_id
     const getData = async () => {
-        console.log(id)
         let res = await axios.get(`/api/post/${id}`)
         setPost(res.data)
+        setUser_id(res.data[0].user_id)
     }
 
     useEffect(() => {
         getData()
     }, [])
-    console.log(post)
 
     let mappyboi = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         const date = moment(post.shift_date).format("dddd, MMMM Do, YYYY")
-        console.log(item.post_id)
         return (
             <Mapp key={i}>
                 <h2>{date}</h2>
@@ -34,6 +35,7 @@ const Post = (props) => {
                 ) : null}
                 <span>Clock In: {item.start_time}</span>
                 <span>Posted {time}</span>
+                <button onClick={() => getChat(item.user_id)} >Message</button>
             </Mapp>
         )
     })
@@ -50,6 +52,16 @@ const Post = (props) => {
         }
     }
 
+    const getChat = async (acc_user_id) => {
+        let res = await axios
+            .get(`/api/getChat`, {acc_user_id})
+            setMessages(res.data)
+    }
+
+    // const sendMessage = async () => {
+
+    // }
+
     return (
         <>
             <Header />
@@ -62,7 +74,9 @@ const Post = (props) => {
                             plz accept me
                         </button>
                     </Posts>
-                    <ChatBox />
+                    <ChatBox>
+                        <Chat />
+                    </ChatBox>
                 </PostView>
             </Dash>
         </>
