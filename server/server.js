@@ -117,7 +117,7 @@ app.get('/api/interested/:id', authCtrl.interested)
 
 // Chat Endpoints
 const sockCtrl = require("./controller/SocketsController")
-app.get('/api/getChat', sockCtrl.getChat)
+app.post('/api/getChat', sockCtrl.getChat)
 
 // Sockets
 const socket = require('socket.io')
