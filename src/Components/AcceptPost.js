@@ -17,11 +17,9 @@ const AcceptPost = (props) => {
     const [user_id2, setUser_id2] = useState("")
     const [room, setRoom] = useState()
 
-    console.log(props.match.params)
 
     const id = props.match.params.post_id
     const getData = async () => {
-        console.log(id)
         let res = await axios.get(`/api/post/${id}`)
         setPost(res.data)
         setUser_id(res.data[0].user_id)
@@ -31,13 +29,16 @@ const AcceptPost = (props) => {
         axios.get("/auth/user-data").then((res) => setUser(res.data))
         getData()
         getPeeps()
-    }, [taken])
-    console.log(post)
-    console.log(currentUser)
+        sockets.on("returnJoin", mess => {
+            setMessages(mess)
+})
+        sockets.on("returnMessages", message => {
+            setMessages(message)
+        })
+    }, [messages])
     let mappyboi = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         const date = moment(post.shift_date).format("dddd, MMMM Do, YYYY")
-        console.log(item.post_id)
         return (
             <Mapp key={i}>
                 <h2>{date}</h2>
@@ -51,12 +52,9 @@ const AcceptPost = (props) => {
     })
 
     const getPeeps = async () => {
-        console.log(id)
         let res = await axios.get(`/api/interested/${id}`)
-        console.log(res.data)
         setPeeps(res.data)
     }
-    console.log(7397489432897, peeps)
 
     const takeShift = async () => {
         await axios
@@ -110,7 +108,7 @@ const AcceptPost = (props) => {
 
             setMessage("")
         }
-        getChat(user_id2)
+        // getChat(user_id2)
     }
 
     let mapped = peeps.map((peeps, i) => {
@@ -153,8 +151,7 @@ const AcceptPost = (props) => {
     const mapMessage = messages.map((mess) => {
         return (
             <Map key={mess.chat_id}>
-
-            <Span1 className={user_id === mess.user_id ? 'green' : 'blue'}>{mess.messages}</Span1>
+                <Span1 className={user_id === mess.user_id ? "gren" : "blu"}>{mess.messages}</Span1>
             </Map>
         )
     })
@@ -168,7 +165,9 @@ const AcceptPost = (props) => {
                     <Divv>
                         <Posts>{mapped}</Posts>
                         <ChatBox>
+                            <MappM>
                             {mapMessage}
+                            </MappM>
                             <Div3>
                                 <Form onSubmit={sendMessage}>
                                     <Input
@@ -191,6 +190,18 @@ const AcceptPost = (props) => {
 
 export default AcceptPost
 
+const MappM = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    overflow-y: scroll;
+    margin-bottom: 40px;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`
+
 const Span1 =styled.div`
     width: 75%;
     margin-bottom: 10px;
@@ -203,6 +214,7 @@ const Input = styled.input`
     bottom: 0px;
     height: 30px;
     width: 80%;
+    background: rgb(0,0,0,0.2);
 `
 const Form = styled.form`
     position: relative;
@@ -221,8 +233,7 @@ const Button = styled.button`
 
 const Map = styled.div`
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end;
     flex-direction: column;
     width: 100%;
 `
@@ -231,6 +242,7 @@ const Div3 = styled.div`
     position: fixed;
     bottom: 10px;
     width: 26vw;
+    height: 40px;
 `
 const PostH = styled.div`
     width: 91%;
@@ -272,7 +284,6 @@ const ChatBox = styled.div`
     top: 10px;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
     &::-webkit-scrollbar {
         display: none;
     }

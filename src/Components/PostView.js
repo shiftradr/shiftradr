@@ -26,9 +26,6 @@ function Picker(props) {
         let bib = moment(start).get("hour, min")
         let date = moment(selectedDate).format('YYYY-MM-DD')
 
-        console.warn(selectedDate)
-        console.log(bob)
-        console.log(bib)
         await axios
             .post("/api/posts", {
                 shiftDate: date,
@@ -69,7 +66,7 @@ function Picker(props) {
             <Divv>
                 Incentive: <Input placeholder="Incentive" ref={incentiveRef} />
             </Divv>
-            <select name="Post type" ref={typeRef}  >
+            <select className="groupId" name="Post type" ref={typeRef}  >
                 <option defaultValue >Post Type</option>
                 <option value="1">Trade</option>
                 <option value="2">NSA</option>
