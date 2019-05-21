@@ -126,6 +126,7 @@ app.put('/api/archive/:id', authCtrl.archive)
 // Chat Endpoints
 const sockCtrl = require("./controller/SocketsController")
 app.post('/api/getChat', sockCtrl.getChat)
+// app.post('/api/getChat2', sockCtrl.getChat2)
 
 // Sockets
 const socket = require('socket.io')
