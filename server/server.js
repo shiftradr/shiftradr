@@ -115,6 +115,14 @@ app.put('/api/post/:id', authCtrl.accPost)
 // get intersted people
 app.get('/api/interested/:id', authCtrl.interested)
 
+// get history of posts i've applied for
+app.get('/api/applied-for', authCtrl.appliedHistory)
+
+// route to a specific post in my applied history
+app.get('/api/applied-post/:id', authCtrl.appliedPost)
+
+app.put('/api/archive/:id', authCtrl.archive)
+
 // Chat Endpoints
 const sockCtrl = require("./controller/SocketsController")
 app.get('/api/getChat', sockCtrl.getChat)

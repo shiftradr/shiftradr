@@ -12,7 +12,8 @@ insert into posts
     last_name,
     post_emp_id,
     post_type,
-    taken
+    taken,
+    archive
     )
 values
     (
@@ -28,6 +29,7 @@ values
         $10,
         $11,
         $12,
+        false,
         false
 );
 select *

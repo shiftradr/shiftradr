@@ -4,6 +4,7 @@ import styled from "styled-components"
 import axios from 'axios'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import swal from "@sweetalert/with-react"
 
 const MyPosts = (props) => {
 
@@ -12,7 +13,7 @@ const MyPosts = (props) => {
     useEffect(() => {
         getData()
     }, [])
-    
+
     const getData = async () => {
         let res = await axios.get("/api/user/posts")
         setPost(res.data)
@@ -28,31 +29,48 @@ const MyPosts = (props) => {
         getData()
     }
 
+    const archive = async (id) => {
+        await axios.put(`/api/archive/${id}`).then(res => res.data).catch(err => console.log('archive error', err))
+        getData()
+    }
+
+
+
     let map = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         let date = moment(item.shift_date).format('dddd, MMMM Do, YYYY')
         return (
-            <PostV to={`/accept_post/${item.post_id}`} key={i}>
-                <span>{date}</span>
-                <span>{item.memo}</span>
-                {item.incentive ? (
-                <span>Incentive: {item.incentive}</span>
-                ) : null }
-                <span>Posted {time}</span>
-                {!item.taken ? (
-                    <Button onClick={() => takeShift(item.post_id)}>Remove Post</Button>
-                ) : <span>No Longer Listed</span>}
-            </PostV>
+            <>
+                <PostV to={`/accept_post/${item.post_id}`} key={i}>
+                    <span>{date}</span>
+                    <span>{item.memo}</span>
+                    {item.incentive ? (
+                        <span>Incentive: {item.incentive}</span>
+                    ) : null}
+                    <span>Posted {time}</span>
+                    {!item.taken ? (
+                        <Button onClick={() => takeShift(item.post_id)}>Remove Post</Button>
+                    ) : <span>No Longer Listed</span>}
+                </PostV>
+                <Button onClick={() => swal({
+                    title: "Are you sure",
+                    text: "This will permanently remove your post",
+                    icon: "warning",
+                    dangerMode: true,
+                    buttons: true
+                })}>Test</Button>
+                <Button onClick={() => archive(item.post_id)} >Archive</Button>
+            </>
         )
     })
 
-    return(
+    return (
         <>
-            <Header/>
+            <Header />
             <Dash>
                 <PostView>
-                <Title>My Posts</Title>
-                {map}
+                    <Title>My Posts</Title>
+                    {map}
                 </PostView>
             </Dash>
         </>

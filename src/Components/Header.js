@@ -71,6 +71,9 @@ const Header = (props) => {
                 <Link to="/my-posts">
                     <h4>My Posts</h4>
                 </Link>
+                <Link to="/history">
+                    <h4>Posts Applied For</h4>
+                </Link>
             
             </SlideOut>
         </div>
