@@ -17,11 +17,9 @@ const AcceptPost = (props) => {
     const [user_id2, setUser_id2] = useState("")
     const [room, setRoom] = useState()
 
-    console.log(props.match.params)
 
     const id = props.match.params.post_id
     const getData = async () => {
-        console.log(id)
         let res = await axios.get(`/api/post/${id}`)
         setPost(res.data)
         setUser_id(res.data[0].user_id)
@@ -31,13 +29,16 @@ const AcceptPost = (props) => {
         axios.get("/auth/user-data").then((res) => setUser(res.data))
         getData()
         getPeeps()
-    }, [taken])
-    console.log(post)
-    console.log(currentUser)
+        sockets.on("returnJoin", mess => {
+            setMessages(mess)
+})
+        sockets.on("returnMessages", message => {
+            setMessages(message)
+        })
+    }, [messages])
     let mappyboi = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         const date = moment(post.shift_date).format("dddd, MMMM Do, YYYY")
-        console.log(item.post_id)
         return (
             <Mapp key={i}>
                 <h2>{date}</h2>
@@ -51,12 +52,9 @@ const AcceptPost = (props) => {
     })
 
     const getPeeps = async () => {
-        console.log(id)
         let res = await axios.get(`/api/interested/${id}`)
-        console.log(res.data)
         setPeeps(res.data)
     }
-    console.log(7397489432897, peeps)
 
     const takeShift = async () => {
         await axios
@@ -203,6 +201,7 @@ const Input = styled.input`
     bottom: 0px;
     height: 30px;
     width: 80%;
+    background: rgb(0,0,0,0.2);
 `
 const Form = styled.form`
     position: relative;
