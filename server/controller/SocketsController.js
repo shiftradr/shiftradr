@@ -11,12 +11,13 @@ module.exports = {
             big = acc_user_id;
             small = req.session.user_id
         } else {
-            small = user_id;
+            small = acc_user_id;
             big = req.session.user_id
         }
         const room = big + ':' + small
-        let chat = await db.chats.get_chats({room})
+        let chat = await db.get_chats({room})
         res.status(200).send(chat)
+        console.log(chat)
     }
 
 }

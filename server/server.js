@@ -23,13 +23,14 @@ const transporter = nodemailer.createTransport({
 // **********************************
 
 
-// Sockets
-const socket = require('socket.io')
-const io = socket (
-    app.listen(SERVER_PORT, () => {
-        console.log(`Listening on ${SERVER_PORT}`)
-    })
-)
+
+
+// const server = require('http').Server(app)
+// var io = require('socket.io')(server)
+// server.listen(SERVER_PORT, () => {
+//     console.log(`Listening on ${SERVER_PORT}`)
+// })
+
 
 massive(CONNECTION_STRING)
     .then((db) => {
@@ -118,6 +119,14 @@ app.get('/api/interested/:id', authCtrl.interested)
 const sockCtrl = require("./controller/SocketsController")
 app.get('/api/getChat', sockCtrl.getChat)
 
+// Sockets
+const socket = require('socket.io')
+const io = socket (
+    app.listen(SERVER_PORT, () => {
+        console.log(`Listening on ${SERVER_PORT}`)
+    })
+)
+
 // Socket Endpoints
 io.on("connection", function(socket) {
     socket.on("endChat", function(room) {
@@ -126,17 +135,17 @@ io.on("connection", function(socket) {
 
     socket.on("startChat", async function(room) {
         const db = app.get("db")
-        const checkedRoom = await db.chats.check_room({ room })
-        !checkedRoom[0] && (await db.chats.create_room({ room }))
-        const messages = await db.chats.get_chats({ room })
+        const checkedRoom = await db.check_room({ room })
+        !checkedRoom[0] && (await db.create_room({ room }))
+        const messages = await db.get_chats({ room })
         socket.join(room)
         io.to(room).emit("returnJoin", messages)
     })
 
     socket.on("sendMessage", async function(data) {
         const db = app.get("db")
-        const { message, user_id, room } = data
-        const messages = await db.chats.create_message({ message, user_id, room })
-        io.to(room).emit("returnMessages", messages)
+        const { messages, user_id, room } = data
+        const message = await db.create_message({ messages, user_id, room })
+        io.to(room).emit("returnMessages", message)
     })
 })
