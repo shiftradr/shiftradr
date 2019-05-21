@@ -16,8 +16,8 @@ module.exports = {
         }
         const room = big + ':' + small
         let chat = await db.get_chats({room})
+
         res.status(200).send(chat)
-        console.log(chat)
     }
 
 }

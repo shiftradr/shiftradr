@@ -4,20 +4,18 @@ import Header from "./Header"
 import axios from "axios"
 import moment from "moment"
 import swal from "@sweetalert/with-react"
-import Chat from './Chat'
-import sockets from "./Sockets";
+import sockets from "./Sockets"
 
 const AcceptPost = (props) => {
-    const [post, setPost] = useState([])
+    const [post, setPost] = useState([{ taken: false }])
     const [peeps, setPeeps] = useState([])
     const [currentUser, setUser] = useState("")
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState("")
-    const [taken, setTaken] = useState('')
+    const [taken, setTaken] = useState("")
     const [user_id, setUser_id] = useState("")
     const [user_id2, setUser_id2] = useState("")
     const [room, setRoom] = useState()
-
 
     console.log(props.match.params)
 
@@ -84,23 +82,35 @@ const AcceptPost = (props) => {
 
     const getChat = async (acc_user_id) => {
         // await sockets.emit("endChat", room);
-        let big;
-        let small;
+        let big
+        let small
         if (user_id > acc_user_id) {
-          big = user_id;
-          small = acc_user_id;
+            big = user_id
+            small = acc_user_id
         } else {
-          big = acc_user_id;
-          small = user_id;
+            big = acc_user_id
+            small = user_id
         }
-        let room = big + ":" + small;
-        sockets.emit("startChat", room);
+        let room = big + ":" + small
+        sockets.emit("startChat", room)
         setRoom(room)
+        let res = await axios.post(`/api/getChat`, { acc_user_id })
+        setMessages(res.data)
+        setUser_id2(acc_user_id)
+    }
 
-        let res = await axios
-            .get(`/api/getChat`, {acc_user_id})
-            setMessages(res.data)
-            setUser_id2(acc_user_id)
+    const sendMessage = async (e) => {
+        e.preventDefault()
+        if (message !== "") {
+            await sockets.emit("sendMessage", {
+                messages: message,
+                user_id: user_id2,
+                room,
+            })
+
+            setMessage("")
+        }
+        getChat(user_id2)
     }
 
     let mapped = peeps.map((peeps, i) => {
@@ -129,13 +139,24 @@ const AcceptPost = (props) => {
                             </button>
                             <button>Decline</button>
                         </>
-                    ) : <span>Shift no longer listed</span>    }
-                    <button onClick={() => getChat(peeps.acc_user_id)} >Message</button>
+                    ) : (
+                        <span>Shift no longer listed</span>
+                    )}
+                    <button onClick={() => getChat(peeps.acc_user_id)}>
+                        Message
+                    </button>
                 </Mapp>
             </Mapp>
         )
     })
 
+    const mapMessage = messages.map((mess) => {
+        return (
+            <Map key={mess.chat_id}>
+                <Span1>{mess.messages}</Span1>
+            </Map>
+        )
+    })
 
     return (
         <>
@@ -146,10 +167,19 @@ const AcceptPost = (props) => {
                     <Divv>
                         <Posts>{mapped}</Posts>
                         <ChatBox>
-                            <Chat 
-                                user_id2={user_id2}
-                                room={room}
-                            />
+                            {mapMessage}
+                            <Div3>
+                                <Form onSubmit={sendMessage}>
+                                    <Input
+                                        onChange={(e) =>
+                                            setMessage(e.target.value)
+                                        }
+                                        value={message}
+                                        placeholder="Enter Message"
+                                    />
+                                    <Button>Send</Button>
+                                </Form>
+                            </Div3>
                         </ChatBox>
                     </Divv>
                 </PostView>
@@ -160,6 +190,48 @@ const AcceptPost = (props) => {
 
 export default AcceptPost
 
+const Span1 =styled.div`
+    width: 75%;
+    background: #bada55;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    padding: 0px 0px 0px 20px;
+`
+
+const Input = styled.input`
+    position: sticky;
+    bottom: 0px;
+    height: 30px;
+    width: 80%;
+`
+const Form = styled.form`
+    position: relative;
+    bottom: 0%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+    /* height: 100%; */
+`
+const Button = styled.button`
+    position: sticky;
+    bottom: -110px;
+    height: 30px;
+`
+
+const Map = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+`
+
+const Div3 = styled.div`
+    position: fixed;
+    bottom: 10px;
+    width: 26vw;
+`
 const PostH = styled.div`
     width: 91%;
     height: 8vh;
@@ -195,9 +267,15 @@ const Posts = styled.div`
 const ChatBox = styled.div`
     height: 76vh;
     width: 26vw;
-    background: pink;
+    background: rebeccapurple;
     position: relative;
     top: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `
 
 // const Input = styled.input`

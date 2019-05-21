@@ -1,60 +1,68 @@
 import React, { useState, useEffect } from "react"
 import styled from "styled-components"
-import axios from 'axios'
-import sockets from './Sockets'
-
+import axios from "axios"
+import sockets from "./Sockets"
 
 const Chat = (props) => {
-
     const [messages, setMessage] = useState("")
 
-    useEffect(() => {
-    })
-    const getChat = () => {
-        
-    }
+    
     const sendMessage = async (e) => {
         e.preventDefault()
         const { user_id2, room } = props
         if (messages !== "") {
-            await sockets.emit("sendMessage", { messages, user_id: user_id2, room})
+            await sockets.emit("sendMessage", {
+                messages,
+                user_id: user_id2,
+                room,
+            })
 
             setMessage("")
         }
+
     }
+
     return (
-        <>
-            <Box>
+        
                 <Form onSubmit={sendMessage}>
-                    <Input onChange={(e) => setMessage(e.target.value)} value={messages} placeholder="Enter Message" />
+                    <Input
+                        onChange={(e) => setMessage(e.target.value)}
+                        value={messages}
+                        placeholder="Enter Message"
+                    />
                     <Button>Send</Button>
                 </Form>
-            </Box>
-        </>
     )
 }
 export default Chat
 const Input = styled.input`
-    position: relative;
-    top: 71.2vh;
+    position: sticky;
+    bottom: 0px;
     height: 30px;
     width: 80%;
 `
 const Form = styled.form`
+    position: relative;
+    bottom: 0%;
     display: flex;
     flex-direction: row;
+    align-items: flex-end;
     width: 100%;
+    /* height: 100%; */
 `
 const Button = styled.button`
-    position: relative;
-    top: 71.2vh;
+    position: sticky;
+    bottom: -110px;
     height: 30px;
 `
-const Box = styled.div`
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-`
+// const Box = styled.div`
+//     display: flex;
+//     flex-direction: row;
+//     height: 100%;
+//     position: relative;
+//     bottom: 0px;
+
+// `
 // const ChatBar = styled.div`
 //     display: flex;
 //     top: 0;
