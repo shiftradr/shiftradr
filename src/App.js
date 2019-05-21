@@ -7,6 +7,8 @@ import PostView from "./Components/PostView"
 import Chat from "./Components/Chat"
 import MyPosts from "./Components/MyPosts"
 import AcceptPost from './Components/AcceptPost'
+import AppliedHistory from "./Components/AppliedHistory";
+import AppliedPost from './Components/AppliedPost'
 
 function App() {
     return (
@@ -19,6 +21,8 @@ function App() {
                 <Route path="/chat" component={Chat} />
                 <Route path="/my-posts" component={MyPosts} />
                 <Route path="/accept_post/:post_id" component={AcceptPost}/>
+                <Route path="/history" component={AppliedHistory}/>
+                <Route path="/applied-for-post/:post_id" component={AppliedPost}/>
             </Switch>
         </HashRouter>
     )
