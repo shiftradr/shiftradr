@@ -108,7 +108,7 @@ const AcceptPost = (props) => {
 
             setMessage("")
         }
-        getChat(user_id2)
+        // getChat(user_id2)
     }
 
     let mapped = peeps.map((peeps, i) => {
@@ -151,7 +151,7 @@ const AcceptPost = (props) => {
     const mapMessage = messages.map((mess) => {
         return (
             <Map key={mess.chat_id}>
-                <Span1>{mess.messages}</Span1>
+                <Span1 className={user_id === mess.user_id ? "gren" : "blu"}>{mess.messages}</Span1>
             </Map>
         )
     })
@@ -165,7 +165,9 @@ const AcceptPost = (props) => {
                     <Divv>
                         <Posts>{mapped}</Posts>
                         <ChatBox>
+                            <MappM>
                             {mapMessage}
+                            </MappM>
                             <Div3>
                                 <Form onSubmit={sendMessage}>
                                     <Input
@@ -188,9 +190,20 @@ const AcceptPost = (props) => {
 
 export default AcceptPost
 
+const MappM = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    overflow-y: scroll;
+    margin-bottom: 40px;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`
+
 const Span1 =styled.div`
     width: 75%;
-    background: #bada55;
     margin-bottom: 10px;
     border-radius: 15px;
     padding: 0px 0px 0px 20px;
@@ -220,8 +233,7 @@ const Button = styled.button`
 
 const Map = styled.div`
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end;
     flex-direction: column;
     width: 100%;
 `
@@ -230,6 +242,7 @@ const Div3 = styled.div`
     position: fixed;
     bottom: 10px;
     width: 26vw;
+    height: 40px;
 `
 const PostH = styled.div`
     width: 91%;
@@ -271,7 +284,6 @@ const ChatBox = styled.div`
     top: 10px;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
     &::-webkit-scrollbar {
         display: none;
     }
