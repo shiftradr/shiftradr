@@ -153,7 +153,8 @@ const AcceptPost = (props) => {
     const mapMessage = messages.map((mess) => {
         return (
             <Map key={mess.chat_id}>
-                <Span1>{mess.messages}</Span1>
+
+            <Span1 className={user_id === mess.user_id ? 'green' : 'blue'}>{mess.messages}</Span1>
             </Map>
         )
     })
@@ -192,7 +193,6 @@ export default AcceptPost
 
 const Span1 =styled.div`
     width: 75%;
-    background: #bada55;
     margin-bottom: 10px;
     border-radius: 15px;
     padding: 0px 0px 0px 20px;

@@ -48,6 +48,7 @@ function Picker(props) {
             <h1 className="registerTitle">Please enter shift date</h1>
             <Divv>
                 Date:
+
                 <DatePicker
                     showTodayButton={true}
                     disablePast={true}
@@ -57,10 +58,10 @@ function Picker(props) {
                 />
             </Divv>
             <Divv>
-                Clock Out: <TimePicker ampm={false} value={startTime} onChange={setOutChange} />
+                Clock In: <TimePicker ampm={false} value={startTime} onChange={setOutChange} />
             </Divv>
             <Divv>
-                Clock In: <TimePicker ampm={false} value={endTime} onChange={setInChange} />
+                Clock Out: <TimePicker ampm={false} value={endTime} onChange={setInChange} />
             </Divv>
             <Divv>
                 Description: <Input placeholder="Description" ref={memoRef} />

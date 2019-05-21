@@ -6,6 +6,16 @@ dark green: #519E8A
 medium green: #7EB09B
 light green: #A3C4BC
 */
+.green {
+    background: #258ea6;
+    color: red;
+
+}
+
+.blue {
+    background: yellow;
+    color: green;
+}
 
 .wrapper {
     height: 100vh;
