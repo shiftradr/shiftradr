@@ -9,6 +9,8 @@ import "./Login.css"
 import styled from "styled-components"
 import axios from "axios"
 import moment from "moment"
+import { Formik } from 'formik'
+import {Yup} from 'yup'
 
 function Picker(props) {
     const [selectedDate, handleDateChange] = useState(moment())
@@ -68,12 +70,15 @@ function Picker(props) {
             <Divv>
                 Incentive: <Input placeholder="Incentive" ref={incentiveRef} />
             </Divv>
-            <select name="Post type" ref={typeRef}  >
+                <select
+                    name="Post type"
+                    ref={typeRef}
+                    >
                 <option defaultValue >Post Type</option>
                 <option value="1">Trade</option>
                 <option value="2">NSA</option>
                 <option value="3">Permanent</option>
-            </select>
+                    </select>
             <ButtonDiv>
                 <Button onClick={() => props.handleModal()}>Cancel</Button>
                 <Button2 onClick={() => handlePost()}>Post</Button2>

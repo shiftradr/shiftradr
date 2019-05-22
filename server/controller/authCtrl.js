@@ -6,16 +6,25 @@ module.exports = {
     register: async (req, res) => {
         try {
             const {
-                user_first,
-                user_last,
-                user_email,
-                password,
-                user_employee_id,
-                group_id,
+                values
+                // user_first,
+                // user_last,
+                // user_email,
+                // password,
+                // user_employee_id,
+                // group_id,
             } = req.body
+            const user_first = values.firstName
+            const user_last = values.lastName
+            const user_email = values.email
+            const password = values.password
+            const user_employee_id = values.employeeId
+            const group_id = values.groupId
+            console.log(11111, group_id, password)
+            console.log(2222, user_email)
             console.log(req.body)
             const db = req.app.get("db")
-            const [foundUser] = await db.check_email([user_email])
+            const [foundUser] = await db.check_email({ user_email })
             console.log("found user", foundUser)
             if (foundUser) {
                 console.log("after userfound")
@@ -29,7 +38,7 @@ module.exports = {
                 user_email,
                 hash,
                 user_employee_id,
-                group_id,
+                group_id
             ])
             req.session.user = {
                 user_id: newUser.user_id,

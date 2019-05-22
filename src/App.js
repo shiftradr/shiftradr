@@ -7,6 +7,7 @@ import PostView from "./Components/PostView"
 import Chat from "./Components/Chat"
 import MyPosts from "./Components/MyPosts"
 import AcceptPost from './Components/AcceptPost'
+import Registration from './Components/Registration'
 
 function App() {
     return (
@@ -18,7 +19,8 @@ function App() {
                 <Route path="/postview" component={PostView} />
                 <Route path="/chat" component={Chat} />
                 <Route path="/my-posts" component={MyPosts} />
-                <Route path="/accept_post/:post_id" component={AcceptPost}/>
+                <Route path="/accept_post/:post_id" component={AcceptPost} />
+                <Route path="/registration" component={Registration} />
             </Switch>
         </HashRouter>
     )
