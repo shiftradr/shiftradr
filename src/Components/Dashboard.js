@@ -33,6 +33,8 @@ const Dashboard = (props) => {
         getData()
     }
 
+    console.log(post)
+
     let map = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         let date = moment(item.shift_date).format("dddd, MMMM Do, YYYY")
@@ -44,13 +46,23 @@ const Dashboard = (props) => {
 
         return (
             <PostV to={`/post/${item.post_id}`} key={i}>
-                <span>{date}</span>
-                <span>{item.memo}</span>
-                {item.incentive ? (
-                    <span>Incentive: {item.incentive}</span>
-                ) : null}
-                <span>Posted {time}</span>
-                <span>{item.start_time}</span>
+                <PDiv1>
+                    <H2>{date}</H2>
+                    <span>Start Time: {item.start_time}</span>
+                    <span>End Time: {item.end_time}</span>
+
+                </PDiv1>
+                <PDiv2>
+                    <span>{item.memo}</span>
+
+                </PDiv2>
+                <PDiv3>
+                    {item.incentive ? (
+                        <SpanTop>Incentive: {item.incentive}</SpanTop>
+                    ) : null}
+                    <SpanBottom>Posted {time}</SpanBottom>
+
+                </PDiv3>
             </PostV>
         )
     })
@@ -107,16 +119,16 @@ const Dashboard = (props) => {
                         <FilterTitle>
                             <Div2>
                                 <span>Please Select Date Range:</span>
-                            <Div>
-                                <InputDiv>
-                                    From:{'   '}
+                                <Div>
+                                    <InputDiv>
+                                        From:{'   '}
+                                        <Input type="date" />
+                                    </InputDiv>
+                                    <InputDiv>
+                                        Date:
                                     <Input type="date" />
-                                </InputDiv>
-                                <InputDiv>
-                                    Date:
-                                    <Input type="date" />
-                                </InputDiv>
-                            </Div>
+                                    </InputDiv>
+                                </Div>
                             </Div2>
                             <Filter
                                 // className="fas fa-filter"
@@ -170,9 +182,9 @@ const Div = styled.div`
 
 const PostV = styled(Link)`
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     margin-top: 5vh;
     min-height: 120px;
     width: 90%;
@@ -252,4 +264,42 @@ const Input = styled.input`
     font-size: 1.1rem;
     border: none;
     border-bottom: 1px solid black;
+`
+
+const PDiv1 = styled.div`
+display: flex;
+flex-direction: column;
+margin-left: 1em;
+width: 45%;
+`
+
+const PDiv2 = styled.div`
+margin-left: .5em;
+margin-right: .5em;
+width: 27.5%;
+`
+
+const PDiv3 = styled.div`
+display: flex;
+flex-direction: column;
+margin-right: 1em;
+justify-content: space-between;
+width: 27.5%;
+
+`
+
+const H2 = styled.h2`
+margin-bottom: .5em;
+margin-top: -.1em;
+`
+
+const SpanTop = styled.span`
+display: flex;
+justify-content: flex-start;
+`
+
+const SpanBottom = styled.span`
+display: flex;
+justify-content: flex-end;
+
 `

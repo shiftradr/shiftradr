@@ -30,6 +30,7 @@ const MyPosts = (props) => {
     }
 
     const archive = async (id) => {
+        await axios.put(`/api/posts/${id}`).then(res => res.data).catch(err => console.log('update error', err))
         await axios.put(`/api/archive/${id}`).then(res => res.data).catch(err => console.log('archive error', err))
         getData()
     }
@@ -40,27 +41,36 @@ const MyPosts = (props) => {
         let time = moment(item.post_date).fromNow()
         let date = moment(item.shift_date).format('dddd, MMMM Do, YYYY')
         return (
-            <>
-                <PostV to={`/accept_post/${item.post_id}`} key={i}>
+            <PostV key={i}>
+                <PostLink to={`/accept_post/${item.post_id}`}>
                     <span>{date}</span>
                     <span>{item.memo}</span>
                     {item.incentive ? (
                         <span>Incentive: {item.incentive}</span>
                     ) : null}
                     <span>Posted {time}</span>
+                </PostLink>
+                <Buttons>
                     {!item.taken ? (
                         <Button onClick={() => takeShift(item.post_id)}>Remove Post</Button>
                     ) : <span>No Longer Listed</span>}
-                </PostV>
-                <Button onClick={() => swal({
-                    title: "Are you sure",
-                    text: "This will permanently remove your post",
-                    icon: "warning",
-                    dangerMode: true,
-                    buttons: true
-                })}>Test</Button>
-                <Button onClick={() => archive(item.post_id)} >Archive</Button>
-            </>
+                    <Button onClick={() => swal({
+                        title: "Are you sure?",
+                        text: "Are you sure that you want to leave this page?",
+                        icon: "warning",
+                        dangerMode: true,
+                        buttons: {
+                            cancel: "Cancel",
+                            success: "Archive"
+                        }
+                    })
+                        .then(willDelete => {
+                            if (willDelete) {
+                                archive(item.post_id);
+                            }
+                        })}>Archive</Button>
+                </Buttons>
+            </PostV>
         )
     })
 
@@ -105,11 +115,11 @@ const PostView = styled.div`
 
 `
 
-const PostV = styled(Link)`
+const PostV = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     margin-top: 5vh;
     height: 140px;
     width: 90%;
@@ -125,9 +135,29 @@ const Button = styled.button`
     border-radius: 20px;
     outline: none;
     border: none;
+    
+`
+
+const Buttons = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+align-items: center;
+text-align: center;
 
 `
+
 const Title = styled.h1`
     color: white;
     font-weight: 700;
+`
+
+const PostLink = styled(Link)`
+display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 140px;
+    width: 80%;
+    background: pink;
+    border-radius: 20px;
 `
