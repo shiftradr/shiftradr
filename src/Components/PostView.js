@@ -9,6 +9,8 @@ import "./Login.css"
 import styled from "styled-components"
 import axios from "axios"
 import moment from "moment"
+import { Formik } from 'formik'
+import {Yup} from 'yup'
 
 function Picker(props) {
     const [selectedDate, handleDateChange] = useState(moment())
@@ -19,16 +21,13 @@ function Picker(props) {
     const typeRef = useRef()
 
     const handlePost = async () => {
-        let start = moment(startTime).format("HH:mm:ss")
-        let end = moment(endTime).format("HH:mm:ss")
+        let start = moment(startTime).format("HH:mm")
+        let end = moment(endTime).format("HH:mm")
 
         let bob = moment(end).get("hour, min")
         let bib = moment(start).get("hour, min")
-        let date = moment(selectedDate).format('YYYY-MM-DD')
+        let date = moment(selectedDate).format("YYYY-MM-DD")
 
-        console.warn(selectedDate)
-        console.log(bob)
-        console.log(bib)
         await axios
             .post("/api/posts", {
                 shiftDate: date,
@@ -36,7 +35,7 @@ function Picker(props) {
                 endTime: bob._i,
                 memo: memoRef.current.value,
                 incentive: incentiveRef.current.value,
-                post_type: typeRef.current.value
+                post_type: typeRef.current.value,
             })
             .catch((err) => console.log(66, err))
         props.getData()
@@ -57,10 +56,20 @@ function Picker(props) {
                 />
             </Divv>
             <Divv>
-                Clock Out: <TimePicker ampm={false} value={startTime} onChange={setOutChange} />
+                Clock In:{" "}
+                <TimePicker
+                    ampm={false}
+                    value={startTime}
+                    onChange={setOutChange}
+                />
             </Divv>
             <Divv>
-                Clock In: <TimePicker ampm={false} value={endTime} onChange={setInChange} />
+                Clock Out:{" "}
+                <TimePicker
+                    ampm={false}
+                    value={endTime}
+                    onChange={setInChange}
+                />
             </Divv>
             <Divv>
                 Description: <Input placeholder="Description" ref={memoRef} />
@@ -68,12 +77,12 @@ function Picker(props) {
             <Divv>
                 Incentive: <Input placeholder="Incentive" ref={incentiveRef} />
             </Divv>
-            <select name="Post type" ref={typeRef}  >
-                <option defaultValue >Post Type</option>
+            <select className="groupId" name="Post type" ref={typeRef}>
+                <option defaultValue>Post Type</option>
                 <option value="1">Trade</option>
                 <option value="2">NSA</option>
                 <option value="3">Permanent</option>
-            </select>
+                    </select>
             <ButtonDiv>
                 <Button onClick={() => props.handleModal()}>Cancel</Button>
                 <Button2 onClick={() => handlePost()}>Post</Button2>

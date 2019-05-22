@@ -17,11 +17,8 @@ const AcceptPost = (props) => {
     const [user_id2, setUser_id2] = useState("")
     const [room, setRoom] = useState()
 
-    console.log(props.match.params)
-
     const id = props.match.params.post_id
     const getData = async () => {
-        console.log(id)
         let res = await axios.get(`/api/post/${id}`)
         setPost(res.data)
         setUser_id(res.data[0].user_id)
@@ -31,13 +28,16 @@ const AcceptPost = (props) => {
         axios.get("/auth/user-data").then((res) => setUser(res.data))
         getData()
         getPeeps()
+        sockets.on("returnJoin", (mess) => {
+            setMessages(mess)
+        })
+        sockets.on("returnMessages", (message) => {
+            setMessages(message)
+        })
     }, [taken])
-    console.log(post)
-    console.log(currentUser)
     let mappyboi = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         const date = moment(post.shift_date).format("dddd, MMMM Do, YYYY")
-        console.log(item.post_id)
         return (
             <Mapp key={i}>
                 <h2>{date}</h2>
@@ -51,12 +51,9 @@ const AcceptPost = (props) => {
     })
 
     const getPeeps = async () => {
-        console.log(id)
         let res = await axios.get(`/api/interested/${id}`)
-        console.log(res.data)
         setPeeps(res.data)
     }
-    console.log(7397489432897, peeps)
 
     const takeShift = async () => {
         await axios
@@ -81,7 +78,6 @@ const AcceptPost = (props) => {
     }
 
     const getChat = async (acc_user_id) => {
-        // await sockets.emit("endChat", room);
         let big
         let small
         if (user_id > acc_user_id) {
@@ -110,7 +106,6 @@ const AcceptPost = (props) => {
 
             setMessage("")
         }
-        getChat(user_id2)
     }
 
     let mapped = peeps.map((peeps, i) => {
@@ -153,7 +148,9 @@ const AcceptPost = (props) => {
     const mapMessage = messages.map((mess) => {
         return (
             <Map key={mess.chat_id}>
-                <Span1>{mess.messages}</Span1>
+                <Span1 className={user_id === mess.user_id ? "gren" : "blu"}>
+                    {mess.messages}
+                </Span1>
             </Map>
         )
     })
@@ -167,7 +164,9 @@ const AcceptPost = (props) => {
                     <Divv>
                         <Posts>{mapped}</Posts>
                         <ChatBox>
-                            {mapMessage}
+                            <PlzScroll>
+                                <MappM>{mapMessage}</MappM>
+                            </PlzScroll>
                             <Div3>
                                 <Form onSubmit={sendMessage}>
                                     <Input
@@ -190,19 +189,39 @@ const AcceptPost = (props) => {
 
 export default AcceptPost
 
-const Span1 =styled.div`
+const PlzScroll = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+`
+
+const MappM = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 80vh;
+    overflow-y: scroll;
+    margin-bottom: 40px;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`
+
+const Span1 = styled.div`
     width: 75%;
-    background: #bada55;
     margin-bottom: 10px;
     border-radius: 15px;
     padding: 0px 0px 0px 20px;
 `
 
 const Input = styled.input`
-    position: sticky;
-    bottom: 0px;
     height: 30px;
     width: 80%;
+    background: #1d2a3d;
+    outline: none;
+    border: none;
+    color: white;
+    padding: 8px;
 `
 const Form = styled.form`
     position: relative;
@@ -211,26 +230,25 @@ const Form = styled.form`
     flex-direction: row;
     align-items: flex-end;
     width: 100%;
-    /* height: 100%; */
 `
 const Button = styled.button`
-    position: sticky;
-    bottom: -110px;
-    height: 30px;
+    padding: 10px 16px 9px 16px;
+    height: 46px;
+    text-align: start;
 `
 
 const Map = styled.div`
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end;
     flex-direction: column;
     width: 100%;
 `
 
 const Div3 = styled.div`
-    position: fixed;
-    bottom: 10px;
+    position: sticky;
+    bottom: 0px;
     width: 26vw;
+    height: 40px;
 `
 const PostH = styled.div`
     width: 91%;
@@ -265,28 +283,21 @@ const Posts = styled.div`
     top: 10px;
 `
 const ChatBox = styled.div`
+    display: flex;
+    flex-direction: column;
     height: 76vh;
     width: 26vw;
     background: rebeccapurple;
     position: relative;
     top: 10px;
-    display: flex;
-    flex-direction: column;
+    border-radius: 10px;
     overflow-y: scroll;
+    
     &::-webkit-scrollbar {
         display: none;
     }
 `
 
-// const Input = styled.input`
-//     display: flex;
-//     height: 20px;
-//     width: 100px;
-//     margin: 10px;
-//     border: none;
-//     outline: none;
-//     border-bottom: 0.5px solid black;
-// `
 const Dash = styled.div`
     display: flex;
     justify-content: center;

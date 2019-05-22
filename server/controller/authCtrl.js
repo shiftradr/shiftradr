@@ -6,16 +6,25 @@ module.exports = {
     register: async (req, res) => {
         try {
             const {
-                user_first,
-                user_last,
-                user_email,
-                password,
-                user_employee_id,
-                group_id,
+                values
+                // user_first,
+                // user_last,
+                // user_email,
+                // password,
+                // user_employee_id,
+                // group_id,
             } = req.body
+            const user_first = values.firstName
+            const user_last = values.lastName
+            const user_email = values.email
+            const password = values.password
+            const user_employee_id = values.employeeId
+            const group_id = values.groupId
+            console.log(11111, group_id, password)
+            console.log(2222, user_email)
             console.log(req.body)
             const db = req.app.get("db")
-            const [foundUser] = await db.check_email([user_email])
+            const [foundUser] = await db.check_email({ user_email })
             console.log("found user", foundUser)
             if (foundUser) {
                 console.log("after userfound")
@@ -29,7 +38,7 @@ module.exports = {
                 user_email,
                 hash,
                 user_employee_id,
-                group_id,
+                group_id
             ])
             req.session.user = {
                 user_id: newUser.user_id,
@@ -213,16 +222,28 @@ module.exports = {
         const applied = await db.get_applied_posts([user_id])
         res.status(200).send(applied)
     },
+
     appliedPost: async (req, res) => {
         const { id } = req.params
         const db = req.app.get("db")
         let appPost = await db.get_applied_post_by_id([id])
         res.status(200).send(appPost)
-    },
+    }, 
+
     archive: async (req, res) => {
         const { id } = req.params
         const db = req.app.get("db")
         const archived = await db.archive([id])
         res.status(200).send(archived)
+    },
+
+    getFiltered: async (req, res) => {
+        const { shift_date1, shift_date2, post_type } = req.body;
+        const  {group_id}  = req.session
+        console.log(shift_date1, shift_date2, post_type, group_id)
+        const db = req.app.get("db")
+        const filtered = await db.get_filtered_posts({ group_id, shift_date1, shift_date2, post_type })
+        res.status(200).send(filtered)
     }
 }
+    

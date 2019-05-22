@@ -6,6 +6,7 @@ import Post from "./Components/Post"
 import PostView from "./Components/PostView"
 import MyPosts from "./Components/MyPosts"
 import AcceptPost from './Components/AcceptPost'
+import Registration from './Components/Registration'
 import AppliedHistory from "./Components/AppliedHistory";
 import AppliedPost from './Components/AppliedPost'
 
@@ -18,7 +19,8 @@ function App() {
                 <Route path="/post/:post_id" component={Post} />
                 <Route path="/postview" component={PostView} />
                 <Route path="/my-posts" component={MyPosts} />
-                <Route path="/accept_post/:post_id" component={AcceptPost}/>
+                <Route path="/accept_post/:post_id" component={AcceptPost} />
+                <Route path="/registration" component={Registration} />g
                 <Route path="/history" component={AppliedHistory}/>
                 <Route path="/applied-for-post/:post_id" component={AppliedPost}/>
             </Switch>
