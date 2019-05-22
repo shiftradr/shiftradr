@@ -213,16 +213,28 @@ module.exports = {
         const applied = await db.get_applied_posts([user_id])
         res.status(200).send(applied)
     },
+
     appliedPost: async (req, res) => {
         const { id } = req.params
         const db = req.app.get("db")
         let appPost = await db.get_applied_post_by_id([id])
         res.status(200).send(appPost)
-    },
+    }, 
+
     archive: async (req, res) => {
         const { id } = req.params
         const db = req.app.get("db")
         const archived = await db.archive([id])
         res.status(200).send(archived)
+    },
+
+    getFiltered: async (req, res) => {
+        const { shift_date1, shift_date2, post_type } = req.body;
+        const  {group_id}  = req.session
+        console.log(shift_date1, shift_date2, post_type, group_id)
+        const db = req.app.get("db")
+        const filtered = await db.get_filtered_posts({ group_id, shift_date1, shift_date2, post_type })
+        res.status(200).send(filtered)
     }
 }
+    

@@ -6,25 +6,38 @@ dark green: #519E8A
 medium green: #7EB09B
 light green: #A3C4BC
 */
-.green {
-    background: #258ea6;
-    color: red;
 
-}
-
-.blue {
-    background: yellow;
-    color: green;
-}
 
 .gren {
-    background-color: pink;
+    background-color: #937A9E;
     align-self: flex-start;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
+.green {
+    position: relative;
+    left: -13px;
+    background-color: #937A9E;
+    transform: rotate(180deg);
+
+}
+.blue {
+    position: relative;
+    top: 0px;
+    left: 13px;
+    background-color: #14AF8E;
+    transform: rotate(-180deg) scaleX(-1);
 }
 
 .blu {
-    background-color: maroon;
+    flex-direction: row-reverse;
+    background-color: #14AF8E;
     align-self: flex-end;
+    border-top-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
 }
 
 .wrapper {

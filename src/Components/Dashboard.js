@@ -2,15 +2,17 @@ import React, { useState, useRef, useEffect } from "react"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 import Header from "./Header"
-import swal from "@sweetalert/with-react"
 import moment from "moment"
 import axios from "axios"
 import PostModal from "./PostModal"
 
 const Dashboard = (props) => {
     const test = useRef()
+    const typeRef = useRef()
 
     const [post, setPost] = useState([])
+    const [start, setStart] = useState(moment().format('YYYY-MM-DD'))
+    const [end, setEnd] = useState(moment().add(1, 'days').format('YYYY-MM-DD'))
 
     useEffect(() => {
         getData()
@@ -19,11 +21,21 @@ const Dashboard = (props) => {
     const getData = async () => {
         axios.get("/auth/user-data").then((res) => console.log(res.data))
         let res = await axios.get("/api/posts")
-        // console.log(9999, res.data[0])
         setPost(res.data)
-        // console.log(res)
     }
-    // console.log(1111, post)
+
+    const filteredData = async () => {
+        if(typeRef.current.value !== '0'){
+            const bob = typeRef.current.value
+            let res = await axios.post('/api/filtered', { shift_date1: start, shift_date2: end, post_type: bob })
+            setPost(res.data)
+            console.log(bob)
+        } else {
+            let res = await axios.post('/api/filtered', { shift_date1: start, shift_date2: end, post_type: null })
+            setPost(res.data)
+
+        }
+    }
 
     const takeShift = async (id) => {
         await axios
@@ -37,12 +49,12 @@ const Dashboard = (props) => {
         let time = moment(item.post_date).fromNow()
         let date = moment(item.shift_date).format("dddd, MMMM Do, YYYY")
         let date2 = moment(item.shift_date)
-        let date3 = moment(item.start_time, "HH:mm:ss")
+        let date3 = moment(item.start_time, "HH:mm")
         if (moment().isSameOrAfter(date2) && moment().isAfter(date3)) {
             takeShift(item.post_id)
         }
 
-        return (
+        return  (
             <PostV to={`/post/${item.post_id}`} key={i}>
                 <span>{date}</span>
                 <span>{item.memo}</span>
@@ -50,9 +62,9 @@ const Dashboard = (props) => {
                     <span>Incentive: {item.incentive}</span>
                 ) : null}
                 <span>Posted {time}</span>
-                <span>{item.start_time}</span>
+                <span>Clock In: {item.start_time.slice(0, 5)}</span>
             </PostV>
-        )
+        ) 
     })
 
     const node = useRef()
@@ -93,6 +105,9 @@ const Dashboard = (props) => {
 
     const [modal, setModal] = useState(false)
 
+    console.log(end)
+    console.log(start)
+
     return (
         <>
             <Header
@@ -107,26 +122,36 @@ const Dashboard = (props) => {
                         <FilterTitle>
                             <Div2>
                                 <span>Please Select Date Range:</span>
-                            <Div>
-                                <InputDiv>
-                                    From:{'   '}
-                                    <Input type="date" />
-                                </InputDiv>
-                                <InputDiv>
-                                    Date:
-                                    <Input type="date" />
-                                </InputDiv>
-                            </Div>
+                                <Div>
+                                    <InputDiv>
+                                        From:
+                                        <Input type="date" value={start} onChange={(e) => setStart(e.target.value)}/>
+                                    </InputDiv>
+                                    <InputDiv>
+                                        Date:
+                                        <Input type="date" value={end} onChange={(e) => setEnd(e.target.value)}/>
+                                    </InputDiv>
+                                    <InputDiv>
+                                        <select ref={typeRef} name="" >
+                                            <option value='0' >Select Shift Type</option>
+                                            <option value="1">Trade</option>
+                                            <option value="2">NSA</option>
+                                            <option value="3">PERM</option>
+                                        </select>
+                                    </InputDiv>
+                                </Div>
                             </Div2>
                             <Filter
-                                // className="fas fa-filter"
-                                onClick={() => setFilter(!filter)}
+                                className="fas fa-filter"
+                                onClick={() => {
+                                    filteredData()
+                                    setFilter(!filter)
+                                    }}
                             />
                         </FilterTitle>
                     </SlideDown>
-
-                    {map}
-                    <button onClick={() => swal(post[0].memo)}>hi</button>
+                    
+                    {post[0] ? (map) : (<h2>No Shifts Found</h2>)}
                     {modal && (
                         <PostModal
                             getData={getData}
@@ -142,13 +167,11 @@ const Dashboard = (props) => {
 
 export default Dashboard
 
-
 const Div2 = styled.div`
-     display: flex;
+    display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-direction: column;
-    
 `
 
 const Div = styled.div`
@@ -236,7 +259,11 @@ const FilterTitle = styled.div`
     height: 100%;
 `
 
-const Filter = styled.div``
+const Filter = styled.div`
+position: relative;
+top: 20px;
+
+`
 const InputDiv = styled.div`
     z-index: 10;
     display: flex;
@@ -244,7 +271,6 @@ const InputDiv = styled.div`
     align-items: center;
     height: 100%;
     width: 200px;
-
 `
 
 const Input = styled.input`
