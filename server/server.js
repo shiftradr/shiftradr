@@ -23,6 +23,15 @@ const transporter = nodemailer.createTransport({
 // **********************************
 
 
+
+
+// const server = require('http').Server(app)
+// var io = require('socket.io')(server)
+// server.listen(SERVER_PORT, () => {
+//     console.log(`Listening on ${SERVER_PORT}`)
+// })
+
+
 massive(CONNECTION_STRING)
     .then((db) => {
         app.set('db', db)
@@ -38,7 +47,7 @@ massive(CONNECTION_STRING)
                  console.log('DB Seeded')
             })
         }
-app.listen(SERVER_PORT, () => console.log(`Running on ${SERVER_PORT}`))
+// app.listen(SERVER_PORT, () => console.log(`Running on ${SERVER_PORT}`))
     })
 
 app.use(session({
@@ -105,3 +114,47 @@ app.put('/api/post/:id', authCtrl.accPost)
 
 // get intersted people
 app.get('/api/interested/:id', authCtrl.interested)
+
+// get history of posts i've applied for
+app.get('/api/applied-for', authCtrl.appliedHistory)
+
+// route to a specific post in my applied history
+app.get('/api/applied-post/:id', authCtrl.appliedPost)
+
+app.put('/api/archive/:id', authCtrl.archive)
+
+// Chat Endpoints
+const sockCtrl = require("./controller/SocketsController")
+app.post('/api/getChat', sockCtrl.getChat)
+// app.post('/api/getChat2', sockCtrl.getChat2)
+
+// Sockets
+const socket = require('socket.io')
+const io = socket (
+    app.listen(SERVER_PORT, () => {
+        console.log(`Listening on ${SERVER_PORT}`)
+    })
+)
+
+// Socket Endpoints
+io.on("connection", function(socket) {
+    socket.on("endChat", function(room) {
+        socket.leave(room)
+    })
+
+    socket.on("startChat", async function(room) {
+        const db = app.get("db")
+        const checkedRoom = await db.check_room({ room })
+        !checkedRoom[0] && (await db.create_room({ room }))
+        const messages = await db.get_chats({ room })
+        socket.join(room)
+        io.to(room).emit("returnJoin", messages)
+    })
+
+    socket.on("sendMessage", async function(data) {
+        const db = app.get("db")
+        const { messages, user_id, room } = data
+        const message = await db.create_message({ messages, user_id, room })
+        io.to(room).emit("returnMessages", message)
+    })
+})

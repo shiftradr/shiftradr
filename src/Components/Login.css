@@ -7,6 +7,16 @@ medium green: #7EB09B
 light green: #A3C4BC
 */
 
+.gren {
+    background-color: pink;
+    align-self: flex-start;
+}
+
+.blu {
+    background-color: maroon;
+    align-self: flex-end;
+}
+
 .wrapper {
     height: 100vh;
     width: 100%;

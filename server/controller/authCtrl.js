@@ -128,9 +128,9 @@ module.exports = {
         } = req.body
         const groupId = req.session.group_id
         const user_id = req.session.user_id
-        const first_name = req.session.user.first_name
-        const last_name = req.session.user.last_name
-        const post_emp_id = req.session.user.post_emp_id
+        const first_name = req.session.user.user_first
+        const last_name = req.session.user.user_last
+        const post_emp_id = req.session.user.user_employee_id
         const post_date = moment.utc()
         const db = req.app.get("db")
         const shifts = await db.create_post([
@@ -145,7 +145,7 @@ module.exports = {
             first_name,
             last_name,
             post_emp_id,
-            post_type,
+            post_type
         ])
         res.status(200).send(shifts)
     },
@@ -215,5 +215,23 @@ module.exports = {
         catch (error) {
             res.status(200).send({ message: error})
         }
+    },
+    appliedHistory: async (req, res) => {
+        const user_id = req.session.user_id
+        const db = req.app.get("db")
+        const applied = await db.get_applied_posts([user_id])
+        res.status(200).send(applied)
+    },
+    appliedPost: async (req, res) => {
+        const { id } = req.params
+        const db = req.app.get("db")
+        let appPost = await db.get_applied_post_by_id([id])
+        res.status(200).send(appPost)
+    },
+    archive: async (req, res) => {
+        const { id } = req.params
+        const db = req.app.get("db")
+        const archived = await db.archive([id])
+        res.status(200).send(archived)
     }
 }
