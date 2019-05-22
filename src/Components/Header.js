@@ -74,7 +74,6 @@ const Header = (props) => {
                 <Link to="/history">
                     <h4>Posts Applied For</h4>
                 </Link>
-            
             </SlideOut>
         </div>
     )
@@ -148,7 +147,7 @@ const Head = styled.div`
     align-items: center;
 
     color: white;
-    background: #1c2938;
+    background-image: linear-gradient(to top, #1d2a3d, #233442, #2d3e47, #485051);
 `
 const I = styled.i`
     margin: 0px 20px;
