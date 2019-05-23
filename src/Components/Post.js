@@ -36,12 +36,10 @@ const Post = (props) => {
         //if uncommented out, don't forget to pass in messages in array below
     }, [acc_user_id])
 
-    
-    
     const plzScroll = () => {
         fakeRef.current.scrollIntoView()
     }
-    
+
     useEffect(plzScroll, [messages])
     const getUserId = async () => {
         let res = await axios.get("/auth/user-data")
@@ -56,12 +54,15 @@ const Post = (props) => {
         const date = moment(post.shift_date).format("dddd, MMMM Do, YYYY")
         return (
             <Mapp key={i}>
-                <h2>{date}</h2>
+                <h2 style={{borderBottom: '1px solid white'}}>{date}</h2>
+                <span style={{marginBottom: '10px'}}>{item.first_name} {item.last_name}</span>
+                <span style={{padding: '0px 29px 20px 29px', fontSize: '1.1rem'}}>Description: {item.memo}</span>
                 {item.incentive ? (
                     <span>Incentive: {item.incentive}</span>
                 ) : null}
-                <span>Clock In: {item.start_time}</span>
-                <span>Posted {time}</span>
+                <span>Clock In: {item.start_time.slice(0, 5)}</span>
+                <span style={{marginBottom: '30px'}}>Clock Out: {item.end_time.slice(0, 5)}</span>
+                <span style={{fontSize: '0.7rem'}}>Posted {time}</span>
             </Mapp>
         )
     })
@@ -170,8 +171,8 @@ const Post = (props) => {
 export default Post
 
 const DIv = styled.div`
-   height: 1px;
-   width: 100%;
+    height: 1px;
+    width: 100%;
 `
 
 const PlzScroll = styled.div`
@@ -188,34 +189,42 @@ const Triangle = styled.div`
 `
 
 const Button = styled.button`
-    padding: 10px 16px 9px 16px;
+    padding: 10px 18px 9px 16px;
     height: 46px;
     text-align: start;
+    outline: none;
+    border: none;
+    background: #FF715B;
+    color: white;
+
 `
 
 const Button2 = styled.button`
-    padding: 10px 16px 9px 16px;
-    height: 46px;
+    padding: 9px 11px 9px 10px;
     text-align: start;
-    border-radius: 8px;
+    border-radius: 15px;
     outline: none;
     border: none;
+    background: #FF715B;
+    color: white;
 `
 
 const Input = styled.input`
     height: 30px;
     width: 80%;
-    background: #1d2a3d;
+    background: #cfcfcf;
     outline: none;
     border: none;
-    color: white;
     padding: 8px;
+    margin: 0px;
+    border-radius: 0px;
+    flex-wrap: wrap;
 `
 
 const Form = styled.form`
+    align-self: right;
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
     width: 100%;
 `
 
@@ -223,11 +232,10 @@ const Div3 = styled.div`
     position: sticky;
     bottom: 0px;
     width: 26vw;
-    height: 40px;
+    max-height: 40px;
 `
 
 const Span1 = styled.div`
-
     width: 100%;
     padding: 3px 5px 5px 20px;
     margin: 0px;
@@ -273,22 +281,23 @@ const Posts = styled.div`
     background: #2c4251;
     color: white;
     position: relative;
-    top: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 1px 1px 1px #1d2a3d;
+    border-radius: 15px;
+    margin: 30px;
+    box-shadow: 0px 1px 50px #cfcfcf;
+
 `
 const ChatBox = styled.div`
     display: flex;
     flex-direction: column;
     height: 84vh;
     width: 26vw;
-    background: #2c4251;
+    background: #fff;
     position: relative;
     overflow-y: scroll;
-    top: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 1px 1px 1px #1d2a3d;
+    border-radius: 15px;
+    box-shadow: 0px 1px 50px #cfcfcf;
 
+    margin: 30px;
     &::-webkit-scrollbar {
         display: none;
     }
@@ -315,12 +324,13 @@ const Dash = styled.div`
 const PostView = styled.div`
     background: #3a474e;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: space-evenly;
-    width: 60%;
+    width: 100%;
     height: 100%;
     background-position: fixed;
     overflow-y: scroll;
+    background-image: linear-gradient(to left,  #509aaa, #6fa5b0, #8bb1b6, #a6bcbe, #a6bcbe,  #a6bcbe,  #a6bcbe,  #a6bcbe,   #a6bcbe,   #a6bcbe, #a6bcbe, #a6bcbe, #8bb1b6, #6fa5b0, #509aaa);
 
     &::-webkit-scrollbar {
         display: none;

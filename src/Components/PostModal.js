@@ -36,7 +36,7 @@ const Outer = styled.div`
     left: 0px;
     bottom: 0px;
     padding: 80px;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
