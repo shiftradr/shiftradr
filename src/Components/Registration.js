@@ -70,6 +70,7 @@ const Registration = (props) => {
                   <div className="firstName">
                     <label htmlFor="firstName">First Name</label>
                     <input
+                      id="reg-inputs"
                       name="firstName"
                       type="text"
                       placeholder="First Name"
@@ -85,6 +86,7 @@ const Registration = (props) => {
                   <div className="lastName">
                     <label htmlFor="lastName">Last Name</label>
                     <input
+                      id="reg-inputs"
                       name="lastName"
                       type="text"
                       placeholder="Last Name"
@@ -100,6 +102,7 @@ const Registration = (props) => {
                   <div className="email">
                     <label htmlFor="email">Email</label>
                     <input
+                      id="reg-inputs"
                       name="email"
                       type="text"
                       placeholder="Email"
@@ -115,6 +118,7 @@ const Registration = (props) => {
                   <div className="password">
                     <label htmlFor="password">Password</label>
                     <input
+                      id="reg-inputs"
                       name="password"
                       type="password"
                       placeholder="Password"
@@ -133,6 +137,7 @@ const Registration = (props) => {
                       Employee ID
                     </label>
                     <input
+                      id="reg-inputs"
                       name="employeeId"
                       type="text"
                       placeholder="Employee ID"
