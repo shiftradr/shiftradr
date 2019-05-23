@@ -13,9 +13,11 @@ const Dashboard = (props) => {
     const [post, setPost] = useState([])
     const [start, setStart] = useState(moment().format('YYYY-MM-DD'))
     const [end, setEnd] = useState(moment().add(1, 'days').format('YYYY-MM-DD'))
+    const [bob, setBob] = useState(false)
 
     useEffect(() => {
         getData()
+        setBob(true)
     }, [])
 
     const getData = async () => {
@@ -117,6 +119,7 @@ const Dashboard = (props) => {
                 getData={getData}
                 test={test}
                 handleClick={handleClick}
+                bob={bob}
             />
             <Dash>
                 <PostView>
@@ -195,9 +198,9 @@ const Div = styled.div`
 
 const PostV = styled(Link)`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    flex-direction: row;
+    flex-direction: column;
     margin-top: 5vh;
     min-height: 120px;
     width: 90%;
@@ -280,42 +283,4 @@ const Input = styled.input`
     font-size: 1.1rem;
     border: none;
     border-bottom: 1px solid black;
-`
-
-const PDiv1 = styled.div`
-display: flex;
-flex-direction: column;
-margin-left: 1em;
-width: 45%;
-`
-
-const PDiv2 = styled.div`
-margin-left: .5em;
-margin-right: .5em;
-width: 27.5%;
-`
-
-const PDiv3 = styled.div`
-display: flex;
-flex-direction: column;
-margin-right: 1em;
-justify-content: space-between;
-width: 27.5%;
-
-`
-
-const H2 = styled.h2`
-margin-bottom: .5em;
-margin-top: -.1em;
-`
-
-const SpanTop = styled.span`
-display: flex;
-justify-content: flex-start;
-`
-
-const SpanBottom = styled.span`
-display: flex;
-justify-content: flex-end;
-
 `
