@@ -204,42 +204,36 @@ Link {
     font-family: sans-serif;
   }
   
-  h1 {
+  /* h1 {
     text-align: center;
-  }
+  } */
   
-  form {
+  /* form {
     max-width: 500px;
     width: 100%;
     margin: 0 auto;
   }
-  
-  label,
+   */
+  /* label,
   input {
     display: block;
     width: 100%;
-  }
+  } */
   
  
   
-  input {
+  #reg-inputs {
     margin-bottom: 20px;
     padding: 10px;
     border-radius: 3px;
     border: 1px solid #777;
   }
   
-  input.error {
-    border-color: red;
-  }
-  
-  .input-feedback {
+ 
+   .input-feedback {
     color: rgb(235, 54, 54);
     margin-top: -15px;
     font-size: 14px;
     margin-bottom: 20px;
   }
-  
- 
-
   
