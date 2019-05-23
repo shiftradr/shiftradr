@@ -13,9 +13,11 @@ const Dashboard = (props) => {
     const [post, setPost] = useState([])
     const [start, setStart] = useState(moment().format('YYYY-MM-DD'))
     const [end, setEnd] = useState(moment().add(1, 'days').format('YYYY-MM-DD'))
+    const [bob, setBob] = useState(false)
 
     useEffect(() => {
         getData()
+        setBob(true)
     }, [])
 
     const getData = async () => {
@@ -44,6 +46,8 @@ const Dashboard = (props) => {
             .catch((err) => console.log("update error", err))
         getData()
     }
+
+    console.log(post)
 
     let map = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
@@ -115,6 +119,7 @@ const Dashboard = (props) => {
                 getData={getData}
                 test={test}
                 handleClick={handleClick}
+                bob={bob}
             />
             <Dash>
                 <PostView>

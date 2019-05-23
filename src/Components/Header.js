@@ -36,7 +36,7 @@ const Header = (props) => {
     return (
         <div>
             <Head>
-                <Icons>
+                <Icons bobby={props.bob}>
                     <StyledLink onClick={() => props.handleModal()}>
                         <i className="fas fa-plus" />
                         Post
@@ -86,6 +86,11 @@ const Icons = styled.div`
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
+    ${(props) => 
+       !props.bobby && css `
+       visibility: hidden;
+       ` 
+    }
 `
 
 const Times = styled.i`
