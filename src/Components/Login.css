@@ -250,12 +250,23 @@ light green: #A3C4BC
 .lastName {
     width: 87%;
 }
+.employee,
+.firstNam,
+.lastNam,
+.emai,
+.passwor {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #cfcfcf;
+    
+}
 
 
 
-.email,
-.password {
-    width: 97%;
+.emai,
+.passwor {
+    width: 94.5%;
 }
 
 .borderbottom::after {
@@ -364,18 +375,13 @@ link {
   
  
   
-  #reg-inputs {
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 3px;
-    border: 1px solid #777;
-  }
+ 
   
  
    .input-feedback {
     color: rgb(235, 54, 54);
     margin-top: -15px;
     font-size: 14px;
-    margin-bottom: 20px;
+    margin-bottom: -3px;
   }
   

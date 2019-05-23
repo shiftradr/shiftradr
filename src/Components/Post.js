@@ -189,7 +189,7 @@ const Triangle = styled.div`
 `
 
 const Button = styled.button`
-    padding: 10px 16px 9px 16px;
+    padding: 10px 18px 9px 16px;
     height: 46px;
     text-align: start;
     outline: none;
@@ -200,7 +200,7 @@ const Button = styled.button`
 `
 
 const Button2 = styled.button`
-    padding: 9px 10px 9px 10px;
+    padding: 9px 11px 9px 10px;
     text-align: start;
     border-radius: 15px;
     outline: none;

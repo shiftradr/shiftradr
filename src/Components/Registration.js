@@ -81,7 +81,7 @@ const Registration = (props) => {
                                                     touched.firstName &&
                                                     "error"
                                                 }
-                                                className="firstName"
+                                                className="firstNam"
                                             />
                                             {errors.firstName &&
                                                 touched.firstName && (
@@ -103,7 +103,7 @@ const Registration = (props) => {
                                                     touched.lastName &&
                                                     "error"
                                                 }
-                                                className="lastName"
+                                                className="lastNam"
                                             />
                                             {errors.lastName &&
                                                 touched.lastName && (
@@ -126,7 +126,7 @@ const Registration = (props) => {
                                                 touched.email &&
                                                 "error"
                                             }
-                                            className="email"
+                                            className="emai"
                                         />
                                         {errors.email && touched.email && (
                                             <div className="input-feedback">
@@ -147,7 +147,7 @@ const Registration = (props) => {
                                                 touched.password &&
                                                 "error"
                                             }
-                                            className="password"
+                                            className="passwor"
                                         />
                                         {errors.password &&
                                             touched.password && (
@@ -170,7 +170,7 @@ const Registration = (props) => {
                                                     touched.employeeId &&
                                                     "error"
                                                 }
-                                                className="employeeId"
+                                                className="employee"
                                             />
                                             {errors.employeeId &&
                                                 touched.employeeId && (
