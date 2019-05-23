@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import Header from "./Header"
 import axios from "axios"
@@ -16,6 +16,8 @@ const AcceptPost = (props) => {
     const [user_id, setUser_id] = useState("")
     const [user_id2, setUser_id2] = useState("")
     const [room, setRoom] = useState()
+    const fakeRef = useRef(null)
+
 
     const id = props.match.params.post_id
     const getData = async () => {
@@ -35,6 +37,8 @@ const AcceptPost = (props) => {
             setMessages(message)
         })
     }, [taken])
+
+    
     let mappyboi = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         const date = moment(post.shift_date).format("dddd, MMMM Do, YYYY")
@@ -108,6 +112,13 @@ const AcceptPost = (props) => {
         }
     }
 
+    const plzScroll = () => {
+        fakeRef.current.scrollIntoView()
+    }
+
+    useEffect(plzScroll, [messages])
+
+
     let mapped = peeps.map((peeps, i) => {
         return (
             <Mapp key={i}>
@@ -147,10 +158,14 @@ const AcceptPost = (props) => {
 
     const mapMessage = messages.map((mess) => {
         return (
-            <Map key={mess.chat_id}>
-                <Span1 className={user_id === mess.user_id ? "gren" : "blu"}>
-                    {mess.messages}
-                </Span1>
+            <Map
+                key={mess.chat_id}
+                className={user_id === mess.user_id ? "gren" : "blu"}
+            >
+                <Triangle
+                    className={user_id === mess.user_id ? "green" : "blue"}
+                />
+                <Span1>{mess.messages}</Span1>
             </Map>
         )
     })
@@ -166,6 +181,7 @@ const AcceptPost = (props) => {
                         <ChatBox>
                             <PlzScroll>
                                 <MappM>{mapMessage}</MappM>
+                                <DIv ref={fakeRef}/>
                             </PlzScroll>
                             <Div3>
                                 <Form onSubmit={sendMessage}>
@@ -192,14 +208,15 @@ export default AcceptPost
 const PlzScroll = styled.div`
     display: flex;
     justify-content: flex-end;
+    flex-direction: column;    
     width: 100%;
 `
 
 const MappM = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    min-height: 80vh;
+    justify-content: center;
+    min-height: 70vh;
     overflow-y: scroll;
     margin-bottom: 40px;
     &::-webkit-scrollbar {
@@ -208,10 +225,8 @@ const MappM = styled.div`
 `
 
 const Span1 = styled.div`
-    width: 75%;
-    margin-bottom: 10px;
-    border-radius: 15px;
-    padding: 0px 0px 0px 20px;
+    width: 100%;
+    margin-bottom: 7px;
 `
 
 const Input = styled.input`
@@ -222,6 +237,7 @@ const Input = styled.input`
     border: none;
     color: white;
     padding: 8px;
+    margin: 0px;
 `
 const Form = styled.form`
     position: relative;
@@ -236,12 +252,15 @@ const Button = styled.button`
     height: 46px;
     text-align: start;
 `
-
 const Map = styled.div`
+    word-wrap: break-word;
+
+    max-width: 20vw;
+    padding: 0px 8px;
+
     display: flex;
-    justify-content: flex-end;
-    flex-direction: column;
-    width: 100%;
+
+    margin: 10px 8px;
 `
 
 const Div3 = styled.div`
@@ -254,9 +273,10 @@ const PostH = styled.div`
     width: 91%;
     height: 8vh;
     display: flex;
+    border-radius: 10px;
     justify-content: center;
     align-items: center;
-    background: pink;
+    background: #2c4251;
 `
 
 const Mapp = styled.div`
@@ -264,7 +284,14 @@ const Mapp = styled.div`
     justify-content: space-evenly;
     align-items: center;
     width: 100%;
-    background: #bada55;
+    background: #2c4251;
+    border-radius: 10px;
+
+`
+const Triangle = styled.div`
+    height: 14px;
+    width: 14px;
+    clip-path: polygon(0% 100%, 100% 100%, 0% 0%);
 `
 
 const Mappy = styled.div`
@@ -276,23 +303,31 @@ const Mappy = styled.div`
 `
 
 const Posts = styled.div`
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
     height: 76vh;
     width: 26vw;
-    background: pink;
+    background: #2c4251;
+    color: white;
     position: relative;
     top: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 1px 1px #1d2a3d;
 `
 const ChatBox = styled.div`
     display: flex;
     flex-direction: column;
     height: 76vh;
     width: 26vw;
-    background: rebeccapurple;
+    background: #2c4251;
     position: relative;
     top: 10px;
     border-radius: 10px;
     overflow-y: scroll;
-    
+    box-shadow: 0px 1px 1px 1px #1d2a3d;
+
     &::-webkit-scrollbar {
         display: none;
     }
@@ -326,5 +361,9 @@ const Divv = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: space-evenly;
+    width: 100%;
+`
+const DIv = styled.div`
+    height: 1px;
     width: 100%;
 `

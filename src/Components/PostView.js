@@ -147,8 +147,8 @@ const Input = styled.input`
 
 const Button = styled.button`
     background-color: #fff;
-    color: #519e8a;
-    border: 2px solid #519e8a;
+    color: #FF715B;
+    border: 2px solid #FF715B;
     width: 100%;
     margin-top: 1em;
     padding: 8px 0px;
@@ -157,16 +157,17 @@ const Button = styled.button`
     letter-spacing: 1px;
     margin-bottom: 0.25em;
     width: 120px;
+    border-radius: 15px;
 
     &:hover {
         color: #fff;
-        background-color: #519e8a;
+        background-color: #FF715B;
     }
 `
 const Button2 = styled.button`
-    background-color: #519e8a;
+    background-color: #FF715B;
     color: #fff;
-    border: 2px solid #519e8a;
+    border: 2px solid #FF715B;
     width: 100%;
     margin-top: 1em;
     padding: 8px 0px;
@@ -175,11 +176,11 @@ const Button2 = styled.button`
     letter-spacing: 1px;
     margin-bottom: 0.25em;
     width: 120px;
+    border-radius: 15px;
 
     &:hover {
-        color: #519e8a;
+        color: #FF715B;
         background-color: #fff;
-        border: 2px solid #519e8a;
     }
 `
 const ButtonDiv = styled.div`
