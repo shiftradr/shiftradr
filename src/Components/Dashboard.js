@@ -9,19 +9,16 @@ import PostModal from "./PostModal"
 const Dashboard = () => {
     const test = useRef()
     const typeRef = useRef()
-    const [fakeBoi, setBoi] = useState()
 
     const [post, setPost] = useState([])
-    const [start, setStart] = useState(moment().format("YYYY-MM-DD"))
-    const [end, setEnd] = useState(
-        moment()
-            .add(1, "days")
-            .format("YYYY-MM-DD"),
-    )
+    const [start, setStart] = useState(moment().format('YYYY-MM-DD'))
+    const [end, setEnd] = useState(moment().add(1, 'days').format('YYYY-MM-DD'))
+    const [bob, setBob] = useState(false)
 
     useEffect(() => {
         getData()
-    }, [fakeBoi])
+        setBob(true)
+    }, [])
 
     const getData = async () => {
         axios.get("/auth/user-data").then((res) => console.log(res.data))
@@ -55,6 +52,8 @@ const Dashboard = () => {
             .then((res) => res.data)
             .catch((err) => console.log("update error", err))
     }
+
+    console.log(post)
 
     let map = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
@@ -128,6 +127,7 @@ const Dashboard = () => {
                 handleModal={handleModal}
                 test={test}
                 handleClick={handleClick}
+                bob={bob}
             />
             <Dash>
                 <PostView>

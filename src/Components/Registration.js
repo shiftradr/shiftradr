@@ -156,7 +156,7 @@ const Registration = (props) => {
                                                 </div>
                                             )}
                                     </div>
-                                    <div className='row'>
+                                    <div className="row">
                                         <div className="employeeId">
                                             <input
                                                 name="employeeId"
@@ -226,11 +226,10 @@ const Registration = (props) => {
                                             Create Account
                                         </button>
                                         <Link
-                                        className='borderbottom'
+                                            className="borderbottom"
                                             style={{
                                                 textDecoration: "none",
                                                 color: "#888686",
-                                               
                                             }}
                                             to="/"
                                         >
