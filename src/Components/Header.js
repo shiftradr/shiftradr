@@ -51,7 +51,11 @@ const Header = (props) => {
                     </StyledLink>
                 </Icons>
                 <Linked to="/dashboard">
-                    <h1>ShifTradr</h1>
+                    <div className="p">
+                        <div className='shif'>Shif</div>
+                        <div className="t" />
+                        <div className='radr'>radr</div>
+                    </div>
                 </Linked>
                 <I
                     ref={bars}
@@ -126,7 +130,7 @@ const SlideOut = styled.div`
     right: -300px;
     top: 0vh;
     z-index: 10;
-    background: #152023;
+    background: #4B5358;
     transition: 0.35s ease-in-out;
     ${(props) =>
         props.on &&
@@ -147,7 +151,13 @@ const Head = styled.div`
     align-items: center;
 
     color: white;
-    background-image: linear-gradient(to top, #1d2a3d, #233442, #2d3e47, #485051);
+    background-image: linear-gradient(
+        to top,
+        #1d2a3d,
+        #233442,
+        #2d3e47,
+        #485051
+    );
 `
 const I = styled.i`
     margin: 0px 20px;
@@ -162,7 +172,7 @@ const StyledLink = styled.div`
     height: 30px;
     width: 80px;
     border-radius: 30px;
-    background: #10171e;
+    background: rgb(56, 58, 61);
     color: white;
     font-size: 1rem;
     position: relative;

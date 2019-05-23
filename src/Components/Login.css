@@ -7,9 +7,102 @@ medium green: #7EB09B
 light green: #A3C4BC
 */
 
+.shif {
+    font-family: 'Righteous', cursive;
+    position: relative;
+    left: 14px
+}
+.radr {
+    font-family: 'Righteous', cursive;
+    position: relative;
+    right: 19px;
+    top: 7px;
+}
+.shiff {
+    font-family: 'Righteous', cursive;
+    position: relative;
+    left: 16px
+}
+.radrr {
+    font-family: 'Righteous', cursive;
+    position: relative;
+    right: 30px;
+    top: 19px;
+}
+.p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+}
+
+.pp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 50px;
+}
+
+.tt {
+    -webkit-clip-path: polygon(
+        8% 15%,
+        100% 15%,
+        88% 28%,
+        68% 28%,
+        46% 80%,
+        28% 91%,
+        54% 28%,
+        28% 28%
+    );
+    background: #FF715B;
+    height: 100px;
+    width: 100px;
+}
+
+
+.t {
+    -webkit-clip-path: polygon(
+        8% 15%,
+        100% 15%,
+        88% 28%,
+        68% 28%,
+        46% 80%,
+        28% 91%,
+        54% 28%,
+        28% 28%
+    );
+    background: #FF715B;
+    height: 60px;
+    width: 60px;
+}
+
+.title {
+    font-size: 1.5rem;
+    margin-top: 2px;
+    border-bottom: 1px solid white;
+    margin-bottom: 5px;
+}
+
+.coolbeans {
+    margin-top: 8px;
+    height: 115px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+}
+
+.posted {
+    font-size: 0.7rem;
+    position: relative;
+    right: -110px;
+}
 
 .gren {
-    background-color: #937A9E;
+    background-color: #cfcfcf;
     align-self: flex-start;
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
@@ -19,25 +112,39 @@ light green: #A3C4BC
 .green {
     position: relative;
     left: -13px;
-    background-color: #937A9E;
+    background-color: #cfcfcf;
     transform: rotate(180deg);
-
 }
 .blue {
     position: relative;
     top: 0px;
     left: 13px;
-    background-color: #14AF8E;
+    background-color: #579CAB;
     transform: rotate(-180deg) scaleX(-1);
+
+}
+
+.select {
+    height: 30px;
+    width: 150px;
+    border: none;
+    border-radius: 15px;
+    color: #8d8b8b;
+    outline: none;
+    margin: 0px 10px 20px 20px;
+
+    
 }
 
 .blu {
     flex-direction: row-reverse;
-    background-color: #14AF8E;
+    background-color: #579CAB;
     align-self: flex-end;
     border-top-left-radius: 7px;
     border-bottom-right-radius: 7px;
     border-bottom-left-radius: 7px;
+    color: white;
+
 }
 
 .wrapper {
@@ -48,6 +155,7 @@ light green: #A3C4BC
     justify-content: center;
     align-items: center;
     background-color: #258ea6;
+    background-image: radial-gradient(circle,  #6fa5b0, #8bb1b6,  #8bb1b6, #6fa5b0, #509aaa, #258EA6);
 }
 
 .form-wrapper {
@@ -71,9 +179,7 @@ light green: #A3C4BC
     margin-bottom: 50px;
     width: 100%;
     color: #111;
-    font-weight: lighter;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+ 
 }
 
 .label {
@@ -85,10 +191,20 @@ light green: #A3C4BC
 
 .regInput {
     padding: 10px 10px;
-    border-radius: 5px;
+    border-radius: 15px;
     outline: none;
     border: 1px solid #cfcfcf;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    background: #ffffff;
+    width: calc(100% - 20px)
+}
+
+
+
+.row {
+    display: flex;
+    flex-direction: row;
+
 }
 
 .regInput::placeholder {
@@ -115,6 +231,11 @@ light green: #A3C4BC
     margin-left: 1%;
 }
 
+.regg {
+    max-width: 100%;
+    overflow: hidden;
+}
+
 .firstName,
 .lastName,
 .email,
@@ -122,16 +243,35 @@ light green: #A3C4BC
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+    border-radius: 15px;
 }
 
 .firstName,
 .lastName {
-    width: 49%;
+    width: 87%;
 }
+
+
 
 .email,
 .password {
+    width: 97%;
+}
+
+.borderbottom::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1.5px;
+    background: #cfcfcf;
+    transition: width .3s;
+    /* border-bottom: 1px solid #cfcfcf;
+    width: 0px; */
+}
+
+.borderbottom:hover::after {
     width: 100%;
+    transition: width .3s;
 }
 
 .createAccount {
@@ -142,9 +282,10 @@ light green: #A3C4BC
 }
 
 .createAccount button {
-    background-color: #519e8a;
-    color: #fff;
-    border: 2px solid #519e8a;
+    background-color: #FFf;
+    color: #FF715B;
+    border: 2px solid #FF715B;
+    border-radius: 15px;
     width: 100%;
     margin-top: 1em;
     padding: 8px 0px;
@@ -154,13 +295,12 @@ light green: #A3C4BC
     margin-bottom: 1em;
     cursor: pointer;
     outline: none;
-    
 }
 
 .createAccount button:hover {
-    color: #519e8a;
-    background-color: #fff;
-    border: 2px solid #519e8a;
+    color: #fff;
+    background-color: #FF715B;
+    border: 2px solid #FF715B;
 }
 
 .createAccount small {
@@ -169,8 +309,8 @@ light green: #A3C4BC
 }
 
 .employeeId {
-    display: flex;
-    flex-direction: column;
+    width: 81%;
+    border-radius: 15px;
 }
 
 .loginForm {
@@ -182,64 +322,59 @@ light green: #A3C4BC
 .groups {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    flex-direction: column;
+    width: 57%;
+    
 }
 
 .groupId {
-  height: 38px;
-  padding: 8px 8px;
-  border-radius: 5px;
-  outline: none;
-  border: 1px solid #cfcfcf;
-  margin-bottom: 20px;
-  width: 213px;
-  color: #A39999;
-  font-size: 1rem;
+    height: 38px;
+    padding: 8px 8px;
+    border-radius: 15px;
+    outline: none;
+    border: 1px solid #cfcfcf;
+    margin-bottom: 20px;
+    width: 213px;
+    color: #a39999;
+    font-size: 1rem;
 }
-Link {
-  cursor: pointer;
+link {
+    cursor: pointer;
 }
 
 .App {
     font-family: sans-serif;
-  }
-  
-  h1 {
+}
+
+h1 {
     text-align: center;
-  }
-  
-  form {
+}
+
+.form {
     max-width: 500px;
     width: 100%;
     margin: 0 auto;
-  }
-  
-  label,
-  input {
+}
+
+label,
+input {
     display: block;
     width: 100%;
-  }
-  
- 
-  
-  input {
+}
+
+input {
     margin-bottom: 20px;
     padding: 10px;
     border-radius: 3px;
-    border: 1px solid #777;
-  }
-  
-  input.error {
+    border: 1px solid #cfcfcf;
+}
+
+input.error {
     border-color: red;
-  }
-  
-  .input-feedback {
+}
+
+.input-feedback {
     color: rgb(235, 54, 54);
     margin-top: -15px;
     font-size: 14px;
-    margin-bottom: 20px;
-  }
-  
- 
-
-  
+}

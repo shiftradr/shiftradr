@@ -6,34 +6,46 @@ import moment from "moment"
 import axios from "axios"
 import PostModal from "./PostModal"
 
-const Dashboard = (props) => {
+const Dashboard = () => {
     const test = useRef()
     const typeRef = useRef()
+    const [fakeBoi, setBoi] = useState()
 
     const [post, setPost] = useState([])
-    const [start, setStart] = useState(moment().format('YYYY-MM-DD'))
-    const [end, setEnd] = useState(moment().add(1, 'days').format('YYYY-MM-DD'))
+    const [start, setStart] = useState(moment().format("YYYY-MM-DD"))
+    const [end, setEnd] = useState(
+        moment()
+            .add(1, "days")
+            .format("YYYY-MM-DD"),
+    )
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [fakeBoi])
 
     const getData = async () => {
         axios.get("/auth/user-data").then((res) => console.log(res.data))
         let res = await axios.get("/api/posts")
+        console.log('hi')
         setPost(res.data)
     }
 
     const filteredData = async () => {
-        if(typeRef.current.value !== '0'){
+        if (typeRef.current.value !== "0") {
             const bob = typeRef.current.value
-            let res = await axios.post('/api/filtered', { shift_date1: start, shift_date2: end, post_type: bob })
+            let res = await axios.post("/api/filtered", {
+                shift_date1: start,
+                shift_date2: end,
+                post_type: bob,
+            })
             setPost(res.data)
-            console.log(bob)
         } else {
-            let res = await axios.post('/api/filtered', { shift_date1: start, shift_date2: end, post_type: null })
+            let res = await axios.post("/api/filtered", {
+                shift_date1: start,
+                shift_date2: end,
+                post_type: null,
+            })
             setPost(res.data)
-
         }
     }
 
@@ -42,7 +54,6 @@ const Dashboard = (props) => {
             .put(`/api/posts/${id}`)
             .then((res) => res.data)
             .catch((err) => console.log("update error", err))
-        getData()
     }
 
     let map = post.map((item, i) => {
@@ -54,17 +65,20 @@ const Dashboard = (props) => {
             takeShift(item.post_id)
         }
 
-        return  (
+        return (
             <PostV to={`/post/${item.post_id}`} key={i}>
-                <span>{date}</span>
-                <span>{item.memo}</span>
-                {item.incentive ? (
-                    <span>Incentive: {item.incentive}</span>
-                ) : null}
-                <span>Posted {time}</span>
-                <span>Clock In: {item.start_time.slice(0, 5)}</span>
+                <span className="title">{date}</span>
+                <span>Click to view more details</span>
+                <div className="coolbeans">
+                    {item.incentive ? (
+                        <span>Incentive: {item.incentive}</span>
+                    ) : null}
+                    <span>Clock In: {item.start_time.slice(0, 5)}</span>
+                    <span>Clock Out: {item.end_time.slice(0, 5)}</span>
+                </div>
+                <span className="posted">Posted {time}</span>
             </PostV>
-        ) 
+        )
     })
 
     const node = useRef()
@@ -112,7 +126,6 @@ const Dashboard = (props) => {
         <>
             <Header
                 handleModal={handleModal}
-                getData={getData}
                 test={test}
                 handleClick={handleClick}
             />
@@ -121,37 +134,53 @@ const Dashboard = (props) => {
                     <SlideDown under={filter} ref={node}>
                         <FilterTitle>
                             <Div2>
-                                <span>Please Select Date Range:</span>
+                                <span style={{ marginBottom: "10px" }}>
+                                    Please Select Date Range.
+                                </span>
                                 <Div>
                                     <InputDiv>
                                         From:
-                                        <Input type="date" value={start} onChange={(e) => setStart(e.target.value)}/>
+                                        <Input
+                                            type="date"
+                                            value={start}
+                                            onChange={(e) =>
+                                                setStart(e.target.value)
+                                            }
+                                        />
                                     </InputDiv>
                                     <InputDiv>
-                                        Date:
-                                        <Input type="date" value={end} onChange={(e) => setEnd(e.target.value)}/>
+                                        Date:{"  "}
+                                        <Input
+                                            type="date"
+                                            value={end}
+                                            onChange={(e) =>
+                                                setEnd(e.target.value)
+                                            }
+                                        />
                                     </InputDiv>
-                                    <InputDiv>
-                                        <select ref={typeRef} name="" >
-                                            <option value='0' >Select Shift Type</option>
-                                            <option value="1">Trade</option>
-                                            <option value="2">NSA</option>
-                                            <option value="3">PERM</option>
-                                        </select>
-                                    </InputDiv>
+                                    <select ref={typeRef} className="select">
+                                        <option value="0">
+                                            Select Shift Type
+                                        </option>
+                                        <option value="1">Trade</option>
+                                        <option value="2">NSA</option>
+                                        <option value="3">PERM</option>
+                                    </select>
                                 </Div>
                             </Div2>
                             <Filter
-                                className="fas fa-filter"
                                 onClick={() => {
                                     filteredData()
                                     setFilter(!filter)
-                                    }}
-                            />
+                                }}
+                            >
+                                <i className="fas fa-filter" />
+                                Filter
+                            </Filter>
                         </FilterTitle>
                     </SlideDown>
-                    
-                    {post[0] ? (map) : (<h2>No Shifts Found</h2>)}
+
+                    {post[0] ? map : <h2>No Shifts Found</h2>}
                     {modal && (
                         <PostModal
                             getData={getData}
@@ -170,15 +199,15 @@ export default Dashboard
 const Div2 = styled.div`
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
 `
 
 const Div = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
-    width: 430px;
+    width: 100%;
 `
 
 // const Button = styled.button`
@@ -192,15 +221,33 @@ const Div = styled.div`
 // `
 
 const PostV = styled(Link)`
+    overflow: hidden;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     margin-top: 5vh;
-    min-height: 120px;
-    width: 90%;
-    background: #283e4a;
-    border-radius: 20px;
+    height: 150px;
+    width: 330px;
+    padding: 10px;
+    text-align: center;
+    background: #4b5358;
+    border-radius: 15px;
+    margin: 20px;
+    background-image: linear-gradient(
+        to right bottom,
+        #4b5358,
+        #53585d,
+        #5a5d63,
+        #626267,
+        #69686c,
+        #706e72,
+        #787378,
+        #80797e,
+        #8b7f87,
+        #97868f,
+        #a38c96
+    );
 `
 
 const Dash = styled.div`
@@ -210,18 +257,36 @@ const Dash = styled.div`
     margin-top: 8vh;
     height: 92vh;
     width: 100vw;
-    background: #10171e;
+    background: #258ea6;
 `
 const PostView = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    flex-direction: column;
-    width: 60%;
+    flex-wrap: wrap;
+    width: 100%;
     height: 100%;
-    background: #15202b;
+    /* background: #C9CBCB; */
     background-position: fixed;
     overflow: scroll;
+    background-image: linear-gradient(
+        to left,
+        #509aaa,
+        #6fa5b0,
+        #8bb1b6,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #8bb1b6,
+        #6fa5b0,
+        #509aaa
+    );
 
     &::-webkit-scrollbar {
         display: none;
@@ -229,14 +294,31 @@ const PostView = styled.div`
 `
 
 const SlideDown = styled.div`
+    color: white;
+
     position: fixed;
     width: 60vw;
-    height: 8vh;
-    margin-top: 8vh;
-    top: -8vh;
+    height: 12vh;
+    margin-top: 7.5vh;
+    top: -13vh;
     z-index: 9;
     background: white;
     transition: 0.35s ease-in-out;
+    background: #509aaa;
+    background-image: linear-gradient(
+        to bottom,
+        #a6bcbe,
+        #a6bcbe,
+        #8bb1b6,
+        #6fa5b0,
+        #509aaa
+    );
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
     ${(props) =>
         props.under &&
         css`
@@ -255,14 +337,32 @@ const FilterTitle = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    align-items: flex-end;
     font-weight: bolder;
     height: 100%;
 `
 
 const Filter = styled.div`
-position: relative;
-top: 20px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-weight: 300;
+    border: none;
+    background: white;
+    color: #8d8b8b;
+    padding-top: 7px;
 
+    /* position: relative;
+  top: 10px; */
+    margin: 0px 20px 20px 20px;
+    display: flex;
+    justify-content: space-evenly;
+    width: 60px;
+
+    &:hover {
+        background: #8d8b8b;
+        color: #fff;
+        cursor: pointer;
+    }
 `
 const InputDiv = styled.div`
     z-index: 10;
@@ -271,11 +371,16 @@ const InputDiv = styled.div`
     align-items: center;
     height: 100%;
     width: 200px;
+    margin: 0px 7px 20px 7px;
 `
 
 const Input = styled.input`
     z-index: 10;
-    font-size: 1.1rem;
-    border: none;
-    border-bottom: 1px solid black;
+    font-size: 1rem;
+    border: 1px solid #cfcfcf;
+    border-radius: 15px;
+    margin-bottom: 0px;
+    width: 65%;
+    color: #8d8b8b;
+    padding: 5px;
 `

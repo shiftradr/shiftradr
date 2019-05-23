@@ -68,8 +68,8 @@ const MyPosts = (props) => {
         <>
             <Header />
             <Dash>
-                <PostView>
                     <Title>My Posts</Title>
+                <PostView>
                     {map}
                 </PostView>
             </Dash>
@@ -82,6 +82,7 @@ const Dash = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     margin-top: 8vh;
     height: 92vh;
     width: 100vw;
@@ -90,19 +91,36 @@ const Dash = styled.div`
 
 const PostView = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    flex-direction: column;
-    width: 60%;
+    flex-wrap: wrap;
+    width: 100%;
     height: 100%;
-    background: #15202b;
+    /* background: #C9CBCB; */
     background-position: fixed;
     overflow: scroll;
+    background-image: linear-gradient(
+        to left,
+        #509aaa,
+        #6fa5b0,
+        #8bb1b6,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #8bb1b6,
+        #6fa5b0,
+        #509aaa
+    );
 
     &::-webkit-scrollbar {
         display: none;
     }
-
 `
 
 const PostV = styled(Link)`
