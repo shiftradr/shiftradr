@@ -20,7 +20,7 @@ function App() {
                 <Route path="/postview" component={PostView} />
                 <Route path="/my-posts" component={MyPosts} />
                 <Route path="/accept_post/:post_id" component={AcceptPost} />
-                <Route path="/registration" component={Registration} />g
+                <Route path="/registration" component={Registration} />
                 <Route path="/history" component={AppliedHistory}/>
                 <Route path="/applied-for-post/:post_id" component={AppliedPost}/>
             </Switch>

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import styled from "styled-components"
 import Header from "./Header"
 import axios from "axios"
 import moment from "moment"
-import sockets from "./Sockets";
+import sockets from "./Sockets"
 
 const AppliedPost = (props) => {
     const [post, setPost] = useState([])
@@ -13,6 +13,7 @@ const AppliedPost = (props) => {
     const [user_id2, setUser_id2] = useState("")
     const [room, setRoom] = useState()
     const [acc_user_id, setAcc_user_id] = useState("")
+    const fakeRef = useRef(null)
 
     const id = props.match.params.post_id
     const getData = async () => {
@@ -24,19 +25,17 @@ const AppliedPost = (props) => {
         getUserById()
         getChat()
         getData()
-        sockets.on("returnJoin", mess => {
+        sockets.on("returnJoin", (mess) => {
             setMessages(mess)
         })
-        sockets.on("returnMessages", message => {
+        sockets.on("returnMessages", (message) => {
             setMessages(message)
         })
-
     }, [acc_user_id])
 
     const getUserById = async () => {
-        let res = await axios
-            .get("/auth/user-data")
-            setUser_id(res.data.user_id)
+        let res = await axios.get("/auth/user-data")
+        setUser_id(res.data.user_id)
     }
 
     let mappyboi = post.map((item, i) => {
@@ -44,16 +43,38 @@ const AppliedPost = (props) => {
             setAcc_user_id(item.user_id)
         }
 
-        let time = moment(item.post_date).fromNow()
         const date = moment(post.shift_date).format("dddd, MMMM Do, YYYY")
         return (
             <Mapp key={i}>
-                <h2>{date}</h2>
-                {item.incentive ? (
-                    <span>Incentive: {item.incentive}</span>
-                ) : null}
-                <span>Clock In: {item.start_time}</span>
-                <span>Posted {time}</span>
+                <div>
+                    <div
+                        style={{
+                            fontSize: "1.4rem",
+                            width: "320px",
+                            textAlign: "center",
+                        }}
+                    >
+                        {date}
+                    </div>
+                    <div
+                        style={{
+                            width: "320px",
+                            display: "flex",
+                            justifyContent: "space-evenly",
+                            fontSize: ".8rem",
+                        }}
+                    >
+                        <span>
+                            Clock In:{" "}
+                            {item.start_time && item.start_time.slice(0, 5)}
+                        </span>
+                        <span>
+                            Clock Out:{" "}
+                            {item.end_time && item.end_time.slice(0, 5)}
+                        </span>
+                    </div>
+                </div>
+                <span style={{ padding: "0px 10px" }}>{item.memo}</span>
             </Mapp>
         )
     })
@@ -78,22 +99,35 @@ const AppliedPost = (props) => {
         // console.log(acc_user_id)
     }
 
-
     const sendMessage = async (e) => {
         e.preventDefault()
         if (message !== "") {
             await sockets.emit("sendMessage", {
                 messages: message,
                 user_id: user_id2,
-                room
+                room,
             })
         }
+        setMessage("")
     }
+
+    const plzScroll = () => {
+        fakeRef.current.scrollIntoView()
+    }
+
+
+    useEffect(plzScroll, [messages])
 
     const mapMessage = messages.map((mess) => {
         return (
-            <Map key={mess.chat_id}>
-                <Span1 className={user_id === mess.user_id ? "gren" : "blu"}>{mess.messages}</Span1>
+            <Map
+                key={mess.chat_id}
+                className={!user_id === mess.user_id ? "gren" : "blu"}
+            >
+                <Triangle
+                    className={!user_id === mess.user_id ? "green" : "blue"}
+                />
+                <Span1>{mess.messages}</Span1>
             </Map>
         )
     })
@@ -106,13 +140,15 @@ const AppliedPost = (props) => {
                     <PostH>{mappyboi}</PostH>
                     <Divv>
                         <ChatBox>
-                            <MappM>
-                                {mapMessage}
-                            </MappM>
+                            <PlzScroll>
+                                <MappM>{mapMessage}</MappM>
+                                <DIv ref={fakeRef} />
+                            </PlzScroll>
+
                             <Div3>
                                 <Form onSubmit={sendMessage}>
-                                    <Input 
-                                        onChange={(e) => 
+                                    <Input
+                                        onChange={(e) =>
                                             setMessage(e.target.value)
                                         }
                                         value={message}
@@ -131,18 +167,36 @@ const AppliedPost = (props) => {
 
 export default AppliedPost
 
+const PlzScroll = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    width: 100%;
+`
+
+const Triangle = styled.div`
+    height: 14px;
+    width: 14px;
+    clip-path: polygon(0% 100%, 100% 100%, 0% 0%);
+`
+
 const Button = styled.button`
-    position: sticky;
-    bottom: -110px;
-    height: 30px;
+    padding: 10px 18px 9px 16px;
+    height: 46px;
+    text-align: start;
+    border: none;
+    outline: none;
+    background: #ff715b;
 `
 
 const Input = styled.input`
-    position: sticky;
-    // bottom: 0px;
     height: 30px;
     width: 80%;
-    background: rgb(0,0,0,0.2);
+    background: #cfcfcf;
+    outline: none;
+    border: none;
+    padding: 8px;
+    margin: 0px;
 `
 
 const Form = styled.form`
@@ -155,45 +209,64 @@ const Form = styled.form`
 `
 
 const Div3 = styled.div`
-    position: fixed;
-    bottom: 10px;
+    position: sticky;
+    bottom: 0px;
     width: 26vw;
     height: 40px;
 `
 
 const Span1 = styled.div`
-    width: 75%;
-    margin-bottom: 10px;
-    border-radius: 15px;
-    padding: 0px 0px 0px 20px;
+    width: 100%;
+    margin: 2px;
 `
 
 const Map = styled.div`
+    word-wrap: break-word;
+
+    max-width: 20vw;
+    padding: 0px 8px;
+
     display: flex;
-    justify-content: flex-end;
-    flex-direction: column;
-    width: 100%;
+
+    margin: 10px 8px;
 `
 
 const MappM = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    height: 100%;
+    min-height: 70vh;
     overflow-y: scroll;
-    margin-bottom: 40px;
+    margin-bottom: 15px;
     &::-webkit-scrollbar {
         display: none;
     }
 `
 
 const PostH = styled.div`
-    width: 91%;
+    width: 54%;
     height: 8vh;
     display: flex;
+    border-radius: 10px;
     justify-content: center;
     align-items: center;
-    background: pink;
+    /* background: #2c4251; */
+    position: relative;
+    top: 5px;
+    background-image: linear-gradient(
+        to right bottom,
+        #4b5358,
+        #53585d,
+        #5a5d63,
+        #626267,
+        #69686c,
+        #706e72,
+        #787378,
+        #80797e,
+        #8b7f87,
+        #97868f,
+        #a38c96
+    );
 `
 
 const Mapp = styled.div`
@@ -201,15 +274,26 @@ const Mapp = styled.div`
     justify-content: space-evenly;
     align-items: center;
     width: 100%;
-    background: #bada55;
+    color: #fff;
+    border-radius: 10px;
 `
 
 const ChatBox = styled.div`
+    display: flex;
+    flex-direction: column;
     height: 76vh;
     width: 26vw;
-    background: lightseagreen;
+    background: #fff;
     position: relative;
-    top: 10px;
+    top: -5px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    margin-left: 12px;
+    box-shadow: 0px 1px 50px #cfcfcf;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `
 
 const Dash = styled.div`
@@ -224,14 +308,32 @@ const Dash = styled.div`
 
 const PostView = styled.div`
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
-    flex-direction: column;
-    width: 60%;
+    flex-wrap: wrap;
+    width: 100%;
     height: 100%;
-    background: #15202b;
+    /* background: #C9CBCB; */
     background-position: fixed;
     overflow: scroll;
+    background-image: linear-gradient(
+        to left,
+        #509aaa,
+        #6fa5b0,
+        #8bb1b6,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #8bb1b6,
+        #6fa5b0,
+        #509aaa
+    );
 
     &::-webkit-scrollbar {
         display: none;
@@ -241,5 +343,9 @@ const Divv = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: space-evenly;
+    width: 100%;
+`
+const DIv = styled.div`
+    height: 1px;
     width: 100%;
 `
