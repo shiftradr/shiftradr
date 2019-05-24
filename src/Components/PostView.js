@@ -9,7 +9,7 @@ import "./Login.css"
 import styled from "styled-components"
 import axios from "axios"
 import moment from "moment"
-import swal from '@sweetalert/with-react'
+import swal from "@sweetalert/with-react"
 
 function Picker(props) {
     const [selectedDate, handleDateChange] = useState(moment())
@@ -18,7 +18,6 @@ function Picker(props) {
     const memoRef = useRef()
     const incentiveRef = useRef()
     const typeRef = useRef()
-    
 
     const handlePost = async () => {
         let start = moment(startTime).format("HH:mm")
@@ -28,17 +27,10 @@ function Picker(props) {
         let bib = moment(start).get("hour, min")
         let date = moment(selectedDate).format("YYYY-MM-DD")
 
-        console.warn(selectedDate)
-        console.log(bob)
-        console.log(bib)
-        if (typeRef.current.value == "defaultValue") {
+        if (typeRef.current.value === "defaultValue") {
             swal("Please Select Deparment", "error")
             return
-        } else if (incentiveRef.current.value.length <= 30)
-        {
-
-            
-        
+        } else if (incentiveRef.current.value.length <= 30) {
             await axios
                 .post("/api/posts", {
                     shiftDate: date,
@@ -46,30 +38,19 @@ function Picker(props) {
                     endTime: bob._i,
                     memo: memoRef.current.value,
                     incentive: incentiveRef.current.value,
-                    post_type: typeRef.current.value
+                    post_type: typeRef.current.value,
                 })
                 .catch((err) => console.log(66, err))
             props.getData()
             props.handleModal()
         } else {
             swal("Incentive must be less than 30 characters")
-
         }
     }
 
-    // function validate() {
-    //     let select = document.getElementById('selection').value
-    //     if (select == "Department") {
-    //         alert("Please Select Department")
-    //         return false
-    // }else {
-    //         return true
-    //     }
-    // }
-
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <h1 className="registerTitle">Please enter shift date</h1>
+            <h1 className="registerTitle1">Please enter shift details.</h1>
             <Divv>
                 Date:
                 <DatePicker
@@ -102,12 +83,20 @@ function Picker(props) {
             <Divv>
                 Incentive: <Input placeholder="Incentive" ref={incentiveRef} />
             </Divv>
-            <select id="selectPost" name="Post type" ref={typeRef}  >
-                <option value="defaultValue"  >Post Type</option>
-                <option value="1">Trade</option>
-                <option value="2">NSA</option>
-                <option value="3">Permanent</option>
-            </select>
+            <Divv>
+                Shift Type:
+                <select
+                    id="selectPost"
+                    name="Post type"
+                    ref={typeRef}
+                    className="select2"
+                >
+                    <option value="defaultValue">Select Shift Type</option>
+                    <option value="1">Trade</option>
+                    <option value="2">NSA</option>
+                    <option value="3">Permanent</option>
+                </select>
+            </Divv>
             <ButtonDiv>
                 <Button onClick={() => props.handleModal()}>Cancel</Button>
                 <Button2 onClick={() => handlePost()}>Post</Button2>
@@ -147,8 +136,8 @@ const Input = styled.input`
 
 const Button = styled.button`
     background-color: #fff;
-    color: #FF715B;
-    border: 2px solid #FF715B;
+    color: #ff715b;
+    border: 2px solid #ff715b;
     width: 100%;
     margin-top: 1em;
     padding: 8px 0px;
@@ -158,16 +147,17 @@ const Button = styled.button`
     margin-bottom: 0.25em;
     width: 120px;
     border-radius: 15px;
+    outline: none;
 
     &:hover {
         color: #fff;
-        background-color: #FF715B;
+        background-color: #ff715b;
     }
 `
 const Button2 = styled.button`
-    background-color: #FF715B;
+    background-color: #ff715b;
     color: #fff;
-    border: 2px solid #FF715B;
+    border: 2px solid #ff715b;
     width: 100%;
     margin-top: 1em;
     padding: 8px 0px;
@@ -179,7 +169,7 @@ const Button2 = styled.button`
     border-radius: 15px;
 
     &:hover {
-        color: #FF715B;
+        color: #ff715b;
         background-color: #fff;
     }
 `

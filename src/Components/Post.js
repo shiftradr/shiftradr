@@ -54,15 +54,28 @@ const Post = (props) => {
         const date = moment(post.shift_date).format("dddd, MMMM Do, YYYY")
         return (
             <Mapp key={i}>
-                <h2 style={{borderBottom: '1px solid white'}}>{date}</h2>
-                <span style={{marginBottom: '10px'}}>{item.first_name} {item.last_name}</span>
-                <span style={{padding: '0px 29px 20px 29px', fontSize: '1.1rem'}}>Description: {item.memo}</span>
+                <h2 style={{ borderBottom: "1px solid white" }}>{date}</h2>
+                <span style={{ marginBottom: "10px" }}>
+                    {item.first_name} {item.last_name}
+                </span>
+                <span
+                    style={{
+                        padding: "0px 29px 20px 29px",
+                        fontSize: "1.1rem",
+                    }}
+                >
+                    Description: {item.memo}
+                </span>
                 {item.incentive ? (
                     <span>Incentive: {item.incentive}</span>
                 ) : null}
-                <span>Clock In: {item.start_time.slice(0, 5)}</span>
-                <span style={{marginBottom: '30px'}}>Clock Out: {item.end_time.slice(0, 5)}</span>
-                <span style={{fontSize: '0.7rem'}}>Posted {time}</span>
+                <span>
+                    Clock In: {item.start_time && item.start_time.slice(0, 5)}
+                </span>
+                <span style={{ marginBottom: "30px" }}>
+                    Clock Out: {item.end_time && item.end_time.slice(0, 5)}
+                </span>
+                <span style={{ fontSize: "0.7rem" }}>Posted {time}</span>
             </Mapp>
         )
     })
@@ -194,9 +207,8 @@ const Button = styled.button`
     text-align: start;
     outline: none;
     border: none;
-    background: #FF715B;
+    background: #ff715b;
     color: white;
-
 `
 
 const Button2 = styled.button`
@@ -205,7 +217,7 @@ const Button2 = styled.button`
     border-radius: 15px;
     outline: none;
     border: none;
-    background: #FF715B;
+    background: #ff715b;
     color: white;
 `
 
@@ -284,7 +296,6 @@ const Posts = styled.div`
     border-radius: 15px;
     margin: 30px;
     box-shadow: 0px 1px 50px #cfcfcf;
-
 `
 const ChatBox = styled.div`
     display: flex;
@@ -330,7 +341,24 @@ const PostView = styled.div`
     height: 100%;
     background-position: fixed;
     overflow-y: scroll;
-    background-image: linear-gradient(to left,  #509aaa, #6fa5b0, #8bb1b6, #a6bcbe, #a6bcbe,  #a6bcbe,  #a6bcbe,  #a6bcbe,   #a6bcbe,   #a6bcbe, #a6bcbe, #a6bcbe, #8bb1b6, #6fa5b0, #509aaa);
+    background-image: linear-gradient(
+        to left,
+        #509aaa,
+        #6fa5b0,
+        #8bb1b6,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #8bb1b6,
+        #6fa5b0,
+        #509aaa
+    );
 
     &::-webkit-scrollbar {
         display: none;
