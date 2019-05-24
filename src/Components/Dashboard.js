@@ -9,10 +9,13 @@ import PostModal from "./PostModal"
 const Dashboard = () => {
     const test = useRef()
     const typeRef = useRef()
-
     const [post, setPost] = useState([])
-    const [start, setStart] = useState(moment().format('YYYY-MM-DD'))
-    const [end, setEnd] = useState(moment().add(1, 'days').format('YYYY-MM-DD'))
+    const [start, setStart] = useState(moment().format("YYYY-MM-DD"))
+    const [end, setEnd] = useState(
+        moment()
+            .add(1, "days")
+            .format("YYYY-MM-DD"),
+    )
     const [bob, setBob] = useState(false)
 
     useEffect(() => {
@@ -21,9 +24,7 @@ const Dashboard = () => {
     }, [])
 
     const getData = async () => {
-        axios.get("/auth/user-data").then((res) => console.log(res.data))
         let res = await axios.get("/api/posts")
-        console.log('hi')
         setPost(res.data)
     }
 
@@ -53,8 +54,6 @@ const Dashboard = () => {
             .catch((err) => console.log("update error", err))
     }
 
-    console.log(post)
-
     let map = post.map((item, i) => {
         let time = moment(item.post_date).fromNow()
         let date = moment(item.shift_date).format("dddd, MMMM Do, YYYY")
@@ -72,10 +71,24 @@ const Dashboard = () => {
                     {item.incentive ? (
                         <span>Incentive: {item.incentive}</span>
                     ) : null}
-                    <span>Clock In: {item.start_time.slice(0, 5)}</span>
-                    <span>Clock Out: {item.end_time.slice(0, 5)}</span>
+                    <span>
+                        Clock In:{" "}
+                        {item.start_time && item.start_time.slice(0, 5)}
+                    </span>
+                    <span>
+                        Clock Out: {item.end_time && item.end_time.slice(0, 5)}
+                    </span>
+                    <div className='perm'>
+                        {item.post_type === 1 ? (
+                            <span>Trade</span>
+                        ) : item.post_type === 2 ? (
+                            <span>NSA</span>
+                        ) : item.post_type === 3 ? (
+                            <span>PERM</span>
+                        ) : null}
+                        <span className="posted">Posted {time}</span>
+                    </div>
                 </div>
-                <span className="posted">Posted {time}</span>
             </PostV>
         )
     })
@@ -117,9 +130,6 @@ const Dashboard = () => {
     }
 
     const [modal, setModal] = useState(false)
-
-    console.log(end)
-    console.log(start)
 
     return (
         <>

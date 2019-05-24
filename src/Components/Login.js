@@ -49,7 +49,7 @@ const Login = (props) => {
                             Login
                         </button>
                         <Link
-                        className='borderbottom'
+                            className="borderbottom"
                             style={{ textDecoration: "none", color: "#888686" }}
                             to="/registration"
                         >
