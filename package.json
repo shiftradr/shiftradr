@@ -52,12 +52,6 @@
   },
   "proxy": "http://localhost:4444",
   "main": "server/server.js",
-  "nodemonConfig": {
-    "ignore": [
-      "src/*",
-      "public/*"
-    ]
-  },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "devDependencies": {},
   "repository": {
