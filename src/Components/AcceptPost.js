@@ -18,7 +18,6 @@ const AcceptPost = (props) => {
     const [room, setRoom] = useState()
     const fakeRef = useRef(null)
 
-
     const id = props.match.params.post_id
     const getData = async () => {
         let res = await axios.get(`/api/post/${id}`)
@@ -38,18 +37,39 @@ const AcceptPost = (props) => {
         })
     }, [taken])
 
-    
     let mappyboi = post.map((item, i) => {
-        let time = moment(item.post_date).fromNow()
         const date = moment(post.shift_date).format("dddd, MMMM Do, YYYY")
         return (
             <Mapp key={i}>
-                <h2>{date}</h2>
-                {item.incentive ? (
-                    <span>Incentive: {item.incentive}</span>
-                ) : null}
-                <span>Clock In: {item.start_time}</span>
-                <span>Posted {time}</span>
+                <div>
+                    <div
+                        style={{
+                            fontSize: "1.4rem",
+                            width: "320px",
+                            textAlign: "center",
+                        }}
+                    >
+                        {date}
+                    </div>
+                    <div
+                        style={{
+                            width: "320px",
+                            display: "flex",
+                            justifyContent: "space-evenly",
+                            fontSize: ".8rem",
+                        }}
+                    >
+                        <span>
+                            Clock In:{" "}
+                            {item.start_time && item.start_time.slice(0, 5)}
+                        </span>
+                        <span>
+                            Clock Out:{" "}
+                            {item.end_time && item.end_time.slice(0, 5)}
+                        </span>
+                    </div>
+                </div>
+                <span style={{ padding: "0px 10px" }}>{item.memo}</span>
             </Mapp>
         )
     })
@@ -118,44 +138,45 @@ const AcceptPost = (props) => {
 
     useEffect(plzScroll, [messages])
 
-
     let mapped = peeps.map((peeps, i) => {
         return (
             <Mapp key={i}>
                 <Mappy>
-                    <span>
-                        {peeps.acc_first_name} {peeps.acc_last_name}
+                    <span style={{ flexDirection: "row", marginTop: "10px" }}>
+                        <span style={{ fontSize: "1.5rem" }}>
+                            {peeps.acc_first_name} {peeps.acc_last_name}{" "}
+                        </span>{" "}
+                        Employee ID: {peeps.acc_emp_id}
                     </span>
-                    <span>{peeps.acc_emp_id}</span>
+                    <Mapp>
+                        {!post[0].taken ? (
+                            <>
+                                <Button1
+                                    onClick={() =>
+                                        emailPeople(
+                                            peeps.acc_user_email,
+                                            peeps.acc_first_name,
+                                            peeps.acc_last_name,
+                                            peeps.acc_emp_id,
+                                        )
+                                    }
+                                >
+                                    Accept
+                                </Button1>
+                                <Button1>Decline</Button1>
+                            </>
+                        ) : (
+                            <span>Shift no longer listed</span>
+                        )}
+                        <Button1 onClick={() => getChat(peeps.acc_user_id)}>
+                            Message
+                        </Button1>
+                    </Mapp>
                 </Mappy>
-                <Mapp>
-                    {!post[0].taken ? (
-                        <>
-                            <button
-                                onClick={() =>
-                                    emailPeople(
-                                        peeps.acc_user_email,
-                                        peeps.acc_first_name,
-                                        peeps.acc_last_name,
-                                        peeps.acc_emp_id,
-                                    )
-                                }
-                            >
-                                Accept
-                            </button>
-                            <button>Decline</button>
-                        </>
-                    ) : (
-                        <span>Shift no longer listed</span>
-                    )}
-                    <button onClick={() => getChat(peeps.acc_user_id)}>
-                        Message
-                    </button>
-                </Mapp>
             </Mapp>
         )
     })
-
+    console.log(mapped)
     const mapMessage = messages.map((mess) => {
         return (
             <Map
@@ -177,11 +198,13 @@ const AcceptPost = (props) => {
                 <PostView>
                     <PostH>{mappyboi}</PostH>
                     <Divv>
-                        <Posts>{mapped}</Posts>
+                        <Posts>
+                            {mapped.length === 0 ? <h2 style={{margin: '160px 15px', fontWeight: '300', fontSize: '2rem'}}>No one has offered to take your shift, please check back later.</h2> : <div>{ mapped }</div>}
+                        </Posts>
                         <ChatBox>
                             <PlzScroll>
                                 <MappM>{mapMessage}</MappM>
-                                <DIv ref={fakeRef}/>
+                                <DIv ref={fakeRef} />
                             </PlzScroll>
                             <Div3>
                                 <Form onSubmit={sendMessage}>
@@ -208,17 +231,17 @@ export default AcceptPost
 const PlzScroll = styled.div`
     display: flex;
     justify-content: flex-end;
-    flex-direction: column;    
+    flex-direction: column;
     width: 100%;
 `
 
 const MappM = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     min-height: 70vh;
     overflow-y: scroll;
-    margin-bottom: 40px;
+    margin-bottom: 15px;
     &::-webkit-scrollbar {
         display: none;
     }
@@ -226,16 +249,15 @@ const MappM = styled.div`
 
 const Span1 = styled.div`
     width: 100%;
-    margin-bottom: 7px;
+    margin: 2px;
 `
 
 const Input = styled.input`
     height: 30px;
     width: 80%;
-    background: #1d2a3d;
+    background: #cfcfcf;
     outline: none;
     border: none;
-    color: white;
     padding: 8px;
     margin: 0px;
 `
@@ -248,10 +270,29 @@ const Form = styled.form`
     width: 100%;
 `
 const Button = styled.button`
-    padding: 10px 16px 9px 16px;
+    padding: 10px 18px 9px 16px;
     height: 46px;
     text-align: start;
+    border: none;
+    outline: none;
+    background: #ff715b;
 `
+const Button1 = styled.button`
+    padding: 3px 8px;
+    text-align: start;
+    border: 2px solid #ff715b;
+    outline: none;
+    background: #fff;
+    border-radius: 15px;
+    margin: 15px 0px;
+    color: #ff715b;
+
+    &:hover {
+        background: #ff715b;
+        color: #fff;
+    }
+`
+
 const Map = styled.div`
     word-wrap: break-word;
 
@@ -270,13 +311,29 @@ const Div3 = styled.div`
     height: 40px;
 `
 const PostH = styled.div`
-    width: 91%;
+    width: 54%;
     height: 8vh;
     display: flex;
     border-radius: 10px;
     justify-content: center;
     align-items: center;
-    background: #2c4251;
+    /* background: #2c4251; */
+    position: relative;
+    top: 5px;
+    background-image: linear-gradient(
+        to right bottom,
+        #4b5358,
+        #53585d,
+        #5a5d63,
+        #626267,
+        #69686c,
+        #706e72,
+        #787378,
+        #80797e,
+        #8b7f87,
+        #97868f,
+        #a38c96
+    );
 `
 
 const Mapp = styled.div`
@@ -284,9 +341,8 @@ const Mapp = styled.div`
     justify-content: space-evenly;
     align-items: center;
     width: 100%;
-    background: #2c4251;
     border-radius: 10px;
-
+    color: #fff;
 `
 const Triangle = styled.div`
     height: 14px;
@@ -299,12 +355,13 @@ const Mappy = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 100px;
+    width: 100%;
+    border-bottom: 1px solid white;
 `
 
 const Posts = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     height: 76vh;
@@ -312,21 +369,23 @@ const Posts = styled.div`
     background: #2c4251;
     color: white;
     position: relative;
-    top: 10px;
+    top: -5px;
     border-radius: 10px;
-    box-shadow: 0px 1px 1px 1px #1d2a3d;
+    box-shadow: 0px 1px 50px #cfcfcf;
+    margin-right: 12px;
 `
 const ChatBox = styled.div`
     display: flex;
     flex-direction: column;
     height: 76vh;
     width: 26vw;
-    background: #2c4251;
+    background: #fff;
     position: relative;
-    top: 10px;
+    top: -5px;
     border-radius: 10px;
     overflow-y: scroll;
-    box-shadow: 0px 1px 1px 1px #1d2a3d;
+    margin-left: 12px;
+    box-shadow: 0px 1px 50px #cfcfcf;
 
     &::-webkit-scrollbar {
         display: none;
@@ -344,14 +403,32 @@ const Dash = styled.div`
 `
 const PostView = styled.div`
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
-    flex-direction: column;
-    width: 60%;
+    flex-wrap: wrap;
+    width: 100%;
     height: 100%;
-    background: #15202b;
+    /* background: #C9CBCB; */
     background-position: fixed;
     overflow: scroll;
+    background-image: linear-gradient(
+        to left,
+        #509aaa,
+        #6fa5b0,
+        #8bb1b6,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #a6bcbe,
+        #8bb1b6,
+        #6fa5b0,
+        #509aaa
+    );
 
     &::-webkit-scrollbar {
         display: none;
@@ -359,7 +436,7 @@ const PostView = styled.div`
 `
 const Divv = styled.div`
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: space-evenly;
     width: 100%;
 `

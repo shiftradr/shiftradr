@@ -122,9 +122,8 @@ app.get("/api/applied-post/:id", authCtrl.appliedPost)
 
 app.put("/api/archive/:id", authCtrl.archive)
 
-
 // get filtered data
-app.post('/api/filtered', authCtrl.getFiltered)
+app.post("/api/filtered", authCtrl.getFiltered)
 
 // Chat Endpoints
 const sockCtrl = require("./controller/SocketsController")

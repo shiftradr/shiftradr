@@ -9,7 +9,6 @@ const Header = (props) => {
     const [open, setOpen] = useState(false)
 
     const handleClickOutside = (e) => {
-        console.log("clicking anywhere")
         if (
             node.current.contains(e.target) ||
             bars.current.contains(e.target)
