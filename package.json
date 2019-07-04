@@ -32,8 +32,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "jest",
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -53,7 +54,10 @@
   "proxy": "http://localhost:4444",
   "main": "server/server.js",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "devDependencies": {},
+  "devDependencies": {
+    "cypress": "^3.3.2",
+    "jest": "^24.8.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shiftradr/shiftradr.git"
